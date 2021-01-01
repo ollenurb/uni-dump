@@ -62,8 +62,121 @@ l'errore si avvicina allo $0$)
 >$$
 
 
-In generale, per determinare la radice di una funzione (o equazione) si puo' usare il seguente 
+Per determinare la molteplicita' di una radice si puo' usare il seguente
+
 #### Teorema 
-> TODO: Teorema su radici e derivate $k$ esime
->  
-> 
+>Una radice $\alpha$ ha molteplicita' $m$ se e solo se
+>$$
+>\begin{aligned}
+>f^{(k)}(\alpha) & = 0, k = 0,1,...,m-1 \\
+>f^{(m)}(\alpha) & \neq 0
+>\end{aligned}
+>$$
+
+**Richiamo ad analisi**: Quando una derivata prima tende tende ad essere tangente all'asse delle $x$ 
+significa che si e' in prossimita' di un **minimo** oppure **massimo** relativo della funzione.
+Il fatto che ci siano piu' massimi e mnimi indica la presenza di piu' radici. 
+
+### Metodo di bisezione 
+Considerata una funzione $f(x)$, continua e contenente un solo zero nell'intervallo $[a,b]$: 
+$c=\frac{a+b}{2}$ e' il *punto medio* dell'intervallo. 
+Allora si possono verificare le seguenti condizioni: 
+
+1. $f(c) = f(\alpha) = 0$ 
+2. $\alpha \in [a, c]$
+3. $\alpha \in [c, b]$
+
+Nel primo caso ci si ferma perche' la soluzione e' stata trovata, mentre per determinare se ci si stia 
+trovando nel caso 2 oppure nel caso 3 basta analizzare in quale intervallo la funzione cambia segno 
+calcolando $f(a) \cdot f(c)$
+
+* Se negativo, allora $\alpha \in [a, c]$
+* Se positivo, allora $\alpha \in [c, b]$
+
+Il metodo prevede poi di reiterare il procedimento ponendo come nuovo intervallo quello in cui si trova 
+$\alpha$. 
+
+Siano quindi:  
+
+* $k$ numero dell'iterazione 
+* $x_k$ = soluzione del passo $k$, per definizione e' $x_k = \frac{a_k + b_k}{2}$
+
+E' possibile calcolare il numero di iterazioni $k$ necessarie per ottenere un **errore inferiore** a 
+$\varepsilon$: 
+$$
+| x_k -\alpha | \leq \frac{b-a}{2^k} \leq \varepsilon \rightarrow  
+k \geq log_2(b-a) + log_2 \varepsilon^{-1}
+$$
+
+Siccome l'errore si dimezza ad ogni iterazione $k$, il metodo ha ordine $p=1$ e costante 
+asintotica $C=\frac{1}{2}$
+
+#### Metodo di Newton 
+Considerata una funzione $f(x)$, continua e contenente un solo zero nell'intervallo $[a,b]$: 
+Dato un punto con ascissa $x_0$, l'approssimazione di $\alpha$ al passo successivo $x_1$ e' data 
+dalll'ascissa del punto d'intersezione tra la tangente al punto $x_0$ e l'asse $x$. 
+Genericamente, possiamo formalizzare il generico passo come: 
+$$
+x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
+$$
+
+**Nota**: $f'$ deve essere sempre $\neq 0$, ma questo accade per le ipotesi iniziale, poiche' in caso 
+contrario, $f$ corrisponderebbe ad una funzione orizzontale che non ha intersezioni con l'asse delle 
+ascisse. 
+
+**Errore al passo $k$**: 
+$$
+|e_{k+1}| \leq \frac{1}{M} |M e_0|^{2k+1} 
+$$
+
+**Convergenza del metodo:** Il metodo converge se
+$$
+x_0 \in (\alpha - \frac{1}{M}; \alpha + \frac{1}{M})
+$$
+Cioe' se il punto iniziale $x_0$ e' scelto sufficientemente vicino alla soluzione $\alpha$. 
+$M$ e' scelto in relazione a $f''$
+
+**Velocita' di convergenza**: Se il metodo converge, allora converge con velocita' $C$ pari a 
+$$
+\lim_{k \rightarrow \infty} \frac{|e_{k+1}|}{|e_k|^2} = \frac{1}{2} \frac{|f''(\alpha)|}{|f'(\alpha)|}
+$$
+
+>Nota: Dalla formula emerge anche che $p = 2$. Il limite converge *ssse* $\alpha$ e' una radice semplice. 
+In corrispondenza di radici multiple, la velocita' di convergenza $C=\frac{1}{2}$, quindi $p=1$. 
+
+**Condizione di arresto**: Data una tolleranza $\tau$ e un numero massimo di iterazioni $N$, la condizione
+d'arresto e' definita come
+$$
+|x_k - x_{k-1}| \lt \tau|x_k| \text{ or } f(x_k) = 0 \text{ or } k \gt N.
+$$
+
+
+#### Metodo delle corde
+Alternativamente al metodo di Netwon che considera tutte le rette con coefficiente angolare calcolato 
+tramite derivata, il metodo delle corde considera un altro fattore come coefficiente angolare: un valore
+costante $m_k$. 
+
+In questo modo, al posto di avere una fascio di rette tangenti, si ottiene un fascio di rette secanti, 
+tutte con lo stesso coefficiente angolare. Questo coefficiente angolare sara' uguale al coefficiente angolare
+della prima tangente del punto considerato. ($m=f'(x_0)$$
+
+#### Metodo delle secanti 
+Il ragionamento e' analogo a quello del metodo delle corde, ma si utilizza un coefficiente angolare *m* 
+differente, definito come
+$$
+m_k \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
+$$
+
+In altri termini, si trova la retta con coefficiente angolare tale che sia secante (passante) per due punti dati. 
+Contrariamente agli altri metodi, questo metodo necessita di due punti iniziali anziche' uno. 
+
+Il criterio per la generazione dei punti e': 
+$$
+x_{k+1} = \frac{x_{k-1} f(x_k) - x_k f(x_{k-1}) } {f(x_k) - f(x_{k-1})}
+$$
+
+Questo metodo e' vantaggioso poiche' approssima molto bene il metodo delle tangenti (man mano che l'intervallo 
+si rimpicciolisce, i due punti tenderanno a esser molto vicini, rendendo le rette quasi delle tangenti), ma senza 
+dovercomputare delle derivate prime in modo diretto. 
+
+**Ordine di convergenza**: Si dimostra che e' pari a $p = \frac{1 + \sqrt{5}} {2} \approx 1.618$
