@@ -180,3 +180,123 @@ si rimpicciolisce, i due punti tenderanno a esser molto vicini, rendendo le rett
 dovercomputare delle derivate prime in modo diretto. 
 
 **Ordine di convergenza**: Si dimostra che e' pari a $p = \frac{1 + \sqrt{5}} {2} \approx 1.618$
+
+### Metodi di punto fisso
+I metodi di punto fisso consistono nel portare le funzioni in forma canonica $f(x) = 0$ nella forma $x=g(x)$.
+
+In questo caso il problema si sposta dal trovate un $\alpha$ tale che $f(\alpha) = 0$ ma di trovare invece
+un valore $\alpha$ tale che $\alpha=g(\alpha)$. ($\alpha$ e' detto **punto fisso** di $g(x)$)
+
+Per ottenere questa forma, si pone inizialmente che $x=g(x)$ e un'approssimazione inziale $x_0$ e si procede
+per costruzione di una successione tramite una regola del tipo
+$$
+x_{k+1} = g(x_k)
+$$
+
+La nozione di convergenza di un metodo iterativo di punto fisso e' connessa al concetto di **contrattivita'**
+La contrattivita' esprime la capacita' di una funzione $g$ di avvicinare tra loro due punti, e si capisce
+come questa nozione possa essere collegata a quella di convergenza. 
+
+#### Definizione
+>Una funzione $f(x)$ e' contrattiva nell'intervallo $I \subset \mathbb{R}$ se esiste una costante $C \in ]0,1[$
+>tale che
+>$$
+>| g(x) - g(y) | \leq C | x - y |, \text{  } \forall x,y \in I
+>$$
+
+
+Una funzione contrattiva e' anche continua, ma non e' necessariamente derivabile. Nel caso in cui sia derivabile
+risulta che 
+$$
+C=max_{x \in I} |g'(x)|
+$$
+La condizione di contrattivita' per una funzione derivabile risulta quindi essere
+$$
+|g'(x)| \lt 1 \text{ in } I
+$$
+In caso non si verificasse questa condizione, il metodo puo' **NON CONVERGERE** alla soluzione $\alpha$.
+Piu' $|g'(x)| \rightarrow 0$ piu' e' veloce la convergenza alla soluzione. 
+
+#### Teorema
+>Sia $f: [a,b] \rightarrow [a,b]$ una funzione di classe $C^1 [a,b]$ con 
+>$$ 
+>|g'(x)| \leq C \lt 1, \forall x \in [a,b]
+>$$
+>e si consideri il metodo iterativo $x_{k+1} = g(x_k)$ con punto iniziale $x_0 \in [a,b]$
+>Allora:
+>
+>* La successione degli $x_k$ converge ad un limite $\alpha$ per $k \rightarrow \infty$ 
+>* $\alpha \in [a,b]$
+>* $\alpha$ e' l'unico punto fisso di $g$
+>* La convergenza e' almeno lineare e $\frac{x_{k+1} - \alpha}{x_{k} - \alpha} \rightarrow g'(\alpha)$
+
+### Esercizi
+#### Esercizio 1
+Applicare il metodo delle tangenti alla funzione: 
+$$
+f(x) = 
+\begin{cases}
+    \sqrt{x},   & x\geq 0\\
+    -\sqrt{-x}, & x < 0
+\end{cases}
+$$
+la cui radice e' $\alpha = 0$.
+
+#### Soluzione
+**Da fare**
+**Hint: Costruisci la successione $x_k$**
+
+#### Esercizio 2
+Applicare il metodo delle tangenti alla funzione: 
+$$
+f(x) = 
+\begin{cases}
+    \sqrt{x^3},   & x\geq 0\\
+    -\sqrt{-x^3}, & x < 0
+\end{cases}
+$$
+la cui radice e' $\alpha = 0$.
+
+#### Soluzione
+**Da fare**
+
+
+#### Esercizio 3 
+Individuare un intervallo che contiene la soluzione positiva dell'equazione 
+$$
+e^{-x^2} = x^2
+$$
+Successivamente, stabilire quante iterazioni del metodo di bisezione sono necessarie per determinare tale
+soluzione a meno di $10^{-3}$ a partire dall'intervallo precedentemente determinato.
+ 
+#### Soluzione 
+**Da fare**
+
+#### Esercizio 4 
+Applicare 3 passi del metodo di bisezione a 
+$$
+p(x) = x^2 - cos(x^2) \text{ con intervallo iniziale } [0,2]
+$$
+
+#### Soluzione 
+**Da fare**
+
+#### Esercizio 5 
+Applicare 3 passi del metodo delle secanti a 
+$$
+(x-1)^3 = e{-x^2}
+$$
+utilizzando come valori iniziali $x_0=0$ e $x_1=2$
+
+#### Soluzione
+**Da fare**
+
+#### Esercizio 6
+Il metodo di Newton e' convergente per l'equazione 
+$$
+p(x)=x^6+x^4+5x^2-12
+$$
+se scegliamo $x_0=0$? E con $x_0=2$? Calcolare la terza approssimazione della successione di Newton
+
+#### Soluzione
+**Da fare**
