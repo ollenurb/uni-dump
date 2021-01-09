@@ -166,6 +166,43 @@ $$
 p_n(x) = \sum^{n}_{k=0} y_k L_k(x)
 $$
 
+#### Approssimazione ai minimi quadrati
+Spesso quando si vuole approssimare una funzione non si hanno dei valori necessariamente distinti, inoltre
+i dati racconti possono avere dell'errore introdotto. 
+L'idea e' quella di trovare per tale insieme di punti, una funzione che sia un'approssimazione del fenomeno 
+rappresentato dai punti $\{ (x_i,y_i) \} i=0,...,m$ dove $m$ e' il numero di punti.
+Questa funzione come detto in precedenza puo' essere rappresentata come una combinazione lineare di funzioni
+$\phi_k(x), k=0,...,m$  
+Per esempio, e' stato visto che nel caso polinomiale $\phi_k(x)=x^k$ e l'approssimazione risultante e' un 
+polinomio di grado $n$: $p_n(x) = c_0 + c_1 x + c_2 x^2 + ... + c_n x^n$  
+Si vuole pero' considerare il caso piu' generale ed usare quindi $\{ \phi_k(x) \}_{k=0,..,n}$ per trovare 
+quindi una funzione della forma: 
+$$
+f_n (x) = c_0 \phi_0(x) +  c_1 \phi_1(x) + ... +  c_n \phi_n(x) 
+$$
+con $f_n(x)$ individuato con il criterio dei minimi quadrati, cioe' tutti i $c_k$ tali che: 
+$$
+\varepsilon_2 = \sum^{m}_{i=0} [ y_i - \sum^{n}_{k=0} c_k \phi_k(x_i) ]^2 = 
+\sum^{m}_{i=0} [ y_i - f_n(x_i) ]^2 
+$$
+Per scegliere a quale tipo di famiglia di funzioni appartiene $\phi_k(x)$ si deve vedere se il fenomeno 
+individuato e' un modello esponenziale, periodico o altro. 
+Ci limiteremo a considerare il caso polinomiale $\phi_k(x) = x^k$, piu' formalmente, si vuole trovare 
+la combinazione lineare $\sum^{n}_{k=0} c_k x_i^k$ tale che
+$$
+\varepsilon_2 = \sum^{m}_{i=0} [ y_i - \sum^{n}_{k=0} c_k x_i^k ]^2
+$$
+sia minimo. 
+Siccome $\varepsilon_2$ varia al variare dei coefficienti $c_k$, possiamo considerarla come in funzione di tali
+coefficienti, quindi si puo' dire che $\varepsilon_2 (c_0, c_1, ...,c_n)$. 
+Per trovare il punto di minimo si puo' pensare di derivare $\varepsilon_2$ e porla $=0$ ottenendo quindi il 
+seguente sistema lineare:
+$$
+\sum^m_{i=0} \sum^n_{j=0} c_j x_i^{j+k} = \sum^m_{i=0} y_i x_i^k \text{   con } k=0,...,n
+$$
+Ne risulta quindi un sistema di $(n+1)$ equazioni in $(n+1)$ incognite. Quando $n=1$ si dice che il sistema e' 
+una retta ai minimi quadrati oppure retta di regressione. 
+
 #### Polinomio interpolante di Newton
 La notazione $f[x_0, ..., x_n]$ indica il coefficiente del termine di grado massimo di un polinomio che 
 interpola una funzione $f(x)$ nei punti di ascisse $[x_0,...,x_n$. 
@@ -175,24 +212,7 @@ $$
 f[x_0, ..., x_n] = \frac{ f[x_1, ..., x_n] - f[x_0, ..., x_{n-1}] }{x_n - x_0}
 $$
 Questa formula permette di generare lo **schema delle differenze divise**.  
-Mediante queste differenze divise, e' possibile dare una rappresentazione esplicita del polinomio 
-interpolante: 
-$$
-\begin{multiline}
-p_n(x) & = p_{n-1}(x) + f[x_0,...,x_n]\omega_{n-1}(x) \\
-       & = p_{n-2}(x) + f[x_0,...,x_{n-1}]\omega_{n-2}(x) + f[x_0, ..., x_n]\omega_{n-1}(x) \\
-       & = ... \\
-       & = f[x_0] + f[x_0, x_1] \omega_{0}(x) + ... +  f[x_0, ..., x_n]\omega_{n-1}(x) \\
-\end{multiline}
-$$
-il quale, espanso nella **foma di Newton** risulta essere: 
-$$
-\begin{multiline}
-p_n(x) = f[x_0] & + f[x_0, x_1](x - x_0) + f[x_0, x_1, x_2](x-x_0)(x-x_1) + ... \\
-                & + f[x_0,.., x_{n-1}](x - x_0)...(x-x_{n-2}) \\
-                & + f[x_0,.., x_{n}](x - x_0)...(x-x_{n-1}) \\
-\end{multiline}
-$$
+**Guardare sul libro a pagina 218**. 
 
 **Complessita' e possibili svantaggi**:
 
@@ -207,8 +227,17 @@ divise
 * E' possibile aggiungere un nuovo nodo di interpolazione, aggiornando la tabella delle diff. div. ed 
 aggiungendo un termine al polinomio. 
 
+#### Approssimazione ai minimi quadrati
+Calcolare il polinomio di **migliore approssimazione** per una funzione $f$ consiste nel determinare 
+il polinomio di grado $n$ che minimizzi una norma dell'errore. 
+Se viene utilizzata una norma infinito si parla di **migliore approssimazione uniforme** mentre il 
+polinomio che minimizza la norma-2 e' detto **migliore approssimazione nel senso dei minimi quadrati**. 
+Il primo problema e' di difficile soluzione mentre il seecondo e' piu' trattabile dal punto di vista 
+computazionale. 
+
 #### Esercizi
 TODO: Presenti sul file **Esercizi.pdf** nella quarta settimana sulla pagina moodle del corso.
+Altri esercizi sono anche sul file della lezione in pdf sempre. 
 (Hint: Per vedere come svolgerli guardare la lezione di teoria della stessa settimana) 
 
 
