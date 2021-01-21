@@ -1,5 +1,5 @@
 
-all: dispense
+all: pdf
 
-dispense:
-		pandoc *.md -o MetNum.pdf
+pdf:
+		pandoc *.md metadata.yaml -s -o MetNum.pdf --template eisvogel --listings

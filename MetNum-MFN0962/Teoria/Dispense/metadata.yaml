@@ -1,0 +1,15 @@
+---
+header-includes: \usepackage{physics}
+                 \usepackage{amsthm}
+                 \newtheorem{definition}{Definition}
+                 \newtheorem{lemma}{Lemma}
+                 \newtheorem{theorem}{Theorem}
+                 \newtheorem{example}{Example}
+                 \newtheorem{assumption}{Assumption}
+numbersections: true
+titlepage: true
+title:  'Appunti di Metodi Numerici'
+subtitle: "A.A. 2020-2021"
+author: [Matteo Brunello]
+---
+

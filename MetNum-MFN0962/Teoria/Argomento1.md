@@ -1,7 +1,6 @@
 % Introduzione al corso di metodi numerici
 
 # Introduzione al corso di metodi numerici
-
 **Analisi Numerica**: Riguarda lo sviluppo e l'analisi di algoritmi per risolvere problemi dove vengono coinvolte variabili reali o complesse.   
 Le variabili reali o complesse coinvolte sono dati affetti da errori (e quindi delle approssimazioni dei dati reali), i quali possono essere categorizzati in due categorie: 
 

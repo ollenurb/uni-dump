@@ -1,7 +1,8 @@
 # Introduzione all'analisi numerica 
 
-L'analisi numerica e' la materia o branca della matematica che si occupa della definizione e l'analisi 
-di algoritmi per la risoluzione di *problemi* matematici in cui sono coinvolte variabili reali o complesse. 
+L'analisi numerica e' la materia o branca della matematica che si occupa della definizione e
+l'analisi di algoritmi per la risoluzione di *problemi* matematici in cui sono coinvolte variabili
+reali o complesse.  
 La soluzione di tali problemi rappresenta un'approssimazione della soluzione reale del problema.
 
 Lo studio degli errori costituisce una parte importante dell'analisi numerica, poiche' condizionano in 
@@ -39,30 +40,27 @@ Quando questo accade si dice che il *problema numerico* in questione e' *stabile
 perturbazioni sui dati in ingresso non influenzano in modo significativo la soluzione (dati in uscita). 
 
 Nell'analisi numerica spesso si vogliono avere delle stime qualitative sui modelli numerici che indichino 
-quanto la soluzione venga influenzata dai dati perturbati in input. 
-Questa caratterizzazione viene detta **condizionamento del problema** ed e' definita come: 
+quanto la soluzione venga influenzata dai dati perturbati in input.   
+Questa caratterizzazione viene detta **condizionamento del problema** ed e' definita come:  
 
->**Definizione**
->*Sia $\delta d$ una perturbazione dei dati $d$ di un problema e sia $\delta x$ la corrispondente 
->perturbazione sulla sua soluzione $x$. Sia inoltre $\left \| \cdot \right \|$ una qualsiasi norma 
->vettoriale. Il **numero di condizionamento assoluto** $K=K(d)$ e' definito dalla relazione: 
+>***Definizione**: Sia $\delta d$ una perturbazione dei dati $d$ di un problema e sia $\delta x$ la 
+>corrispondente perturbazione sulla sua soluzione $x$. Sia inoltre $\left \| \cdot \right \|$ una qualsiasi 
+>norma vettoriale. Il **numero di condizionamento assoluto** $K=K(d)$ e' definito dalla relazione:
 >$$
 >\left \| \delta x \right \| \leq K \left \| \delta d \right \|
 >$$
->mentre per il **numero di condizionamento relativo** $k = k(d)$: 
+>mentre per il **numero di condizionamento relativo** $k = k(d)$:*
 >$$
 >\frac{\left \| \delta x \right \|}{\left \| x \right \|} 
->\leq k \frac{\left \| \delta d \right \|}{\left \| d \right \|}
+\leq k \frac{\left \| \delta d \right \|}{\left \| d \right \|}
 >$$
->*
 
 Il condizionamento misura quindi **quanto** un errore sui dati possa essere amplificato nei risultati. 
 Piu' tale numero e' grande piu' risulta essere amplificato l'errore nei risultati. 
 
 ## Algoritmi 
->**Definizione** 
->Un **algoritmo** e' una sequenza univoca di un numero finito di operazioni elementari che stabilisce come 
->calcolare la soluzione di un problema assegnati certi dati iniziali. 
+>***Definizione**: Un **algoritmo** e' una sequenza univoca di un numero finito di operazioni elementari 
+>che stabilisce come calcolare la soluzione di un problema assegnati certi dati iniziali.*
 
 Un algoritmo e' detto **stabile** quando al tendere delle operazioni all'infinito, la soluzione tende a 
 quella reale. E' detto **instabile** quando gli errori si propagano in modo incontrollato man mano che 
@@ -72,18 +70,11 @@ cioe' in numero di operazioni in virgola mobile necessarie a risolvere il proble
 l'algoritmo. 
 E' utile anche dare una definizione di errore relativo e assoluto per gli algoritmi numerici: 
 
->**Definizione**
->Siano $a$ il valore esatto della soluzione di un problema e $a^*$ il valore perturbato di $a$, **l'errore
->assoluto** di un algoritmo e' definito come
+>***Definizione**: Siano $a$ il valore esatto della soluzione di un problema e $a^*$ il valore perturbato 
+>di $a$, **l'errore assoluto** di un algoritmo e' definito come
 >$$ \varepsilon = \left | a - a^* \right | $$
->mentre **l'errore relativo** e' definito come
+>mentre **l'errore relativo** e' definito come *
 >$$ \rho =\frac{\left | a - a^* \right |}{ \left | a \right | } $$
 
 L'errore relativo fornisce informazioni sul numero di cifre significative esatte in $a^*$ (cioe' quelle a
 partire dalla prima cifra diversa da $0$)
-
-
-
-
-
-
