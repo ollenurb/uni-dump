@@ -216,78 +216,98 @@ Tale metodo, seppur semplice dal punto di vista implementativo, presenta delle p
 poco soddisfacenti nemmeno se comparate con il metodo di bisezione.
 
 ## Metodo delle secanti 
-Il ragionamento e' analogo a quello del metodo delle corde, ma si utilizza un coefficiente angolare *m* 
-differente, definito come
+Il ragionamento e' analogo a quello del metodo delle corde, ma si utilizza un coefficiente angolare
+*m* differente, definito come
+
 $$
-m_k \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
+m_k = \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
 $$
 
-In altri termini, si trova la retta con coefficiente angolare tale che sia secante (passante) per due punti dati. 
-Contrariamente agli altri metodi, questo metodo necessita di due punti iniziali anziche' uno. 
+In altri termini, si trova la retta con coefficiente angolare tale che sia secante (passante) per
+due punti dati.  Contrariamente ai metodi Newton e delle corde, questo metodo necessita di due punti
+iniziali anziche' uno. 
 
-Il criterio per la generazione dei punti e': 
+In termini algebrici possiamo definire l criterio per la generazione dei punti come 
 $$
 x_{k+1} = \frac{x_{k-1} f(x_k) - x_k f(x_{k-1}) } {f(x_k) - f(x_{k-1})}
 $$
 
-Questo metodo e' vantaggioso poiche' approssima molto bene il metodo delle tangenti (man mano che l'intervallo 
-si rimpicciolisce, i due punti tenderanno a esser molto vicini, rendendo le rette quasi delle tangenti), ma senza 
-dovercomputare delle derivate prime in modo diretto. 
+Un vantaggio di questo metodo e' che approssima molto bene il metodo delle tangenti (man mano che
+l'intervallo si rimpicciolisce, i due punti tenderanno a esser molto vicini, rendendo le rette quasi
+delle tangenti), ma senza la necessita' di dover computare delle derivate prime in modo diretto, le
+quali potrebbero essere non note a priori. 
+Inoltre, guardando la formula per la generazione della successione dei punti, si nota che e'
+presente $f(x_{k-1})$, cio' significa che tale valore e' stato calcolato in precedenza e tramite
+opportune memorizzazioni e' possibile evitare di ricalcolarlo. 
 
-**Ordine di convergenza**: Si dimostra che e' pari a $p = \frac{1 + \sqrt{5}} {2} \approx 1.618$
+E' possibile dimostrare che l'**ordine di convergenza** e' pari a $p = \frac{1 + \sqrt{5}} {2}
+\approx 1.618$ (questa quantita' e' nota come *rapporto aureo*). 
+Cio' indica che a parita' di costo computazionale esso produce una riduzione dell'errore maggiore
+del metodo di Newton, oltre a non richiedere la computazione della derivata prima. 
 
 ## Metodi di punto fisso
-I metodi di punto fisso consistono nel portare le funzioni in forma canonica $f(x) = 0$ nella forma $x=g(x)$.
-
-In questo caso il problema si sposta dal trovate un $\alpha$ tale che $f(\alpha) = 0$ ma di trovare invece
-un valore $\alpha$ tale che $\alpha=g(\alpha)$. ($\alpha$ e' detto **punto fisso** di $g(x)$)
-
-Per ottenere questa forma, si pone inizialmente che $x=g(x)$ e un'approssimazione inziale $x_0$ e si procede
-per costruzione di una successione tramite una regola del tipo
+Fino ad ora i metodi che sono stati trattati (eccetto quello delle secanti) possono essere
+generalizzati nella forma 
 $$
 x_{k+1} = g(x_k)
 $$
+Dove $g$ e' un'opportuna funzione d'iterazione che dipende dal metodo. Se questa funzione converge
+alla radice si ha quindi che 
+$$
+\alpha = g(\alpha)
+$$
+Cioe', la funzione di iterazione come prossimo punto data la radice, ritorna la radice stessa.
+In analisi, il valore che una funzione mappa in se stesso e' detto **punto fisso**. 
+I metodi di punto fisso quindi non consistono piu' nel trovare un valore $\alpha$ tale che
+$f(\alpha) = 0$ ma invece che $\alpha=g(\alpha)$. Ovviamente, la funzione $g$ viene scelta in modo
+che il suo punto fisso coincida con la radice di $f$.   
+Il metodo consiste nel porre inizialmente che $x=g(x)$ e di dare un punto iniziale inziale $x_0$ che
+sia un'approssimazione di $\alpha$. Successivamente si procede per costruzione di una successione
+tramite una regola del tipo
+$$
+x_{k+1} = g(x_k)
+$$
+Si puo' notare che ponendo $x = g(x)$ (in altri termini esplicitando la $x$ di $f(x)$) possiamo
+ottenere diverse funzioni di iterazione $g$ in base al modo in cui si opera algebricamente.  Non
+tutte le possibili funzioni di iterazioni pero' garantiscono la convergenza alla soluzione, anzi,
+piu' precisamente la nozione di convergenza di un metodo iterativo di punto fisso, e' connessa al
+concetto di **contrattivita'**. La contrattivita' esprime la capacita' di una funzione $g$ di
+avvicinare tra loro due punti (*contrarre=diminuire le distanze*). 
 
-La nozione di convergenza di un metodo iterativo di punto fisso e' connessa al concetto di **contrattivita'**
-La contrattivita' esprime la capacita' di una funzione $g$ di avvicinare tra loro due punti, e si capisce
-come questa nozione possa essere collegata a quella di convergenza. 
-
-#### Definizione
->Una funzione $f(x)$ e' contrattiva nell'intervallo $I \subset \mathbb{R}$ se esiste una costante $C \in ]0,1[$
->tale che
+>***Definizione**: Una funzione $f(x)$ e' contrattiva nell'intervallo $I \subset \mathbb{R}$ se
+>esiste una costante $C \in ]0,1[$ tale che* 
 >$$
->| g(x) - g(y) | \leq C | x - y |, \text{  } \forall x,y \in I
+>| g(x) - g(y) | \leq C | x - y |, \text{  } \forall x,y \in I 
 >$$
 
-
-Una funzione contrattiva e' anche continua, ma non e' necessariamente derivabile. Nel caso in cui sia derivabile
-risulta che 
+Diciamo quindi che il metodo converge *se e solo se* $g(x)$ e' una funzione contrattiva.  
+Una funzione contrattiva e' anche continua, ma non e' necessariamente derivabile. 
+Nel caso in cui essa sia derivabile risulta che 
 $$
 C=max_{x \in I} |g'(x)|
 $$
-La condizione di contrattivita' per una funzione derivabile risulta quindi essere
+E quindi possiamo dire che la condizione di contrattivita' per una funzione derivabile risulta essere
 $$
 |g'(x)| < 1 \text{ in } I
 $$
-In caso non si verificasse questa condizione, il metodo puo' **NON CONVERGERE** alla soluzione $\alpha$.
+In caso non si verificasse questa condizione, il metodo **puo'** non convergere alla soluzione $\alpha$.
 Piu' $|g'(x)| \rightarrow 0$ piu' e' veloce la convergenza alla soluzione. 
+Questa relazione tra contrattivita' e convergenza del metodo e' chiarita dal seguente teorema
 
-#### Teorema
->Sia $f: [a,b] \rightarrow [a,b]$ una funzione di classe $C^1 [a,b]$ con 
+>***Teorema**: Sia $f: [a,b] \rightarrow [a,b]$ una funzione di classe $C^1 [a,b]$ con*
 >$$ 
 >|g'(x)| \leq C < 1, \forall x \in [a,b]
 >$$
->e si consideri il metodo iterativo $x_{k+1} = g(x_k)$ con punto iniziale $x_0 \in [a,b]$
->Allora:
+>*e si consideri il metodo iterativo $x_{k+1} = g(x_k)$ con punto iniziale $x_0 \in [a,b]$*
+>*Allora:*
 >
 >* La successione degli $x_k$ converge ad un limite $\alpha$ per $k \rightarrow \infty$ 
 >* $\alpha \in [a,b]$
 >* $\alpha$ e' l'unico punto fisso di $g$
 >* La convergenza e' almeno lineare e $\frac{x_{k+1} - \alpha}{x_{k} - \alpha} \rightarrow g'(\alpha)$
 
-### Esercizi
-#### Esercizio 1
-Applicare il metodo delle tangenti alla funzione: 
+## Esercizi proposti
+**Esercizio 1:** Applicare il metodo delle tangenti alla funzione: 
 $$
 f(x) = 
 \begin{cases}
@@ -297,12 +317,9 @@ f(x) =
 $$
 la cui radice e' $\alpha = 0$.
 
-#### Soluzione
-**Da fare**
-**Hint: Costruisci la successione $x_k$**
+**Soluzione**: *Hint: Costruisci la successione $x_k$*
 
-#### Esercizio 2
-Applicare il metodo delle tangenti alla funzione: 
+**Esercizio 2**: Applicare il metodo delle tangenti alla funzione: 
 $$
 f(x) = 
 \begin{cases}
@@ -312,46 +329,36 @@ f(x) =
 $$
 la cui radice e' $\alpha = 0$.
 
-#### Soluzione
-**Da fare**
+**Soluzione**: *Da fare*
 
-
-#### Esercizio 3 
-Individuare un intervallo che contiene la soluzione positiva dell'equazione 
+**Esercizio 3**: Individuare un intervallo che contiene la soluzione positiva dell'equazione 
 $$
 e^{-x^2} = x^2
 $$
-Successivamente, stabilire quante iterazioni del metodo di bisezione sono necessarie per determinare tale
-soluzione a meno di $10^{-3}$ a partire dall'intervallo precedentemente determinato.
+Successivamente, stabilire quante iterazioni del metodo di bisezione sono necessarie per determinare
+tale soluzione a meno di $10^{-3}$ a partire dall'intervallo precedentemente determinato.
  
-#### Soluzione 
-**Da fare**
+**Soluzione**: *Da fare*
 
-#### Esercizio 4 
-Applicare 3 passi del metodo di bisezione a 
+**Esercizio 4**: Applicare 3 passi del metodo di bisezione a 
 $$
 p(x) = x^2 - cos(x^2) \text{ con intervallo iniziale } [0,2]
 $$
 
-#### Soluzione 
-**Da fare**
+**Soluzione**: *Da fare*
 
-#### Esercizio 5 
-Applicare 3 passi del metodo delle secanti a 
+**Esercizio 5**: Applicare 3 passi del metodo delle secanti a 
 $$
 (x-1)^3 = e{-x^2}
 $$
 utilizzando come valori iniziali $x_0=0$ e $x_1=2$
 
-#### Soluzione
-**Da fare**
+**Soluzione**: *Da fare*
 
-#### Esercizio 6
-Il metodo di Newton e' convergente per l'equazione 
+**Esercizio 6**: Il metodo di Newton e' convergente per l'equazione 
 $$
 p(x)=x^6+x^4+5x^2-12
 $$
 se scegliamo $x_0=0$? E con $x_0=2$? Calcolare la terza approssimazione della successione di Newton
 
-#### Soluzione
-**Da fare**
+**Soluzione**: *Da fare*
