@@ -1,3 +1,4 @@
+\newpage
 # Numeri di macchina
 Come gia' detto in precedenza, gli algoritmi studiati dall'analisi numerica operano sistematicamente
 su dati affetti da errori. In questa sezione verra' mostrato come vengono memorizzati i numeri reali

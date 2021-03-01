@@ -1,3 +1,4 @@
+\newpage
 # Equazioni non lineari
 
 Le equazioni non lineari sono tutte quelle funzioni la cui equazione non e' nella forma  $f(x) = ax
@@ -305,6 +306,11 @@ Questa relazione tra contrattivita' e convergenza del metodo e' chiarita dal seg
 >* $\alpha \in [a,b]$
 >* $\alpha$ e' l'unico punto fisso di $g$
 >* La convergenza e' almeno lineare e $\frac{x_{k+1} - \alpha}{x_{k} - \alpha} \rightarrow g'(\alpha)$
+
+Il seguente corollario mostra sotto quali condizioni la convergenza del metodo e' quadratica
+
+>***Corollario:** Sotto le ipotesi del teorema precedente, se $g'(\alpha)=0$ e $g''(x)$ e' continua
+>in $[a,b]$, allora il metodo iterativo ha ordine almeno 2.*
 
 ## Esercizi proposti
 **Esercizio 1:** Applicare il metodo delle tangenti alla funzione: 

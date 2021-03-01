@@ -1,4 +1,4 @@
-% Metodi diretti per la soluzione di sistemi lineari
+\newpage
 # Metodi diretti per la soluzione di sistemi lineari
 
 **Distanza euclidea** tra due vetori $v, w \in \mathbb{R}$ e' definita come 
@@ -18,7 +18,7 @@ x = A^{-1} \cdot b
 $$
 
 #### Sistemi diagonali 
-Se la matrice dei coefficienti (rinominata da $A$) $D$ e' **diagonale** con $det(d) \new 0$ allora il 
+Se la matrice dei coefficienti (rinominata da $A$) $D$ e' **diagonale** con $det(d) \neq 0$ allora il 
 sistema 
 $$
 D \cdot x = b

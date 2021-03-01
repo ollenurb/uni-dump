@@ -1,6 +1,5 @@
-# Quadratura Numerica
-
-### Formule di quadratura
+\newpage
+# Quadratura Numerica 
 Un problema di quadratura consiste nel determinare il valore un integrale definito del tipo 
 $$
 I(f) = \int_{a}^{b} f(x) dx
@@ -103,7 +102,7 @@ I_0^{(c)} = h \sum^{n-1}_{i=0} f(\frac{x_i + x_{i+1}}{2})
 $$
 
 #### Definizione
->Una formula ha grado di precisione $r$ se e' esatta per $f(x) \in \mathbb{P}_r e non e' piu' 
+>Una formula ha grado di precisione $r$ se e' esatta per $f(x) \in \mathbb{P}_r$ e non e' piu' 
 >esatta quando $f(x) \in \mathbb{P}_{r+1}$.
 
 #### Errori delle formule 
@@ -137,7 +136,7 @@ $$
 
 #### Soluzione
 Per verificare che abbia grado $r=5$ basta verificare che ponendo $f(x) = x^5$ si ottiene 
-$\int^1_{-1} f(x) dx = \frac{1}{9} [5 f(\sqrt{\frac{3}{5}})+ 8 f(0) + 5 f(-\sqrt{\frac{3}{5}})].   
+$\int^1_{-1} f(x) dx = \frac{1}{9} [5 f(\sqrt{\frac{3}{5}})+ 8 f(0) + 5 f(-\sqrt{\frac{3}{5}})]$.   
 Mentre per $f(x) = x^6$ l'uguaglianza non e' verificata. 
 
 Per il punto 2 bisogna cambiare l'intervallo di integrazione da $[0, 1]$ a $[1, -1]$

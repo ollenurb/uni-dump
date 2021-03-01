@@ -15,7 +15,7 @@ while(nit<maxIt)
     inc=x-x0;
     x0=x;
     if(nargout>=3)
-        INC(end+1)=abs(inc); 
-    end 
-    nit=nit+1; 
+        INC(end+1)=abs(inc);
+    end
+    nit=nit+1;
 end
