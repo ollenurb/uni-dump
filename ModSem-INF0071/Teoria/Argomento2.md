@@ -95,6 +95,39 @@ Un dataset RDF e' costituito da:
 * Un grafo e' detto anonimo (o default graph)
 * Zero o piu' grafi con un nome (named graphs)
 
+### Il formato Turtle
+RDF e' serializzato in diversi formati tra cui Json LD, N-Triples, RDF/XML e Turtle.
+Storicamente si e' sempre utilizzato e prediletto `XML`, tuttavie `XML` si e' imposto come standard
+di condivisione di documenti. Lo standard attuale e' dato dal formato Turtle (*Terse RDF Triple
+Language*) di cui ne vediamo alcune caratteristiche. 
+Diamo ora un esempio di formato Turtle [@rdf_turtle] 
+```
+@base <http://example.org/> .
+@prefixrdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefixrdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefixfoaf: <http://xmlns.com/foaf/0.1/> .
+@prefixrel: <http://www.perceive.net/schemas/relationship/> .
 
+<...#green-goblin>
+    rel:enemyOf<#spiderman>;
+    a foaf:Person;            # In the context of the Marvel universe
+    foaf:name"Green Goblin" .
 
+<...#spiderman>
+    rel:enemyOf<#green-goblin> ;
+    a foaf:Person;
+    foaf:name"Spiderman",
+             "Uomo Ragno" .
+```
+La rappresentazione a grafo risultante e' quella descritta in figura \ref{figGraph2}.
+
+![Grafo RDF dell'esempio \label{figGraph2}](img/1.2_rdf_turtle_graph.png)
+
+In questo esempio vengono introdotte numerose caratteristiche del linguaggio Turtle: 
+
+* IRI `@base` e relativi
+* `@prefix` e nomi prefissi
+* `;` indica che allo stesso soggetto si applicano piu' predicati (con diverso oggetto).
+* `,` indica che allo stesso soggetto e predicato si applicano piu' oggetti. 
+* `:` indica il prefisso a cui ci si riferisce. Puo' essere anche vuoto. 
 
