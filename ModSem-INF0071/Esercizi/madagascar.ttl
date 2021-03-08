@@ -1,0 +1,38 @@
+@prefix animals: <http://www.funny_animals.org#>
+@prefix rdf: <>
+@prefix rdfs: <>
+@prefix moviedata: <>
+
+animals:Animale a rdfs:Class .
+animals:Luogo a rdfs:Class .
+animals:Leone a rdfs:Class ;
+              rdfs:subClassOf animals:Animale .
+
+animals:Zebra a rdfs:Class ;
+              rdfs:subClassOf animals:Animale .
+animals:Giraffa rdf:type rdfs:Class;
+              rdfs:subClassOf animals:Animale .
+animals:Ippopotamo rdf:type rdfs:Class;
+              rdfs:subClassOf animals:Animale .
+
+animals:Bistecca rdf:type rdfs:Class ;
+animals:Film rdf:type rdfs:Class ;
+
+animals:abita a rdfs:Property ;
+              rdfs:range animals:Luogo .
+
+animals:haPersonaggio a rdfs:Property ;
+                      rdfs:domain animals:Film ;
+                      rdfs:range animals:Animale .
+
+moviedata:NewYorkZoo a animals:Luogo
+
+moviedata:Marty a animals:Zebra
+
+moviedata:Melman a animals:Giraffa
+
+moviedata:Gloria a animals:Ippopotamo
+
+moviedata:Alex a animal:Leone ;
+               foaf:name = "Alex";
+

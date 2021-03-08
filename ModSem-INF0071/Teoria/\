@@ -1,7 +1,7 @@
 ## RDF
-RDF e' un linguaggio *property centric* che permette di descrivere risorse. Con risorsa si intende
-qualsiasi cosa, un documento, una persona, un oggetto fisico o astratto. Piu' in generale il termine
-*risorsa* indica qualsiasi cosa che sia identificabile tramite URI (Unified Resource Identifier).
+RDF e' un linguaggio che permette di descrivere risorse. Con risorsa si intende qualsiasi cosa, un
+documento, una persona, un oggetto fisico o astratto. Piu' in generale il termine *risorsa* indica
+qualsiasi cosa che sia identificabile tramite URI (Unified Resource Identifier).
 RDF fa parte dello stack di linguaggi del web semantico, costituito da:
 
 * RDF: che permette di descrivere risorse
@@ -217,23 +217,13 @@ I vocabolari che verranno utilizzati principalmente all'interno del corso sono:
 * SKOS: permette di descrivere e allineare terminologie diverse
 
 ### Dublin Core
-Il vocabolario dublin core consiste in 15 descrittori generici e largamente usati che sono stati
+Il vocabolario dublin core consiste in 15 elementi generici e largamente usati che sono stati
 introdotti per facilitare l'interoperabilita' delle informazioni nel Web introducendo semplici
 metadati all'interno delle pagine. Dublin Core consiste quindi in uno schema di metadati che sono
-utilizzati per annotare risorse identificabili tramite IRI.
+utilizzati per annotare risorse identificabili tramite IRI. Inoltre DC include anche un set di termini
+e proprieta' predefiniti che si possono utilizzare. 
 L'insieme dei 15 descrittori e' racchiuso nel *Dublin Core Metadata Element Set (MES)*, mentre i
-termini e proprieta' di dublin core sono racchiusi nel *Dublin Core Metadata Terms*.
-Europeana e' un archivio europeo dei beni culturali il cui schema di metadati e' descritto in un
-formato basato su Dublin Core. 
-
-### Friend Of A Friend (FOAF)
-Anche in questo caso, il vocabolario e' diviso in due parti: Foaf Core e Social Web. Il primo
-contiene termini di base di FOAF mentre il secondo e' un'estensione che e' stata sviluppata
-principalmente prendendo come riferimento l'ambito dei social media.
- 
-### Schema.org
-E' un insieme di vocabolari di tipo enciclopedico, concepiti per associare una descrizione semantica
-a contenuti presenti nel web come pagine, mails, messaggi ecc..
+termini sono racchiusi nel *Dublin Core Metadata Terms*.
 
 
 
