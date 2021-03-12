@@ -17,13 +17,13 @@ i=0,...,n$.
 L'obiettivo e' quello di ottenere la funzione interpolante $\phi$ come combinazione
 lineare di $n+1$ funzioni $\varphi_j$ con $j = 0,...,n$.  
 $$ 
-\phi(x) = \sum^{n}_{j=0} a_j \varphi_i (x)
+\phi(x) = \sum^{n}_{j=0} a_j \varphi_j (x)
 $$
 
 Per ottenere i coefficienti $a_j$ della funzione e' sufficiente imporre la condizione di
-interpolazione ($a_j \varphi_i (x_i)= y_i$) ottenendo cosi' la formalizzazione del problema: 
+interpolazione ($a_j \varphi_j (x_i)= y_i$) ottenendo cosi' la formalizzazione del problema: 
 $$
-\sum^n_{j=0} a_j \varphi_i (x_i) = y_i
+\sum^n_{j=0} a_j \varphi_j (x_i) = y_i
 $$
 
 La cui soluzione e' il vettore dei coefficienti $a$. 
@@ -89,9 +89,10 @@ $$
 Per concludere, si ha che il polinomio esiste ed e' unico se e solo se $det(V) \neq 0$.
 
 Questo risultato e' utile soprattutto per stabilire l'esistenza e unicita' del polinomio
-interpolante siccome il determinante di $V$ e' facilmente calcolabile.
-Per determinare i polinomi pero', si preferisce evitare di risolvere direttamente il sistema lineare
-descritto per una serie di ragioni: 
+interpolante siccome il determinante di $V$ e' facilmente calcolabile.  Per determinare i polinomi
+pero', si preferisce evitare di risolvere direttamente il sistema lineare descritto per una serie di
+ragioni: 
+
 * La matrice *V* e' malcondizionata se alcuni nodi sono vicini
 * Esistono algoritmi con un costo computazionale minore
 * La rappresentazione canonica dei polinomi e' instabile, poiche' piccole perturbazioni nei
@@ -99,7 +100,7 @@ descritto per una serie di ragioni:
 
 ### Interpolazione Lagrangiana 
 Un approccio possibile per evitare di calcolare direttamente il sistema lineare descritto in
-Gprecedenza e' quello di utilizzare i cosiddetti *polinomi interpolanti di Lagrange*, definiti come: 
+precedenza e' quello di utilizzare i cosiddetti *polinomi interpolanti di Lagrange*, definiti come: 
 $$
 p_n(x) = \sum^{n}_{j=0} y_j L_j (x)
 $$

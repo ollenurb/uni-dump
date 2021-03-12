@@ -1,4 +1,4 @@
-# Metodi per al risoluzione di equazioni lineari
+## Metodi per al risoluzione di equazioni lineari
 * Un fattore di condizionamento del problema e' dato dal valore della derivata prima della funzione
   in prossimita' della radice, piu' e' piccola piu' il problema sara' mal condizionato. (Ci si
   arriva tramite il polinomio di Taylor oppure per via grafica) se la funzione tende ad essere
@@ -32,3 +32,16 @@
 * 
 
 
+## Interpolazione
+* Diversi metodi, abbiamo visto l'interpolazione polinomiale e l'approssimazione ai minimi quadrati.
+* Precondizioni: Il polinomio esiste ed e' unico se e solo se $x_i \neq x_j$ per $i \neq j$. Tale
+  precondizione previene il fatto che il denominatore si possa annullare nel calcolo del polinomio
+  interpolante di Lagrange
+
+### Interpolazione Polinomiale Lagrangiana
+* Puo' risultare instabile quando due o piu' nodi sono prossimi tra loro poiche' almeno uno dei due
+  fattori del denominatore risulta prossimo allo 0 
+* Errore: $E(x) = \frac{f^{(n+1)}(\xi_x)}{(n - 1)!}$. Non sempre converge a zero per $n \rightarrow
+  \infty$, proprio per il teorema di **Faber**. Esiste pero' almeno una distribuzione di nodi per
+  cui l'errore tende a 0 al tendere a infinito di $n$.
+*  

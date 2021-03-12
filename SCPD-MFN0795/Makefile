@@ -1,4 +1,4 @@
 all: pdf
 
 pdf:
-		pandoc *.md metadata.yaml -d dispense.yaml -o SCPD.pdf
+		pandoc *.md metadata.yaml -d dispense.yaml -V documentclass=report -o SCPD.pdf

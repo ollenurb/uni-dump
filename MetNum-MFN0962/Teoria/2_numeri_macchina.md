@@ -111,6 +111,7 @@ calcolatore. Lo standard definisce due tipi di precisione:
 +------------+-------+-----------+------------+--------+----------------------+
 | Doppia     | 1 bit |   11 bit  | 52(+1) bit | 64 bit | $10^{-324}-10^{308}$ |
 +------------+-------+-----------+------------+--------+----------------------+
+
 : Comparazione schematica tra precisione singola e doppia 
 
 L'utilizzo delle variabili in singola precisione piuttosto che quelle in doppia precisione e'

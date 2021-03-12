@@ -220,4 +220,27 @@ all'interno della rete per essere raggiunto.
 
 ![Rete MIN di tipo Omega \label{figOmega}](img/2.8_omega.png){ width=80% }
 
+## Tassonomia di Flynn
+Nel 1966 Flynn invento' una tassonomia per classificare le diverse tipologie di sistema di calcolo.
+Le classificazioni sono basate sul numero concorrente di istruzioni eseguite e sulla disponibilita'
+del flusso di dati. In sostanza, si dividono in 4 classificazioni:
+
+* Single Instruction Stream Single Data Stream (SISD): Sistema che non sfrutta nessun meccanismo di
+  parallelismo, ne a livello di istruzioni ne a livello di flusso dati. Sono i tradizionali sistemi
+  di calcolo sequenziali. 
+* Single Instruction Stream Multiple Data Streams (SIMD): Sistemi in cui una singola istruzione
+  opera su piu' dati contemporaneamente. A livello di architettura sono composti da piu' processori
+  che effettuano la stessa operazione contemporaneamente su dati differenti. Particolarmente utili
+  per applicazioni di tipo multimediale o di processing grafico dove la stessa operazione deve
+  essere effettuata su dati diversi (ad esempio applicare un kernel ad una immagine). I processori
+  moderni offrono alcune istruzioni SIMD specifiche per questi utilizzi.
+* Multiple Instruction Streams Single Data Stream (MISD): In questa tipologia di sistemi, i
+  processori eseguono diverse operazioni sugli stessi dati.
+* Multiple Instruction Streams Multiple Data Streams (MIMD): Sono i sistemi di calcolo descritti fin
+  ora che comprendono i sistemi a memoria condivisa e a scambio di messaggi. In questi sistemi i
+  processori eseguono indipendentemente istruzioni differenti su dati differenti. Tipicamente il
+  software eseguito segue il modello di programmazione SPMD (*Single Program, Multiple Data*), che
+  consiste nel far eseguire a tutti i processori lo stesso programma indipendentemente su dati
+  diversi.
+
 
