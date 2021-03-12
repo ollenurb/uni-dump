@@ -1,3 +1,4 @@
+# I linguaggi del Web of Data
 ## RDF
 RDF e' un linguaggio *property centric* che permette di descrivere risorse. Con risorsa si intende
 qualsiasi cosa, un documento, una persona, un oggetto fisico o astratto. Piu' in generale il termine
@@ -235,6 +236,21 @@ principalmente prendendo come riferimento l'ambito dei social media.
 E' un insieme di vocabolari di tipo enciclopedico, concepiti per associare una descrizione semantica
 a contenuti presenti nel web come pagine, mails, messaggi ecc..
 
+### SKOS (Simple Knowledge Representation System)
+E' uno standard W3C sviluppato per la rappresentazione di vocabolari strutturati. Il suo scopo
+principale e' quello di facilitare l'uso e la pubblicazione di tali vocabolari come linked data.
+Il vocabolario SKOS e' basato sulla nozione di concetto, dove gli oggetti primitivi non sono
+termini ma sono nozioni astratte. I concetti possono essere relazionati tra loro usando delle
+relazioni di tipo `broader`/`narrower`. Ad ogni concetto puo' essere anche associata della
+documentazione. 
+SKOS permette anche di definire vocabolari (`conceptScheme`), specificando quali concetti fanno parte
+di un determinato vocabolario (`inScheme`).
+La finalita' di SKOS e' principalmente quella di mettere in relazione concetti e termini che stanno
+in vocabolari (ma anche tassonomie, soggettari ecc) diversi tra di loro. Tramite SKOS si puo'
+specificare ad esempio se un determinato concetto corrisponde esattamente o comunque ha certe
+similitudini con altri concetti in altri vocabolari. 
 
+**TODO: Inserisci esempio e illustra la relazione dei concetti tra loro**
 
-
+[Linked Open Vocabularies](https://lov.linkeddata.es/dataset/lov/): Raccolta di vocabolari
+scopribili e resi pubblici. 
