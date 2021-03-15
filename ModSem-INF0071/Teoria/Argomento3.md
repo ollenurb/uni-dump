@@ -25,7 +25,17 @@ Una possibile classificazione delle ontologie fa riferimento al loro livello di 
 * Domain ontologies: rappresentano i concetti  e le relazioni proprie di un dominio specifico, anche
   mediante l'uso di concetti definiti con ontologie a livelli inferiori.
 
-Vediamo ora alcune ontologie esistenti e di uso comune
+Le ontologie possono essere anche categorizzate in due categorie principali:
+
+* Lightweight: normalmente sono delle semplici tassonomie senza assiomi e con poche relazioni per
+  facilitarne la standardizzazione. Esempi di questa tipologia di ontologie sono Wordnet, Tesauri,
+  Soggettari, Iconclass
+* Large-Scale: ontologie di grandi dimensioni. Possono essere ottenute tramite l'estrazione
+  automatica di concetti da testi, dall'integrazione di risorse diverse oppure dal lavoro di una
+  comunita' di utenti via *crowd sourcing*. Esempi di ontologie large scale sono CYC, YAGO, YAGO2 e
+  DBPedia.
+
+Vediamo ora nel dettaglio alcune delle ontologie citate.
   
 ## CYC 
 CYC (*enCYClopedic Knowledge*) e' un progetto che mira ad assemblare un'ontologia e una knowledge
@@ -64,6 +74,13 @@ gerarchia di classi e un insieme di relazioni tra di esse per rappresentare la c
 linguaggio con cui e' scritta e' il KIF (*Knowledge Interchange Format*).
 Per ogni classe, esiste un insieme di assiomi che ne descrivono le caratteristiche. Gli assiomi a
 loro volta sono espressi utilizzando le relazioni contenute nell'ontologia. 
+
+## YAGOSUMO
+E' l'integrazione di milioni di entita' di YAGO (basata su Wikipedia e Wordnet) in SUMO. La
+combinazione di queste due grosse ontologie ha dato vita a un'enorme quantita' di conoscenza
+formalizzata, che puo' essere utilizzata da strumenti di ragionamento automatico. YAGOSUMO sfrutta
+quindi la conoscenza assiomatica di SUMO per poter effettuare delle forme di ragionamento automatico
+piu' avanzate che non sarebbero possibili su YAGO. 
 
 
 

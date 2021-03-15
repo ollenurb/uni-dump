@@ -242,15 +242,37 @@ principale e' quello di facilitare l'uso e la pubblicazione di tali vocabolari c
 Il vocabolario SKOS e' basato sulla nozione di concetto, dove gli oggetti primitivi non sono
 termini ma sono nozioni astratte. I concetti possono essere relazionati tra loro usando delle
 relazioni di tipo `broader`/`narrower`. Ad ogni concetto puo' essere anche associata della
-documentazione. 
-SKOS permette anche di definire vocabolari (`conceptScheme`), specificando quali concetti fanno parte
-di un determinato vocabolario (`inScheme`).
+documentazione.   
+SKOS permette anche di definire vocabolari (`conceptScheme`), specificando quali concetti fanno
+parte di un determinato vocabolario (`inScheme`).
 La finalita' di SKOS e' principalmente quella di mettere in relazione concetti e termini che stanno
 in vocabolari (ma anche tassonomie, soggettari ecc) diversi tra di loro. Tramite SKOS si puo'
 specificare ad esempio se un determinato concetto corrisponde esattamente o comunque ha certe
 similitudini con altri concetti in altri vocabolari. 
+Di seguito e' illustrato un esempio di mapping tra due schemi in SKOS:
 
-**TODO: Inserisci esempio e illustra la relazione dei concetti tra loro**
+```
+ex1:referenceAnimalScheme rdf:type skos:ConceptScheme;
+    dct:title"Extensivelist of animals"@en.
+    
+ex1:platypus rdf:type skos:Concept;
+    skos:prefLabel"platypus"@en;
+    skos:inScheme ex1:referenceAnimalScheme.
+    
+ex2:eggSellerScheme rdf:type skos:ConceptScheme;
+    dct:title"Obsessedegg-seller'svocabulary"@en.
+    
+ex2:eggLayingAnimals rdf:type skos:Concept;
+    skos:prefLabel"animals that lay eggs"@en;
+    skos:inScheme ex2:eggSellerScheme.
+    
+ex1:platypus skos:broadMatch ex2:eggLayingAnimals.
+```
 
 [Linked Open Vocabularies](https://lov.linkeddata.es/dataset/lov/): Raccolta di vocabolari
 scopribili e resi pubblici. 
+
+### DCAT
+Anche se non citato precedentemente vale la pena citare anche DCAT, un vocabolario specifico per la
+descrizione di cataloghi di dati. L'obiettivo di DCAT e' quello di favorire l'interoperabilita' tra
+dati e servizi relativi ai dati. 
