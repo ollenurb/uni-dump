@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#"
+     xml:base="http://www.modsem.org/matteo/ontologies/2021/2/ontoart"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:ontoart="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#">
+    <owl:Ontology rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#crea -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#crea">
+        <owl:inverseOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#creataDa"/>
+        <rdfs:domain rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#creaDipinto -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#creaDipinto">
+        <rdfs:subPropertyOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#crea"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Dipinto"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#creataDa -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#creataDa">
+        <rdfs:domain rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#AnnoNascita -->
+
+    <owl:DatatypeProperty rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#AnnoNascita">
+        <rdfs:domain rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#ArtistaMultimediale -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#ArtistaMultimediale">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Dipinto -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Dipinto">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Musicista -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Musicista">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaLetteraria -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaLetteraria">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaMultimediale -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaMultimediale">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaMusicale -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#OperaMusicale">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Pittore -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Pittore">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#crea"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Dipinto"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scrittore -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scrittore">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scultore -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scultore">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scultura -->
+
+    <owl:Class rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Scultura">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Opera"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#LeonardoDaVinci -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#LeonardoDaVinci">
+        <rdf:type rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Artista"/>
+        <crea rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#MonnaLisa"/>
+        <AnnoNascita rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1452</AnnoNascita>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/matteo/ontologies/2021/2/ontoart#MonnaLisa -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#MonnaLisa">
+        <rdf:type rdf:resource="http://www.modsem.org/matteo/ontologies/2021/2/ontoart#Dipinto"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

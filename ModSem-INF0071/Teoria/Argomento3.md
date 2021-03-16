@@ -37,7 +37,7 @@ Le ontologie possono essere anche categorizzate in due categorie principali:
 
 Vediamo ora nel dettaglio alcune delle ontologie citate.
   
-## CYC 
+### CYC 
 CYC (*enCYClopedic Knowledge*) e' un progetto che mira ad assemblare un'ontologia e una knowledge
 base che racchiuda concetti base e regole su come il mondo funzioni. L'idea e' quella di catturare
 la conoscenza di senso comune, concentrandosi anche a rappresentare la conoscenza implicita. Ne
@@ -67,7 +67,7 @@ Attualmente CYC e' utilizzata in applicazioni quali:
 * Sicurezza delle reti
 * Intelligent analysis, basi di dati, ecc.
 
-## Ontologia SUMO 
+### SUMO 
 SUMO (*Suggested Upper Merged Ontology*) e anch'esso un progetto mirato alla creazione di
 un'ontologia fondazionale per la rappresentazione di conoscenza di senso comune. SUMO utilizza una
 gerarchia di classi e un insieme di relazioni tra di esse per rappresentare la conoscenza. Il
@@ -75,12 +75,57 @@ linguaggio con cui e' scritta e' il KIF (*Knowledge Interchange Format*).
 Per ogni classe, esiste un insieme di assiomi che ne descrivono le caratteristiche. Gli assiomi a
 loro volta sono espressi utilizzando le relazioni contenute nell'ontologia. 
 
-## YAGOSUMO
+### YAGOSUMO
 E' l'integrazione di milioni di entita' di YAGO (basata su Wikipedia e Wordnet) in SUMO. La
 combinazione di queste due grosse ontologie ha dato vita a un'enorme quantita' di conoscenza
-formalizzata, che puo' essere utilizzata da strumenti di ragionamento automatico. YAGOSUMO sfrutta
-quindi la conoscenza assiomatica di SUMO per poter effettuare delle forme di ragionamento automatico
-piu' avanzate che non sarebbero possibili su YAGO. 
+formalizzata, che puo' essere utilizzata da strumenti di ragionamento automatico. 
+Ogni termine di WordNet viene mappato con la classe corrispondente di SUMO.
+YAGOSUMO sfrutta poi la conoscenza assiomatica di SUMO per poter effettuare delle forme di
+ragionamento automatico piu' avanzate che non sarebbero possibili su YAGO. 
+
+### YAGO2
+E'la versione piu' recente di YAGO, e' un'ontologia derivata da Wikipedia, WordNet e GeoNames.
+Contiene piu' di 10 milioni di entita'. 
+
+### Dbpedia
+E' un'iniziativa semantica di Wikipedia. E' stata costruita a partire da Wikipedia tramite strumenti
+automatici. 
+
+## OWL
+OWL2 e' un linguaggio per creare ontologie per il web semantico con un significato definito
+formalmente. Le ontolofie scritte in OWL2 contengono classi, individui e letterali; sono scritte in
+documenti il cui formato e' definito dal web semantico. In generale, le ontologie OWL2 sono
+codificate in documenti RDF in modo automatico.
+OWL si basa su logiche computazionali tali che la conoscenza espressa nell'ontologia puo' essere
+oggetto di ragionamento automatico da parte di software specifici chiamati *reasoner*. Tali software
+verificano la non contradditorieta' dell'ontologia e sono in grado di rendere esplicita la
+conoscenza implicita contenuta nell'ontologia.   
+Tipicamente un'ontologia consiste nella terminologia (o vocabolario, o T-Box) che costituisce la
+conoscenza generale sul dominio dato. Accanto alla terminologia, l'ontologia puo' poi contenere un
+insieme di asserzioni (o A-Box) che descrivono entita' concrete o specifiche del dominio dato.
+
+Piu' precisamente, gli elementi costituenti di un'ontologia sono:
+
+* Individui: oggetti del dominio concettuale 
+* Classi: categorie degli oggetti del dominio 
+* Proprieta': sono a loro volta suddivise in
+    - Object properties: collegano individui a individui
+    - Datatype properties: assegnano un dato a un individuo (es. eta' ad una persona) 
+    - Annotation properties: contengono commenti e descrizioni sulle entita'
+* Assiomi di classe: permettono di stabilire relazioni tra classi (es. sottoclasse). Possono essere
+  dichiarazioni, assiomi riguardanti classi, assiomi su oggetti o tipi di dati, definizioni di tipi
+  di dati, chiavi, asserzioni e assiomi che riguardano le annotazioni.
+* Espressioni di classe: permettono di descrivere classi. Le entita' possono essere combinate a
+  formare espressioni usando dei costruttori di classi. Le espressioni di classe rappresentano
+  insiemi di entita', specificando formalmente le condizioni e le proprieta' che devono rispettare 
+  le singole  entita'. Le entita' che rispettano tali condizioni sono dette *istanze* della class
+  expression. (es. professoressa = docente and donna).  N.B. Il tipo piu' semplice di class
+  expression e' la classe stessa.
 
 
+**NB: Necessario e sufficiente:**
+Le classi definite come *equivalenti* a un certo insieme di restrizioni sono denominate classi
+definite. Le restrizioni individuano condizioni necessarie e sufficienti per l'appartenenza alla
+classe. Senza l'utilizzo del costrutto EquivalentTo si possono associare a una classe solo
+proprieta' necessarie ma *non sufficienti*.  
 
