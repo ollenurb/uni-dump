@@ -64,14 +64,6 @@ principale. Secondo questo criterio si possono avere due tipologie di sistema a 
   indirizzo e per ogni processore.
 * NUMA (*Non-Uniform Memory Access*): E' l'oppposto di UMA.
 
-Se si parla invece di supporto per la programmazione sono disponibili diverse opzioni quali:
-
-* Threads
-* Estensioni di linguaggi sequenziali tramite direttive per il preprocessore (*OpenMP*) 
-* Estensioni di linguaggi sequenziali tramite l'aggiunta di sintassi specifica (*UPC*) 
-* Linguaggi di programmazione paralleli 
-* Compilatori ottimizzati per la parallelizzazione (*Parallelizing Compilers*) 
-
 ### Sistemi Multicomputer a Scambio di Messaggi
 Con sistemi a multicomputer ci si riferisce ad un insieme di computer interconnessi tra di loro
 attraverso una rete di interconnessione, come mostrato in figura \ref{figMPM}

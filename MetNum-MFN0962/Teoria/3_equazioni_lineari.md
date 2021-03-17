@@ -323,9 +323,40 @@ f(x) =
 $$
 la cui radice e' $\alpha = 0$.
 
-**Soluzione**: *Hint: Costruisci la successione $x_k$*
+**Soluzione**:
+Calcoliamo in primo luogo la derivata prima di $f$:
+$$
+f'(x) = 
+\begin{cases}
+    \frac{1}{2\sqrt{x}},   & x > 0\\
+    \frac{1}{2\sqrt{-x}},  & x < 0
+\end{cases}
+$$
+Costruiamo ora la successione ipotizzando che $x_0 > 0$, ottenendo
+$$
+x_1 = x_0 - \frac{\sqrt{x}}{\frac{1}{2\sqrt{x}}} = 
+x_0 - 2x_0 = 
+-x_0 (x_1<0) 
+$$
+Proseguiamo calcolando il secondo passo dell'iterazione
+$$
+x_2 = x_1 - \frac{-\sqrt{-x}}{\frac{1}{2\sqrt{-x}}} = x_1 - 2x_1 = -x_1 = x_0 (x_2>0)
+$$
+Si nota quindi che la successione generata risulta essere $x_0, -x_0, x_0, \dots$ e che quindi il
+metodo non converge. 
 
 **Esercizio 2**: Applicare il metodo delle tangenti alla funzione: 
+$$
+f(x) = 
+\begin{cases}
+    \sqrt{x^3},   & x \geq 0\\
+    -\sqrt{-x^3}, & x < 0
+\end{cases}
+$$
+la cui radice e' $\alpha = 0$.
+
+**Soluzione**: Si opera analogamente all'esercizio precedente. In primo luogo si calcola la derivata
+prima di $f$
 $$
 f(x) = 
 \begin{cases}
@@ -333,9 +364,6 @@ f(x) =
     -\sqrt{-x^3}, & x < 0
 \end{cases}
 $$
-la cui radice e' $\alpha = 0$.
-
-**Soluzione**: *Da fare*
 
 **Esercizio 3**: Individuare un intervallo che contiene la soluzione positiva dell'equazione 
 $$

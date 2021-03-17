@@ -2,7 +2,9 @@
 * Un fattore di condizionamento del problema e' dato dal valore della derivata prima della funzione
   in prossimita' della radice, piu' e' piccola piu' il problema sara' mal condizionato. (Ci si
   arriva tramite il polinomio di Taylor oppure per via grafica) se la funzione tende ad essere
-  tangente all'asse $x$ tende quindi ad avere piu' di una radice.
+  tangente all'asse $x$ tende quindi ad avere piu' di una radice. 
+  Algebricamente, lo si vede mostrando il fattore di condizionamento $f_c = \frac{1}{f'(\xi)}$ con
+  $\xi \in I(x,\alpha)$
 
 #### Bisezione
 * La funzione deve essere continua e avere una radice in $[a,b]$ 
@@ -26,11 +28,10 @@
 * Serve a trovare un $\alpha$ tale che $\alpha = g(\alpha)$
 * Il punto fisso $\alpha$ viene trovato se la funzione e' contrattiva in un intervallo $I$ che
   contiene $\alpha$
-* Se la funzione e' derivabile si puo' dire che sia anche contrattiva se $|g'(x)<1$ in $I$
+* Se la funzione e' derivabile si puo' dire che sia anche contrattiva se $|g'(x)<1|$ in $I$
 * $\alpha$ e' unico 
 * Se $g'(\alpha)=0$ e $g''(x)$ continua in $[a,b]$ allora il metodo ha ordine di convergenza $p=2$
-* 
-
+* Stima dell'errore: $|\alpha - x_k| \leq \frac{x_{k+1}-x_k}{1-L}$
 
 ## Interpolazione
 * Diversi metodi, abbiamo visto l'interpolazione polinomiale e l'approssimazione ai minimi quadrati.
