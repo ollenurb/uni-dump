@@ -188,16 +188,17 @@ MPI_Irecv(buf, count, datatype, dest, tag, comm, request)
 ```
 
 In caso di utilizzo di questa tipologia di primitive, si possono utilizzare altre operazioni per
-controllare se l'azione locale e' stata completata o meno. 
+controllare se l'azione locale e' stata completata o meno, quali `MPI_Wait()` e `MPI_Test()`.  
+In questo senso le varianti non bloccanti insieme alle primitive per controllare la terminazione
+delle azioni locali, sono delle versioni piu' generiche e flessibili di quelle bloccanti. 
 
 La primitiva send puo' avere tre modalita' di comunicazione che definiscono il protocollo di
 send/receive:
 
 * Modalita' standard: la send non assume che la corrispondente routine di receive sia stata
   eseguita.
-* Modalita' bufferizzata: la send puo' ritornare prima che la receive sia stata eseguita. E'
-  necessario inoltre specificare esplicitamente lo spazio di bufferizzazione tramite opportune
-  operazioni.  
+* Modalita' bufferizzata: serve in caso sia necessario specificare esplicitamente lo spazio di
+  bufferizzazione riservato ai messaggi tramite `MPI_Buffer_attach()`.
 * Modalita' sincrona: la send e la receive possono iniziare prima l'una rispetto all'altra in
   qualsiasi ordine ma completeranno solamente insieme.
 * Modalita' ready: una send puo' iniziare solo se una receive corrispondente e' gia' stata iniziata,
@@ -214,5 +215,15 @@ MPI_Scatter()         - Primitiva Scatter
 MPI_Alltoall()        - Invia i dati da tutti i processi a tutti i processi
 MPI_Reduce()          - Primitiva Reduce
 MPI_Reduce_scatter()  - Combina i valori e utilizza scatter sul risultato della combinazione 
-MPI_Scan()            - ??
+MPI_Scan()            - Distribuisce ai vari processi tutti i prefissi accumulati
 ```
+
+Tutte queste primitive di comunicazione hanno come effetto collaterale anche la necessita' di
+sincronizzazione. La barrier e' una primitiva atta alla sincronizzazione e non allo scambio di
+messaggi. Serve a far sincronizzare tutti i processi di un determinato comunicatore. 
+La barrier e' una primitiva da usare con cura. Secondo alcuni autori ha utilita' solo per supportare
+il programmatore nello scrivere programmi paralleli, poiche' tutti i programmi che utilizzano la
+primitiva barrier possono essere scritti senza tale primitiva, essendo cosi' piu' efficienti,
+siccome la barrier deve aspettare il processo piu' lento per sincronizzarli tutti. 
+
+
