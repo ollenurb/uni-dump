@@ -15,10 +15,10 @@ gli **errori di discretizzazione** che sono introdotti quando i dati sono rappre
 finito di cifre. 
 
 ## Buona posizione e condizionamento 
-Un *modello matematico* rappresenta il primo passo per studiare le caratteristiche di determinati fenomeni. 
-Tale modello e' costituito da un insieme di formule che descrivono il comportamento del fenomeno sotto 
-studio. Spesso il fenomeno da studiare e' profondamente complesso, per cui anche il suo modello matematico 
-sara' tale. Per questa ragione le equazioni e formule del modello risultano essere troppo complicate per 
+Tale modello e' costituito da un insieme di formule che descrivono il comportamento del fenomeno
+sotto studio. Spesso il fenomeno da studiare e' profondamente complesso, per cui anche il suo
+modello matematico sara' tale. Per questa ragione le equazioni e formule del modello risultano
+essere troppo complicate per 
 essere risolte con metodi diretti, e in questi casi si preferisce associare al modello matematico un 
 **modello numerico**. 
 Il fine del modello numerico e' quello di ottenere una forma del modello matematico particolarmente adatta 
