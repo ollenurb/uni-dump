@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.modsem.org/examples/2021/urban_ontology#"
+     xml:base="http://www.modsem.org/examples/2021/urban_ontology"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:urban="http://www.modsem.org/examples/2021/urban_ontology#">
+    <owl:Ontology rdf:about="http://www.modsem.org/examples/2021/urban_ontology"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#haPopolazione -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#haPopolazione">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#situatoIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoIn">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Citta -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Nazione -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Popolazione -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Bergamo -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Bergamo">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Giappone -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Giappone">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Italia -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Italia">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Tokio -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Tokio">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Giappone"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Torino -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Torino">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

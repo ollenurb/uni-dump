@@ -30,8 +30,8 @@ La cui soluzione e' il vettore dei coefficienti $a$.
 
 ### Interpolazione Polinomiale
 L'interpolazione polinomiale e' un caso specifico del metodo dell'interpolazione che utilizza come
-funzioni $\varphi_i$ dei polinomi. Questo metodo si appoggia direttamente sui risultati del seguente
-teorema: 
+funzioni $\varphi_i$ dei polinomi $p_n(x)$. La ragione per cui si utilizzano i polinomi e' chiarita
+formalmente dal seguente teorema: 
 
 >***Teorema (Weierstrass)**
 >Sia $f \in C[a,b]$. Per ogni $\varepsilon > 0$ esiste un intero $n$ e un 
@@ -45,7 +45,7 @@ teorema:
 >$$
 
 Esso afferma che tramite un polinomio qualsiasi e' possibile approssimare *bene quanto si vuole* una
-funzione continua.
+funzione continua. 
 
 >***Teorema**: Il polinomio interpolante esiste ed e' unico se e solo se $x_i \neq x_j$ per $i
 \neq j$.*
@@ -86,12 +86,16 @@ determinante diverso da 0. Tale determinante e' facilmente calcolabile e risulta
 $$
 det(V) = \prod_{i,j=0_{i>j}}^{n} (x_i - x_j).
 $$
-Per concludere, si ha che il polinomio esiste ed e' unico se e solo se $det(V) \neq 0$.
+Per concludere, si ha che il polinomio esiste ed e' unico se $det(V) \neq 0$, ma questo accade se e
+solo se $i$ e $j$ sono diversi tra loro, dimostrando il teorema.
 
-Questo risultato e' utile soprattutto per stabilire l'esistenza e unicita' del polinomio
-interpolante siccome il determinante di $V$ e' facilmente calcolabile.  Per determinare i polinomi
-pero', si preferisce evitare di risolvere direttamente il sistema lineare descritto per una serie di
-ragioni: 
+Questo teorema risulta utile per stabilire a priori e in modo semplice l'esistenza e unicita' del
+polinomio interpolante, dal momento che il calcolo del determinante della matrice di Vandermonde e'
+noto. In secondo luogo, ci permette anche di garantire l'unicita' del polinomio e di poter
+utilizzare anche altre rappresentazioni che richiederebbero meno risorse computazionali.
+
+L'approccio che consiste nel determinare i polinomi mediante la risoluzione del sistema lineare non
+e' pero' preferibile per diverse ragioni:
 
 * La matrice *V* e' malcondizionata se alcuni nodi sono vicini
 * Esistono algoritmi con un costo computazionale minore
@@ -104,12 +108,23 @@ precedenza e' quello di utilizzare i cosiddetti *polinomi interpolanti di Lagran
 $$
 p_n(x) = \sum^{n}_{j=0} y_j L_j (x)
 $$
-Dove $L_j$ sono i *polinomi caratteristici di Lagrange*
+Dove $\{L_j\}_{j=0}^n$ sono i *polinomi caratteristici di Lagrange*
 $$
-L_j(x) = \frac{(x-x_0)(x-x_1) \cdots (x-x_{k-1})(x-x_{k+1}) \cdots (x-x_k)}
-{(x_k-x_0)(x_k-x1) \cdots (x_K-x_{k-1})(x_k-x_{k+1}) \cdots (x_k-x_k)}
-= \prod^{n}_{k=0, k \neq j} \frac{x-x_k}{x_j-x_k}
+L_j(x) = \prod^{n}_{k=0, k \neq j} \frac{x-x_k}{x_j-x_k}
 $$
+
+Tali polinomi caratteristici di Lagrange si annullano nei punti $x_i$ con $i \neq j$, dove $j$ e'
+l'indice del polinomio caratteristico *j-esimo*. In altre parole, soddisfano la seguente proprieta'
+di interpolazione:
+$$
+L_j(x_i) = \delta_{ij} = \begin{cases} 1 & i=j\\ 0 & i \neq j \end{cases}
+$$
+
+In questo modo, il polinomio di Lagrange interpola tutti i punti $(x_i, y_i)$ ed e' quindi una
+rappresentazione differente dell'unico polinomio interpolante.
+La valutazione di un punto in un polinomio interpolante di Lagrange ha complessita' temporale di
+$O(n^2)$, mentre per determinare il polinomio tramite risoluzione del sistema lineare dei
+coefficienti (utilizzando ad esempio il metodo di Gauss), ha una complessita' di $O(n^3)$.
 
 Per valori di $x \neq x_i$ (poiche' si ha che $f(x_i) = P_n(x_i)$) si puo' valutare l'errore
 $$

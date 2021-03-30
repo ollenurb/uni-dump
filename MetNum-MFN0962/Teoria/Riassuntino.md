@@ -19,6 +19,8 @@
 * La funzione deve essere continua e derivabile in $[a,b]$, inoltre il punto iniziale $x_0$ deve
   essere scelto sufficientemente vicino alla soluzione se no il metodo non converge.
 * Ha convergenza quadratica
+* Fissata una tolleranza $\tau$ e un numero massimo di iterazioni $N$, e' possibile fissare il
+  criterio di arresto come $|x_k - x_{k-1}| < \tau|x_k|$ or $f(x_k)=0$ or $k > N$
   
 #### Secanti
 * Uguale a Newton ma fissa il coefficiente angolare
