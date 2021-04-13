@@ -22,6 +22,29 @@
     
 
 
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#cittaSituataInContinente -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#cittaSituataInContinente">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Continente"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione"/>
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#haMonumento -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#haMonumento">
+        <owl:inverseOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#monumentoDi"/>
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.modsem.org/examples/2021/urban_ontology#haPopolazione -->
 
     <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#haPopolazione">
@@ -31,12 +54,67 @@
     
 
 
-    <!-- http://www.modsem.org/examples/2021/urban_ontology#situatoIn -->
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#monumentoDi -->
 
-    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoIn">
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#monumentoDi">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+        <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Continente"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione -->
+
+    <owl:ObjectProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione">
         <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
         <rdfs:range rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
     </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#dataFondazione -->
+
+    <owl:DatatypeProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#dataFondazione">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#haNumeroQuartieri -->
+
+    <owl:DatatypeProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#haNumeroQuartieri">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#nome -->
+
+    <owl:DatatypeProperty rdf:about="http://www.modsem.org/examples/2021/urban_ontology#nome">
+        <rdfs:domain rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
     
 
 
@@ -57,15 +135,266 @@
     
 
 
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaAfricana -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaAfricana">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#NazioneAfricana"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaAsiatica -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaAsiatica">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#NazioneAsiatica"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaConT -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaConT">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#nome"/>
+                <owl:someValuesFrom>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:pattern>[T][a-z]*</xsd:pattern>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaEuropea -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaEuropea">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInNazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#NazioneEuropea"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaGrande -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaGrande">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haPopolazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneAmpia"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaMedia -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaMedia">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haPopolazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneMedia"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaMoltoTuristica -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaMoltoTuristica">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haMonumento"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaPiccola -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaPiccola">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haPopolazione"/>
+                <owl:someValuesFrom rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneScarsa"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#CittaTuristica -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#CittaTuristica">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haMonumento"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Continente -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Continente">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Africa"/>
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Americhe"/>
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Asia"/>
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Australia"/>
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Europa"/>
+                    <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Oceania"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Megalopoli -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Megalopoli">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#haNumeroQuartieri"/>
+                <owl:someValuesFrom>
+                    <rdfs:Datatype>
+                        <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+                        <owl:withRestrictions rdf:parseType="Collection">
+                            <rdf:Description>
+                                <xsd:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#int">20</xsd:minExclusive>
+                            </rdf:Description>
+                        </owl:withRestrictions>
+                    </rdfs:Datatype>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Monumento -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+    
+
+
     <!-- http://www.modsem.org/examples/2021/urban_ontology#Nazione -->
 
     <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
     
 
 
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#NazioneAfricana -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#NazioneAfricana">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente"/>
+                <owl:hasValue rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Africa"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#NazioneAsiatica -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#NazioneAsiatica">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente"/>
+                <owl:hasValue rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Asia"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#NazioneEuropea -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#NazioneEuropea">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#situatoInContinente"/>
+                <owl:hasValue rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Europa"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.modsem.org/examples/2021/urban_ontology#Popolazione -->
 
     <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#PopolazioneAmpia -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneAmpia">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#PopolazioneMedia -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneMedia">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#PopolazioneScarsa -->
+
+    <owl:Class rdf:about="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneScarsa">
+        <rdfs:subClassOf rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Popolazione"/>
+    </owl:Class>
     
 
 
@@ -80,19 +409,50 @@
     
 
 
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Africa -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Africa"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Americhe -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Americhe"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Asia -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Asia"/>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Australia -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Australia"/>
+    
+
+
     <!-- http://www.modsem.org/examples/2021/urban_ontology#Bergamo -->
 
     <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Bergamo">
         <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
-        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
+        <haPopolazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#popolazioneBergamo"/>
+        <situatoInNazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
     </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Europa -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Europa"/>
     
 
 
     <!-- http://www.modsem.org/examples/2021/urban_ontology#Giappone -->
 
     <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Giappone">
-        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#NazioneAsiatica"/>
     </owl:NamedIndividual>
     
 
@@ -101,7 +461,14 @@
 
     <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Italia">
         <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Nazione"/>
+        <situatoInContinente rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Europa"/>
     </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#Oceania -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Oceania"/>
     
 
 
@@ -109,7 +476,10 @@
 
     <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Tokio">
         <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
-        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Giappone"/>
+        <haPopolazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#popolazioneTokio"/>
+        <situatoInNazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Giappone"/>
+        <haNumeroQuartieri rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">21</haNumeroQuartieri>
+        <nome>Tokio</nome>
     </owl:NamedIndividual>
     
 
@@ -118,7 +488,60 @@
 
     <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#Torino">
         <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Citta"/>
-        <situatoIn rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
+        <haMonumento rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#moleAntonelliana"/>
+        <haMonumento rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#palazzoReale"/>
+        <haMonumento rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#statuaVittorioEmanuele"/>
+        <haPopolazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#popolazioneTorino"/>
+        <situatoInNazione rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Italia"/>
+        <haNumeroQuartieri rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</haNumeroQuartieri>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#moleAntonelliana -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#moleAntonelliana">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#palazzoReale -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#palazzoReale">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#popolazioneBergamo -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#popolazioneBergamo">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneScarsa"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#popolazioneTokio -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#popolazioneTokio">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneAmpia"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#popolazioneTorino -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#popolazioneTorino">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#PopolazioneMedia"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.modsem.org/examples/2021/urban_ontology#statuaVittorioEmanuele -->
+
+    <owl:NamedIndividual rdf:about="http://www.modsem.org/examples/2021/urban_ontology#statuaVittorioEmanuele">
+        <rdf:type rdf:resource="http://www.modsem.org/examples/2021/urban_ontology#Monumento"/>
     </owl:NamedIndividual>
     
 
@@ -142,6 +565,14 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#moleAntonelliana"/>
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#palazzoReale"/>
+            <rdf:Description rdf:about="http://www.modsem.org/examples/2021/urban_ontology#statuaVittorioEmanuele"/>
+        </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>
 

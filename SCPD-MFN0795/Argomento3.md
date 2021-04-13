@@ -226,4 +226,47 @@ il programmatore nello scrivere programmi paralleli, poiche' tutti i programmi c
 primitiva barrier possono essere scritti senza tale primitiva, essendo cosi' piu' efficienti,
 siccome la barrier deve aspettare il processo piu' lento per sincronizzarli tutti. 
 
+## Valutazione di programmi paralleli
+Nella valutazione di programmi sequenziali si usa spesso come metrica il numero di istruzioni che
+vengono eseguite. Per un algoritmo parallelo, le cose si complicano leggermente ed e' necessario
+tener conto anche del tempo che passa il programma a far comunicare i processi tra loro. 
+E' possibile quindi exprimere il tempo di esecuzione parallela $t_{p}$ come la somma di due parti: il
+tempo di computazione e il tempo di comunicazione
+$$
+t_{p} = t_{comp} + t_{comm}
+$$
+In questa relazione, il tempo di computazione viene valutato allo stesso modo dei programmi
+sequenziali. Mentre nel caso in cui piu' di un processo venga eseguito in parallelo, si tiene conto
+solo del processo che ha tempo di esecuzione massimo. 
+L'unita' di tempo di $t_{comp}$ viene misurata in numero di istruzioni eseguite. Tipicamente nella
+valutazione delle prestazioni, il tempo computazionale viene suddiviso in diverse parti, separate
+dai momenti in cui avvengono gli scambi di messaggi.
 
+Il tempo di comunicazione $t_{comm}$, invece, dipende direttamente dal numero di messaggi, dalla
+grandezza di un singolo messaggio, dalla tipologia di rete di interconnessione e dalla modalita' di
+trasmissione. Siccome l'indice e' influenzato da diversi fattori, e' difficile ottenere un modello
+molto preciso. Come prima approssimazione si potrebbe utilizzare la seguente relazione:
+$$
+t_{comm} = t_{startup} + w t_{data}
+$$
+Questa relazione ci dice che il tempo di comunicazione e' dato dal tempo di startup ($t_{startup}$)
+(essenzialmente il tempo necessario a mandare un messaggio senza nessun dato) piu' il tempo
+necessario a inviare un messaggi ($t_{data}$) moltiplicato per il numero di messaggi inviati ($w$). 
+
+Una volta ottenuti i valori di $t_s$, $t_{comp}$ e di $t_{comm}$ e' possibile calcolare il fattore
+di speedup (descritto in precedenza). Riscriviamo la relazione sostituendo il valore di $t_{p}$
+$$
+speedup=\frac{t_s}{t_{comp} + t_{comm}}
+$$
+Da questa relazione, risulta inoltre evidente come il tempo di comunicazione influenzi direttamente
+il fattore di speedup. In alcune implementazioni, ad esempio, si potrebbe verificare la condizione
+in cui il programma passi significativamente piu' tempo a comunicare che a effettuare calcoli
+effettivi all'aumentare della grandezza del problema.
+Il rateo computazione/comunicazione da una stima di come questi due tempi cambiano. 
+$$
+comp/comm_{ratio} = \frac{t_{comp}}{t_{comm}}
+$$
+Generalmente una buona implementazione parallela ha un rateo di computazione/comunicazione maggiore
+di 1.
+
+Pag. 77
