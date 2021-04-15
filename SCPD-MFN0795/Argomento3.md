@@ -241,7 +241,9 @@ solo del processo che ha tempo di esecuzione massimo.
 L'unita' di tempo di $t_{comp}$ viene misurata in numero di istruzioni eseguite. Tipicamente nella
 valutazione delle prestazioni, il tempo computazionale viene suddiviso in diverse parti, separate
 dai momenti in cui avvengono gli scambi di messaggi.
-
+$$
+t_{comp}=t_{comp1}+t_{comp2}+\dots
+$$
 Il tempo di comunicazione $t_{comm}$, invece, dipende direttamente dal numero di messaggi, dalla
 grandezza di un singolo messaggio, dalla tipologia di rete di interconnessione e dalla modalita' di
 trasmissione. Siccome l'indice e' influenzato da diversi fattori, e' difficile ottenere un modello
@@ -249,7 +251,7 @@ molto preciso. Come prima approssimazione si potrebbe utilizzare la seguente rel
 $$
 t_{comm} = t_{startup} + w t_{data}
 $$
-Questa relazione ci dice che il tempo di comunicazione e' dato dal tempo di startup ($t_{startup}$)
+Questa relazione indica che il tempo di comunicazione e' dato dal tempo di startup ($t_{startup}$)
 (essenzialmente il tempo necessario a mandare un messaggio senza nessun dato) piu' il tempo
 necessario a inviare un messaggi ($t_{data}$) moltiplicato per il numero di messaggi inviati ($w$). 
 
@@ -261,12 +263,12 @@ $$
 Da questa relazione, risulta inoltre evidente come il tempo di comunicazione influenzi direttamente
 il fattore di speedup. In alcune implementazioni, ad esempio, si potrebbe verificare la condizione
 in cui il programma passi significativamente piu' tempo a comunicare che a effettuare calcoli
-effettivi all'aumentare della grandezza del problema.
-Il rateo computazione/comunicazione da una stima di come questi due tempi cambiano. 
+effettivi all'aumentare della grandezza del problema. In altri termini, se la complessita'
+computazionale del tempo di computazione e del tempo di comunicazione sono le stesse, allora
+difficilmente le performance aumenterebbero all'aumentare della grandezza del problema $n$.
+Il rateo computazione/comunicazione da' una stima di come questi due tempi cambiano. 
 $$
 comp/comm_{ratio} = \frac{t_{comp}}{t_{comm}}
 $$
-Generalmente una buona implementazione parallela ha un rateo di computazione/comunicazione maggiore
-di 1.
-
-Pag. 77
+Generalmente una buona implementazione parallela ha un rateo di computazione/comunicazione in cui la
+complessita' computazionale e' piu' grande di quella della comunicazione.
