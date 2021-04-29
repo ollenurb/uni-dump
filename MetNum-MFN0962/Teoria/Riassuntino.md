@@ -68,7 +68,7 @@
   interpolante. (Per dimostrazione esprimi due polinomi $p$ e $\tilde{p}$ nella forma di Lagrange e
   fai $| p - \tilde{p} |$)
 
-## Polinomio Interpolante di Newton 
+### Polinomio Interpolante di Newton 
 * Rappresenta una forma alternativa del polinomio di Lagrange particolarmente utile quando si ha
   gia' un polinomio $P_n$ interpolante in $n$ punti e si vuole ottenere un'altro polinomio
   interpolante in $n+1$ punti. Risulta meno oneroso in termini compuazionali poiche' ha complessita'
@@ -78,5 +78,18 @@
   che ($x_0$ ripetuto $k$ volte) $f[x_0, \dots, x_0] = \frac{f^{(k)}}{k!}$.
 * Rappresentazione di Newton: $P_n(x) = f(x_0)+(x-x_0)f[x_0, x_1] + \dots + (x-x_0)\dots(x -
   x_{n-1})f[x_0, x_1, \dots, x_n]$
+* Permette inoltre di dare una rappresentazione alternativa dell'errore: $E_n(x) = f(x) - P_n(x) =
+  f[x_0, \dots, x_n, x] \omega(x)$. Questa rappresentazione non richiede che la funzione sia
+  differenziabile ne' che sia continua, rispetto alla rappresentazione vista in precedenza. 
 
-
+## Approssimazione ai minimi quadrati
+* Si preferisce utilizzarla al posto dell'interpolazione in casi in cui i dati presentano forti
+  errori. 
+* Consiste nel trovare i $c_k$ tali che $\varepsilon_2 = \sum_{i=0}^m [y_i - \sum_{k=0}^n c_k
+  \varphi_k(x_i)]^2$ sia minimo. 
+* Abbiamo solo visto il caso dei polinomi, per cui prendiamo come riferimento $\varphi_k(x) = x^k$. 
+* Si ottiene un sistema lineare a $(n+1)$ equazioni e a $(n+1)$ incognite (da vedere sul libro o
+  appunti). 
+* Nota per la risoluzione degli esercizi: con $n=1$ prendi la sottomatrice $(n+1)\times(n+1)$ e
+  risolvi il sistema corrispondente.
+  
