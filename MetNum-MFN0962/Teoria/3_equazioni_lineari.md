@@ -90,7 +90,7 @@ $$
 
 Per studiare le radici di una funzione possiamo anche utilizzare strumenti analitici quali la
 derivata prima. Studiandone l'andamento, quando essa tende ad essere tangente all'asse delle $x$
-($f'(x) = 0) significa che si e' in prossimita' di un **minimo** oppure **massimo** relativo della
+($f'(x) = 0$) significa che si e' in prossimita' di un **minimo** oppure **massimo** relativo della
 funzione.  Il fatto che ci siano piu' massimi e minimi indica la presenza di piu' radici. 
 
 Il condizionamento del calcolo delle radici e' dato principalmente dall'andamento della funzione in
@@ -99,7 +99,18 @@ contenuta la radice $\alpha$. E' facile notare che piu' questo intervallo e' gra
 l'errore. Se quindi la derivata prima della funzione tende a $0$ in prossimita' della radice,
 l'ampiezza di questo intervallo tendera' a crescere sempre di piu'. Questo perche' il tendere a $0$
 della derivata prima corrisponde al fatto che la funzione tende ad essere tangente all'asse delle
-$x$ e quindi ad avere una doppia radice. 
+$x$ e quindi ad avere una doppia radice.  
+Questa conseguenza e' possibile vederla anche in maniera puramente algebrica, applicando il teorema
+di Taylor si sviluppa $f(x)$ fino al primo termine, ottenendo
+$$
+f(x) = f(\alpha) + f'(\xi)(x-\alpha)
+$$
+se poniamo poi che $|f(x)| < \varepsilon$ si ottiene
+$$
+| x - \alpha | \leq \frac{1}{|f'(\xi)|} \cdot \varepsilon
+$$
+che e' la relazione che esprime il *condizionamento assoluto*. Dalla relazione e' evidente come il
+valore di $f'$ influenzi direttamente l'andamento dell'errore poiche' compare a denominatore.
 
 ## Metodo di bisezione
 Il metodo di bisezione e' il metodo numerico piu' semplice e banale dal punto di vista

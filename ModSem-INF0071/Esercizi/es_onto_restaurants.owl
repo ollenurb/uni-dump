@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/matteo/ontologies/onto_risto#"
+     xml:base="http://www.semanticweb.org/matteo/ontologies/onto_risto"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#haDipendente -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#haDipendente">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#lavoraIn"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#lavoraIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#lavoraIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Personale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#indirizzo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#indirizzo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#nome -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#nome">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#numeroCoperti -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#numeroCoperti">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#unsignedInt"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#punteggioMedioClienti -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#punteggioMedioClienti">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#unsignedInt"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Cameriere -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cameriere">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Personale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Cinese -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cinese">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#CucinaPesce -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#CucinaPesce">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Cuoco -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cuoco">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Personale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Giapponese -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Giapponese">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Personale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Personale"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Piemontese -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Piemontese">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteFusion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteFusion">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cucina"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteGrande -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteGrande">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#numeroCoperti"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">10</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteOrientale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#RistoranteOrientale">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#RistorantePiccolo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#RistorantePiccolo">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#numeroCoperti"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">10</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Thai -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Thai">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Toscana -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Toscana">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Trattoria -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Trattoria">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#faCucina"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#AllaBeccuccia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#AllaBeccuccia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Trattoria"/>
+        <faCucina rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ribollita"/>
+        <indirizzo>Viale del Lezzo, 14, Arezzo (AR)</indirizzo>
+        <nome>Alla Beccuccia di Piermenti Andrea</nome>
+        <numeroCoperti rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</numeroCoperti>
+        <punteggioMedioClienti rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">19</punteggioMedioClienti>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Fiorentina -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Fiorentina">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Toscana"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Noodles -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Noodles">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Thai"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Piero -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Piero">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cuoco"/>
+        <lavoraIn rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#AllaBeccuccia"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/onto_risto#Ribollita -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ribollita">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Toscana"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Cinese"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Giapponese"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Regionale"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Thai"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Orientale"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Piemontese"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/onto_risto#Toscana"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

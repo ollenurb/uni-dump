@@ -1,4 +1,6 @@
-## Metodi per al risoluzione di equazioni lineari
+\newpage
+# Riassunto dei vari argomenti
+## Metodi per la risoluzione di equazioni lineari
 * Un fattore di condizionamento del problema e' dato dal valore della derivata prima della funzione
   in prossimita' della radice, piu' e' piccola piu' il problema sara' mal condizionato. (Ci si
   arriva tramite il polinomio di Taylor oppure per via grafica) se la funzione tende ad essere

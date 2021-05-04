@@ -1,0 +1,458 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/matteo/ontologies/houses#"
+     xml:base="http://www.semanticweb.org/matteo/ontologies/houses"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:houses="http://www.semanticweb.org/matteo/ontologies/houses#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/matteo/ontologies/houses"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#casaContieneArredo -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#casaContieneArredo">
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#compostoDa"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#compostoDa -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#compostoDa">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#contiene -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#contiene">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#situatoIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#situatoIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#indirizzo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#indirizzo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Ambiente -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#AmbienteCucina -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#AmbienteCucina">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Cucina"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Appartamento -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoGrande -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoGrande">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#compostoDa"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoGrandePerFamiglie -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoGrandePerFamiglie">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#situatoIn"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#compostoDa"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoVacanze -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoVacanze">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#situatoIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Arredo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Bagno -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Bagno">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Lavabo"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Comune -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Cucina -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Cucina">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Divano -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Divano">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Lavabo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Lavabo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Letto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Letto">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Portaombrelli -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Portaombrelli">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Arredo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Soggiorno -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Soggiorno">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Divano"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Portaombrelli"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#contiene"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Letto"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Bardonecchia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Bardonecchia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#CasaDiCarlo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#CasaDiCarlo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Carlo"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Carlo"/>
+        <situatoIn rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Loano"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#CasaDiGiovanni -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#CasaDiGiovanni">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giovanni"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giovanni"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza3Giovanni"/>
+        <situatoIn rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Loano"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#CasaDiGiulia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#CasaDiGiulia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoGrande"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giulia"/>
+        <compostoDa rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giulia"/>
+        <situatoIn rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Courmayeur"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Courmayeur -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Courmayeur">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#CucinaGas -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#CucinaGas">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Cucina"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Laigueglia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Laigueglia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#LavaboInAcciaio -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#LavaboInAcciaio">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Lavabo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#LettoMogano -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#LettoMogano">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Letto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Loano -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Loano">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Rapallo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Rapallo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#ComuneTuristico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Carlo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Carlo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giovanni -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giovanni">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Bagno"/>
+        <contiene rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#LavaboInAcciaio"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giulia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza1Giulia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Carlo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Carlo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Ambiente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giovanni -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giovanni">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto"/>
+        <contiene rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#LettoMogano"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giulia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza2Giulia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#StanzaDaLetto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Stanza3Giovanni -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Stanza3Giovanni">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#AmbienteCucina"/>
+        <contiene rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#CucinaGas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#Torino -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Torino">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
