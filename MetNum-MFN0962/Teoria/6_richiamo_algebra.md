@@ -64,7 +64,12 @@ compongono la matrice. Se $=0$ vuol dire che la trasformazione associata alla ma
 spazio di una o piu' dimensioni.
 
 **Definizione**: Una matrice $A$ e' detta ***invertibile*** o ***non singolare*** se esiste una matrice
-$A^{-1}$ tale che $AA^{-1} = I = A^{-1}A$. $A$ e' invertibile se e solo se ha $det(A) \neq 0$
+$A^{-1}$ tale che $AA^{-1} = I = A^{-1}A$. $A$ e' invertibile se e solo se ha $det(A) \neq 0$.  
+Per calcolare l'inversa di una matrice si calcola la sua matrice dei ***cofattori*** $cof(A)$ corrispondente
+(guardare sotto per definizione di cofattore). Successivamente si applica la seguente relazione
+$$
+A^{-1} = \frac{1}{det(A)} \cdot cof(A)^T 
+$$
 
 **Definizione**: Il ***rango*** di una matrice e' il numero massimo di vettori riga (o colonna)
 linearmente indipendenti che compongono la matrice, oppure come l'ordine della sottomatrice piu'
@@ -120,8 +125,12 @@ e' minore stretta della molteplicita' algebrica la matrice viene detta ***difett
 inferiore***) se e' composta da tutti elementi nulli al di sopra (analogamente al di sotto) della
 diagonale principale. Quando una matrice e' sia diagonale superiore che inferiore e' detta matrice
 ***diagonale***.
-Una proprieta' importante delle matrici triangolari (e diagonali) e' che $det(D) = \prod^n_{i=1}
-a_{ii}$ (cioe' e' uguale al prodotto degli elementi sulla diagonale principale).
+Alcune proprieta' importanti riguardanti le matrici triangolari (e diagonali) sono:
+
+* $det(D) = \prod^n_{i=1} a_{ii}$ (cioe' il determinante uguale al prodotto degli elementi sulla
+  diagonale principale).
+* $\sigma(D) = \{d_{11}, \dots, d_{kk}\}$, (lo spettro di una matrice coincide con la diagonale
+  principale)
 
 **Definizione**: Sono dette matrici ***sparse*** le matrici che hanno un numero di elementi diversi
 da $0$ inferiore al $10\%$ del totale degli elementi. Analogamente, una matrice e' detta ***densa***
@@ -152,7 +161,51 @@ righe (o colonne siccome e quadrata), connessi tra loro tramite un arco $(i, j)$
 $a_{ij} \neq 0$. Allora, se $G$ e' ***fortemente connesso*** (cioe' se esiste un cammino orientato
 per ogni coppia di nodi $(i, j)$) $A$ e' riducibile.   
 
+**Definizione**: Due matrici $A$ e $B$ si dicono ***simili*** quando esiste una matrice $S$ non
+singolare ($det(S) \neq 0$) tale che 
+$$
+B = S^{-1}AS
+$$
+Le matrici simili condividono gli stessi autovalori e autovettori.
 
+**Definizione**: Una matrice $A$ si dice ***diagonalizzabile*** se esiste una matrice $X$ non
+singolare tale che
+$$
+X^{-1}AX = D = diag(\lambda_1, \dots, \lambda_n)
+$$
+In altri termini, una matrice diagonalizzabile e' una matrice simile ad una matrice diagonale $D$.
+Quando $X$ e' unitaria (cioe' XX^T = X^TX = I) allora si dice che $A$ e' ***unitariamente
+diagonalizzabile***.  
+Non tutte le matrici sono diagonalizzabili, a tal proposito, diciamo che una matrice $A$ e'
+diagonalizzabile se e solo se ammette $n$ autovettori linearmente indipendenti.
+Questo lo si puo' dimostrare applicando la definizione di autovalore e autovettore, siano
+$$
+Ax_i = \lambda_i x_i \quad i=0, \dots, n 
+$$
+i rispettivi autovalori e autovettori di $A$, allora possiamo riscrivere la seguente relazione in
+forma matriciale come 
+$$
+A [x_1 \cdots x_n] = [x_1, \cdots, x_n]
+\begin{bmatrix}
+\lambda_1 & & \\
+ & \ddots & \\
+ & & \lambda_n
+\end{bmatrix}
+$$
+Ossia $AX = XD$, dove $X$ e' la matrice avente gli autovettori di $A$ come colonne. Se gli
+autovettori sono indipendenti, la matrice $X$ e' invertibile, per cui si puo' trovare $X^{-1}$ per
+cui se moltiplicata per la relazione precedente si ottiene
+$$
+X^{-1}AX = D
+$$
+Tale diagonalizzazione e' detta ***fattorizzazione spettrale***, perche' utilizza gli autovalori e
+gli autovettori di una matrice per ottenere la sua diagonale. 
 
-
+**Definizione**: Una matrice quadrata $A$ di ordine $n$ e' detta ***diagonalmente dominante*** per
+righe se 
+$$
+a_{ii} \geq \sum^n_{j=1, j \neq i} | a_{ij} |, \quad i=1, \dots, n
+$$
+Si dice inoltre che e' ***strettamente diagonalmente dominante*** se vale il minore stretto, mentre
+viene detta ***irriducibilmente diagonalmente dominante*** se e' anche irriducibile.
 
