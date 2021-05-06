@@ -1,5 +1,5 @@
 \newpage
-# Metodi diretti per la soluzione di sistemi lineari
+# Metodi per la soluzione di sistemi lineari
 Un sistema lineare a $m$ equazioni e $n$ incognite e' un insieme di equazioni che devono essere
 soddisfatte simultaneamente. Una sua soluzione e' una $n$-upla (tanti elementi quante le incognite)
 che contiene i numeri reali $\{k_1, \dots, k_n \}$ tali che soddisfino le equazioni se sostituiti al
@@ -131,11 +131,195 @@ $$
 $$
 E' importante notare come la norma non sia specificata e come tale numero cambi proprio in base alla
 norma con cui viene valutata.
+Avendo trovato come le due perturbazioni sui termini noti $b$ e sulla matrice di coefficienti $A$
+influenzano le soluzioni, possiamo quindi dare la definizione del seguente teorema
 
+>***Teorema**: Siano $\delta A$ e $\delta b$, rispettivamente, le perturbazioni della matrice dei
+>coefficienti e dei termini noti di un sistema lineare $Ax = b$, e sia*
+>$$ 
+>(A+\delta A)(x + \delta x) = (b + \delta b)
+>$$
+>*il sistema perturbato risultante, se $|| \delta A|| \; || A^{-1} || < 1$, allora l'errore 
+>relativo della soluzione del sistema soddisfa la disuguaglianza seguente*
+>$$
+\frac{|| \delta x ||}{|| x ||} \leq \frac{\kappa(A)}{1 - \kappa(A) \frac{||\delta A||}{||A||}} (\frac{|| \delta A ||}{|| A ||} + \frac{|| \delta b ||}{|| b ||}) 
+>$$
+>*dove $\kappa(A) = ||A|| \; ||A^{-1}||$ e' l'indice di condizionamento di $A$.*
 
+Da cui segue anche il seguente corollario
 
+>***Corollario**: Sotto le ipotesi del teorema precedente, se $||\delta A|| \; ||A^{-1}|| <
+>\frac{1}{2}$, allora la stima dell'errore relativo della soluzione sara'*
+>$$
+\frac{|| \delta x ||}{|| x ||} \leq 2\kappa(A) (\frac{|| \delta A ||}{|| A ||} + \frac{|| \delta b ||}{|| b ||}) 
+>$$
 
+Dalla stima del corollario precedente e' possibile inoltre ricavare quante cifre sono da ritenersi
+corrette. Sia $\varepsilon$ l'epsilon di macchina si ha
+$$
+\frac{|| \delta x ||}{|| x ||} \leq 4\kappa(A) \varepsilon \leq \frac{1}{2} 10^{-p+1}
+$$
+per cui $p$ cifre significative sono da ritenersi corrette nella soluzione perturbata.
 
+## Metodi diretti
+Dopo aver introdotto alcune nozioni sull'errore e il condizionamento dei sistemi lineari, possiamo
+passare ad introdurre i metodi per la soluzione dei sistemi lineari, in particolare quelli diretti.
+Consideriamo inizialmente alcuni casi di sistemi lineari detti "*facili*" perche' di quasi immediata
+soluzione.
+Come detto in precedenza, un sistema lineare $Ax=b$ ammette soluzioni se e solo se $A$ e' non
+singolare (invertibile) e tale soluzione e' data dalla relazione seguente
+$$
+x = A^{-1} \cdot b
+$$
+Se sotto le ipotesi precedenti un sistema ha matrice dei coefficienti diagonale $D$, il sistema
+avra' un'unica soluzione
+$$
+x_i = \frac{b_i}{d_i}, \qquad i=1,\dots,n
+$$
+Questo caso rappresenta il caso piu' semplice possibile in quanto il costo computazionale e' di $n$
+divisioni ($O(n)$), e' ben posto se la matrice e' non singolare ed e' stabile dal momento che ogni
+divisione e' indipendente l'una dall'altra.
+Ricordiamo che *ben posto* significa che un problema possiede in un prefissato campo di definizione
+una e una sola soluzione e che questa *dipende con continuita' dai dati*.
 
+Consideriamo ora un altro caso relativamente semplice, ipotizzando che la matrice dei coefficienti
+$Q$ sia ortogonale ($Q^TQ = QQ^T = I$ la trasposta coincide con l'inversa). Poiche' e' certo che $Q$
+sia sia invertibile, la soluzione del sistema sara' data da
+$$
+x = Q^T \cdot b \; \rightarrow \; x_i=\sum^n_{j=1} q_{ji} b_j, \quad i = 0, \dots, n
+$$
+Questa volta il costo computazionale coincide con il costo della moltiplicazione di matrici che e'
+$O(n^2)$ operazioni. Anche in questo caso l'algoritmo e' ben posto e stabile. 
 
+Passiamo ora a considerare al caso in cui la matrice dei coefficienti e' triangolare. Definiamo le
+matrici $L$ e $U$ rispettivamente la matrice triangolare inferiore e superiore.
+Per la proprieta' delle matrici triangolari sappiamo che i sistemi con matrici triangolari come
+matrice dei coefficienti ammettono soluzione unica se e solo se il prodotto di tutti gli elementi
+sulla diagonale principale non e' nullo. 
+In generale i metodi per la risoluzione di sistemi triangolari si basano sul concetto di
+sostituzione. Prendiamo per esempio un sistema triangolare inferiore $Lx=b$ (il concetto viene esteso
+anche al caso di sistemi triangolari superiori), allora possiamo scrivere lo stesso in forma
+esplicita come:
+$$
+\begin{cases}
+    l_{1,1} x_1 & =  b_1 \\
+    l_{2,1} x_1 + l_{2,2} x_2 & = b_2 \\
+    l_{3,1} x_1 + l_{2,2} x_2 + l_{3,3} x_3 & = b_3 \\
+    \qquad \vdots & \quad \vdots \\
+    l_{3,1} x_1 + l_{2,2} x_2 + l_{3,3} x_3 + \cdots + l_{n,n} x_n & = b_n \\
+\end{cases}   
+$$
+E' evidente dalla forma esplicita come sia possibile ricavare immediatamente la prima incognita
+$x_1$ dalla prima equazione, per poi generare cosi' un *"effetto a cascata"* sostituendo il valore
+di $x_1$ in tutte le altre equazioni e ripetendo il procedimento nella riga successiva. Cio' che e'
+appena stato descritto e' in effetti il ***metodo della sostituzione in avanti*** o ***forward
+substitution***.
+Posto che $x_1 = \frac{b_1}{l_{1,1}}$, allora possiamo calcolare il generico $x_i$ come
+$$
+x_i = \frac{b_i - \sum^{i-1}_{k=1} l_{i,k} x_k}{l_{i,i}}, \quad i=2, \dots, n
+$$
+Siccome abbiamo posto che la matrice non sia singolare e quindi non ci siano elementi nulli sulla
+diagonale principale, il termine $l_{i,i}$ non causa problemi di stabilita'.
+
+L'algoritmo puo' essere riassunto nei passi seguenti in codice Matlab:
+```{.matlab .numberLines}
+x1 = b1/L(1 1);
+for i=2:n
+    x(i) = b(i);
+    for k=1:i-1
+        x(i) = x(i) - L(i k) * x(k);
+    end
+    x(i) = x(i) / L(i i);
+end
+```
+Valutando l'algoritmo si ottiene che la sua complessita' e di 
+$$
+O(\sum^n_{i=1} i) = O(\frac{n(n+1)}{2}) = O(\frac{n^2}{2})
+$$
+
+Come gia' detto possiamo applicare lo stesso procedimento al contrario, ottenendo il cosiddetto
+***metodo della sostituzione in indietro*** o ***backward substitution***.
+Anche l'algoritmo di backward substitution gode delle stesse caratteristiche della sua controparte
+quali stabilita' e costo computazionale.
+In generale, dato $x_n = \frac{b_n}{l_{n,n}}$ allora la generica componente $x_i$ del vettore delle
+soluzioni puo' essere calcolata mediante sostituzione in indietro per mezzo della seguente relazione
+$$
+x_i = \frac{b_i - \sum^{n}_{k=i+1} u_{i,k} x_k}{u_{i,i}}, \quad i=(n-2),(n-3), \dots, 1
+$$
+
+## Metodo di Gauss
+I metodi di risoluzione fin'ora introdotti si limitano ad alcuni casi limite e molto particolari.
+Introduciamo ora alcuni metodi per la risoluzione di sistemi lineari di forma generica, con la
+matrice dei coefficienti senza nessuna forma particolare. 
+Il metodo di Gauss e' un metodo che consiste nell'eliminare progressivamente le incognite da fissate
+equazioni. Tale metodo funziona sempre, sia se il sistema non ammette una sola soluzione sia nel
+caso ne ammetta infinite. Nel secondo caso l'algoritmo termina segnalandolo. L'idea alla base del
+metodo e' quella di ottenere mediante un numero finito di passi una matrice dei coefficienti
+triangolare. Dopo aver triangolarizzato la matrice e' poi possibile utilizzare uno dei metodi di
+sostituzione descritti in precedenza.
+
+Assumiamo di avere un sistema lineare $Ax=b$, e assumiamo anche che la prima entrata $a_{1,1}$ di
+$A$ sia diversa da zero ($a_{1,1} \neq 0$).
+Possiamo quindi eliminare la prima incognita $x_1$ dalla $2^{a}, 3^{a}, \dots,$ *n-esima* equazione,
+sottraendo dall'*i-esima* equazione ($i=2, \dots, n$) la prima equazione moltiplicata per 
+$$
+m_{i,1} = \frac{a_{i,1}}{a_{1,1}}, \quad i=2, \dots, n
+$$
+Cio' che si ottiene e' un sistema equivalente, con la prima equazione inalterata ma con tutti i
+coefficienti di $x_1$ uguali a 0 in tutte le equazioni successive. Piu' precisamente, il sistema
+lineare equivalente (il cui passo dell'algoritmo e' specificato ad apice, se non specificato e'
+passo 1) sara'
+$$
+\begin{cases}
+    a_{i,j}^{(2)} = a_{i,j} - m_{i,1} a_{1,j} \\
+    \qquad \qquad \qquad \qquad\qquad i,j=2, \dots, n\\
+    b_{i}^{(2)} = b_{i} - m_{i,1} b_{1} \\
+\end{cases}
+$$
+
+Il metodo viene poi reiterato prendendo $a^{(2)}_{2,2}$ come elemento per l'eliminazione, ottenendo
+quindi un sistema in cui le due prime equazioni sono inalterate, ma con i coefficienti di $x_1$ e
+$x_2$ uguali a zero. Per cui il sistema risultante sara':
+$$
+\begin{cases}
+    a_{i,j}^{(3)} = a^{(2)}_{i,j} - m_{i,2} a_{2,j}^{(2)} \\
+    \qquad \qquad \qquad \qquad\qquad i,j=3, \dots, n\\
+    b^{(3)}_{i} = b^{(2)}_{i} - m_{i,2} b^{(2)}_{2} \\
+\end{cases}
+$$
+E' chiaro fin da subito che il metodo possa essere reiterato per il passo *k-esimo*, ottenendo alla
+fine un sistema con matrice dei coefficienti triangolare superiore.
+Per il caso generale, possiamo riassumere il metodo con un insieme di relazioni. Posto che
+$$
+a_{i,j} = a^{(1)}_{i,j}, \quad b_{i} = b^{(1)}_{i}, \quad i,j = 1, \dots, n
+$$
+allora e' possibile calcolare il sistema al passo $k+1$ mediante le seguenti equazioni:
+$$
+\begin{cases}
+    m_{i,k} = \frac{a_{i,k}^{(k)}}{a_{k,k}^{(k)}} \\
+    \\
+    a_{i,j}^{(k+1)} = a^{(k)}_{i,j} - m_{i,k} a_{k,j}^{(k)} \qquad\qquad i,j=k+1, \dots, n\\
+    \\
+    b^{(k+1)}_{i} = b^{(k)}_{i} - m_{i,k} b^{(k)}_{k} \\
+\end{cases}
+$$
+L'elemento $a_{k,k}$ e' detto ***elemento pivot***, mentre le quantita' $m_{i,k}$ sono dette
+***moltiplicatori***. Dal metodo si evince inoltre che l'algoritmo e' stabile se e solo se tutti gli
+elementi pivot sono diversi da 0 (dal momento che compaiono al denominatore).
+L'algoritmo termina inoltre in $n-1$ passi, con $n$ dimensione della matrice quadrata dei
+coefficienti.
+
+**Algoritmo di Gauss**:
+```{.matlab .numberLines}
+for k=1:n-1
+    for i=k+1:n
+        m(i k) = a(i k)/a(k k);
+        for j=k+1:n
+            a(i j)=a(i j)-m(i k)*a(k j);
+        end
+        b(i)=b(i)-m(i k)*b(k);1
+    end
+end
+```
+Dal codice si evince che la complessita' temporale e' di tipo $O(n^3)$
 
