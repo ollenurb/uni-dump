@@ -323,3 +323,175 @@ end
 ```
 Dal codice si evince che la complessita' temporale e' di tipo $O(n^3)$
 
+### Stabilita'
+La stabilita' del metodo di Gauss e' garantita in generale se tutti se per ogni passo $k$
+dell'algoritmo gli elementi pivot $a_{k,k}$ sono diversi da 0. Per poterlo stabilire a priori si
+puo' utilizzare il seguente teorema:
+
+>***Teorema**: Sia $A \in M_{n,n}(\mathbb{R})$. Gli elementi pivot sono tutti diversi da zero se
+>e soltanto se tutte le matrici prncipali di testa sono invertibili, (o non singolari) quindi se*
+>$$
+det(A_k) \neq 0 \quad \forall k = 1, \dots, n
+>$$
+>*dove le matrici principali di testa $A_k$ sono definite nel modo seguente*
+>$$
+A_k(a_{i,j})_{i,j=1, \dots, k}, \quad k = 1, \dots, n
+>$$
+
+Dal teorema precedente e' evidente come non sia una condizione di facile verifica e chiaramente
+computazionalmente molto onerosa da verificare. Tuttavia, esistono alcune classi di matrici per cui
+e' noto che tutti gli elementi pivot siano diversi da zero per ogni $k$, quali:
+
+* Matrici diagonalmente dominanti per righe
+* Matrici diagonalmente dominanti per colonne
+* Matrici simmetrice definite positive
+
+La terza tipologia infatti si basa sul risultato del seguente teorema
+
+>***Teorema (Criterio di Sylvester)**: Una matrice simmetrica $A \in M_{n,n}(\mathbb{R})$ e'
+>definita positiva se e solo se*
+>$$
+det(A_k) > 0, \quad k=1, \dots, n
+>$$
+>*dove $det(A_k)$ sono i **minori principali** di $A$.*
+
+In generale, pero', per ogni matrice $A$ non singolare (condizione necessaria per la soluzione di un
+sistema lineare) non si ha la certezza che ogni elemento pivot ad ogni passo $k$ non sia nullo.
+Tuttavia, quando l'elemento pivot al generico passo $k$ e' nullo, e' impossibile che non esista una
+riga della matrice dei coefficienti che abbia pivot diverso da 0, questo perche' se fosse cosi',
+allora la matrice dei coefficienti sarebbe singolare e non si potrebbe di fatto risolvere il
+sistema. L'idea e' quindi quella di scambiare la riga *k-esima* con pivot uguale a 0 con la riga
+*r-esima* che ha pivot non nullo. Tale tecnica di scambio di righe e' detta **pivoting**. Siccome al
+pari di scambi di righe il sistema lineare rimane invariato, possiamo affermare che
+
+>*Ogni sistema non singolare, mediante opportuni scambi di righe, puo' essere sempre ricondotto alla
+>forma triangolare superiore con il metodo di Gauss.*
+
+E' possibile inoltre utilizzare il pivoting anche quando i pivot sono molto piccoli (in valore
+assoluto) rispetto all'ordine di grandezza degli elementi della matrice. Questo perche' potrebbe
+causare il fenomeno della *cancellazione numerica*, e quindi rappresenterebbe fonte di
+*instabilita'*.  
+Otteniamo cosi' due strategie principali di pivoting:
+
+**Pivoting Parziale (o di colonna)**: cerca il nuovo pivot considerando tutti gli elementi della
+sottocolonna *k-esima*, (che hanno riga $l \geq k$) scegliendo il massimo.
+
+* Al passo $k$:
+    1. Trova $l$ tale che $|a_{l,k}^{(k)}| = \max_{i=k, \dots, n} |a_{i,k}^{(k)}|$
+    2. Scambia la riga $k$ con la riga $l$ 
+    3. Scambia gli elementi $k$ e $l$ di $b$
+
+**Pivoting Totale**: cerca il nuovo pivot considerando l'intera sottomatrice di ordine $n-k$,
+scegliendo il massimo.
+
+* Al passo $k$:
+    1. Trova $(r,s)$ con $r,s \geq k$ tale che 
+    $$ |a_{r,s}^{(k)}| = \max_{k \leq i,j \leq n} |a_{i,j}^{(k)}|$$ 
+    2. Scambia le righe $k$ e $r$ e le colonne $k$ e $s$
+    3. Scambia gli elementi $k$ e $r$ di $b$
+    4. Memorizza che sono state scambiate le incognite $x_k$ $x_s$
+
+In generale, la strategia di pivoting totale e' molto costosa computazionalmente, per questo motivo
+si tende ad impiegare piu' spesso la strategia di pivoting parziale, anche perche' risulta
+soddisfacente nella maggior parte dei casi.  
+Osserviamo inoltre che nei casi di matrici diagonalmente dominanti per colonne, il pivoting non
+genera scambi, mentre nei casi di matrici simmetriche positive il pivoting produce scambi ma senza
+apportare nessun miglioramento significativo. Si dice percio' che in questi casi la stabilita' e'
+garantita anche senza pivoting.
+
+### Condizionamento 
+Avendo discusso della stabilita', si vuole a questo punto studiare la propagazione degli errori del
+metodo di Gauss. A tal proposito, enunciamo il seguente teorema
+
+>***Teorema (Wilkinson):** La soluzione numerica $\tilde{x}$ del sistema lineare $Ax = b$ di
+>ordine $n$, ottenuta mediante l'applicazione del metodo di Gauss con pivoting (parziale o totale) in
+>un sistema a virgola mobile in base $\beta$ con $t$ cifre significative, coincide con la soluzione
+>esatta del sistema perturbato*
+>$$
+(A + \delta A)\tilde{x} = b
+>$$
+>*Se $n^2 \beta^{-1} << 1$, (cioe' che lo spazio destinato del sistema in virgola mobile alla
+>memorizzazione di un numero reale sia sufficientemente grande rispetto alla dimensione del sistema)
+>allora si ha*
+>$$
+||\delta A||_{\infty} \leq 2g(n) \beta^{-t}(n + 1)^3 ||A||_{\infty}
+>$$
+>*dove il fattore di crescita $g(n)$ assume i valori*
+$$
+\begin{cases}
+2^{n-1} & \text{per il pivoting parziale}\\
+n^{\frac{1}{2}} (2 \cdot 3^{\frac{1}{2}} \cdot 4^{\frac{1}{3}} \dots 
+n^{\frac{1}{(n-1)}})^{\frac{1}{2}} & \text{per il pivoting totale} \\
+\end{cases}
+$$
+
+Ora applichiamo la definizione di errore relativo data dal teorema illustrato nella sezione 7.0.1,
+e otteniamo:
+$$
+\frac{||\delta x||}{||x||} = \frac{||x-\tilde{x}||}{||x||} \leq
+\frac{||A|| \; ||A^{-1}||}{1 - ||A|| \; ||A^{-1}|| \; \frac{||\delta A||}{||A||}} \cdot
+\frac{||\delta A||}{||A||} = 
+\frac{||A^{-1}|| \; ||\delta A||}{1 - ||A^{-1}|| \; ||\delta A||}
+$$
+il che ci dice che l'errore relativo tende a 0 quando la norma della perturbazione sui dati della
+matrice dei coefficienti $\delta A$ tende a 0.
+
+**Osservazione**: C'e' da dire che anche se esistono matrici il cui fattore di crescita relativo al
+pivoting parziale raggiunge il suo limite superiore di $2^{n-1}$, in molti casi i fattori di
+crescita sono molto piu' bassi del massimo (ne sono quindi un limite inferiore). In questo caso le
+due strategie di pivoting producono risultati molto simili in termini di errore. In generale, e'
+consigliabile fare ricorso al pivoting totale in casi in cui ci siano sistemi con matrici dei
+coefficienti di grandi dimensioni.
+
+## Fattorizzazione LU
+La fattorizzazione LU e' un metodo strettamente legato al metodo di Gauss. Consideriamo una matrice
+quadrata $A$ di ordine $n$ ($A \in M_{n,n}(\mathbb{R})$), tramite il metodo di Gauss e' possibile
+rappresentare $A$ come
+$$
+A = LU
+$$
+dove $L$ e' una matrice triangolare inferiore a diagonale unitaria e $U$ una matrice triangolare
+superiore definite nel modo seguente 
+$$
+L=\begin{bmatrix}
+    1 & 0 & 0 & \cdots & 0\\ 
+    m_{2,1} & 1 & 0 & \cdots & 0\\ 
+    m_{3,1} & m_{3,2}  & 1 & \cdots & 0 \\ 
+    \vdots & \vdots & \ddots & \ddots & \vdots \\ 
+    m_{n,1} & m_{n,2} & \cdots & m_{n, n-1} & 1\\
+\end{bmatrix}\;
+U=\begin{bmatrix}
+    a_{1,1}^{(1)} & a_{1,2}^{(1)} & \cdots        & \cdots & a_{1,n}^{(1)}\\ 
+    0             & a_{2,2}^{(2)} & \cdots        & \cdots & a_{2,n}^{(2)}\\ 
+    0             & 0             & a_{1,3}^{(3)} & \cdots & a_{3,n}^{(3)}\\ 
+    \dots         & \ddots        & \ddots        & \ddots & \vdots \\ 
+    0             & \cdots        & 0             & \cdots & a_{n,n}^{(3)}\\ 
+\end{bmatrix}
+$$
+Come nel caso del MEG, la fattorizzazione LU esiste ed e unica se e solo se la matrice $A$ e' non
+singolare e tutti i suoi minori principali sono non nulli. 
+Il costo computazionale della fattorizzazione LU e' $O \left ( \frac{n^3}{3} \right)$. Questo
+perche' la fattorizzazione $LU$ coincide con la prima parte del metodo di Gauss, tralasciando quindi
+la parte in cui si fa una sostituzione in avanti. (non si vuole risolvere un sistema lineare ma si
+vuole ottenere solo una fattorizzazione della matrice $A$)
+
+Nonostante cio', mediante la fattorizzazione LU e' anche possibile risolvere sistemi lineari, e lo
+si puo' fare procedendo nel modo seguente:
+
+1. Calcolati $L$ e $U$, si ottiene che $Ax = b \leftrightarrow LUx = b$ 
+2. Posto che $Ux = y$, si calcola la soluzione del sistema $Ly=b$ mediante *forward substitution*.
+3. $y$ diventa cosi' il termine noto del sistema triangolare superiore $Ux = y$, che puo' essere
+   risolto mediante *backward substitution*. Tale soluzione e' la soluzione del sistema iniziale. 
+
+Il costo computazionale della procedura e' superiore a quella del metodo di Gauss poiche' risulta
+essere di $\frac{n^3}{3} + 2 \frac{n^2}{2}$ (applico Gauss + faccio 2 sostituzioni -avanti e
+indietro- che hanno la stessa complessita') flops.
+A differenza dell'algoritmo di Gauss, la fattorizzazione $LU$ non modifica i termini noti del
+sistema. $LU$ quindi opera solamente sulla matrice dei coefficienti, lasciando invariato il vettore
+dei termini noti.
+
+  
+  
+
+
+
