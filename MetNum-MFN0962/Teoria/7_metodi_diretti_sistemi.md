@@ -470,7 +470,7 @@ U=\begin{bmatrix}
 $$
 Come nel caso del MEG, la fattorizzazione LU esiste ed e unica se e solo se la matrice $A$ e' non
 singolare e tutti i suoi minori principali sono non nulli. 
-Il costo computazionale della fattorizzazione LU e' $O \left ( \frac{n^3}{3} \right)$. Questo
+Il costo computazionale della fattorizzazione LU e' $O \left( \frac{n^3}{3} \right)$. Questo
 perche' la fattorizzazione $LU$ coincide con la prima parte del metodo di Gauss, tralasciando quindi
 la parte in cui si fa una sostituzione in avanti. (non si vuole risolvere un sistema lineare ma si
 vuole ottenere solo una fattorizzazione della matrice $A$)
@@ -490,8 +490,45 @@ A differenza dell'algoritmo di Gauss, la fattorizzazione $LU$ non modifica i ter
 sistema. $LU$ quindi opera solamente sulla matrice dei coefficienti, lasciando invariato il vettore
 dei termini noti.
 
-  
-  
+Concettualmente, quindi, $LU$ e' semplicemente il metodo di Gauss in cui pero' si salvano i
+moltiplicatori di ogni passo nella matrice triangolare inferiore $L$.
+La fattorizzazione $LU$ e' inoltre particolarmente utile per diverse ragioni tra cui:
 
+* **Efficiente occupazione della memoria**: presenta la minore complessita' spaziale ($O(n(n+1))$)
+  possibile, che coincide con quella necessaria a memorizzare i dati del problema. 
+* **Risoluzione di piu' sistemi lineari**: dal momento che lascia invariati gli altri dati del
+  sistema, e' particolarmente utile per la soluzione di $m$ sistemi lineari aventi la stessa matrice
+  dei coefficienti ma vettori dei termini noti differenti. 
+  Il costo computazionale per la soluzione di $m$ sistemi, ciascuno risolto indipendentemente dagli
+  altri e' di $O \left( \frac{n^3}{3} + \frac{n^2}{2} \right)$, mentre se prima si opera la
+  fattorizzazione $LU$ e poi si ripetono solo i passi 2) e 3) descritti in precedenza si ottiene una
+  complessita' pari a $O \left( \frac{n^3}{3} + mn \right)$
+* **Calcolo del determinante**: per il teorema di Binet abbiamo che $det(A) = det(LU) = det(L) \cdot
+  det(U)$. Dal momento che $det(L)=1$, allora abbiamo che $det(A) = det(U) = \prod^n_{i=1} u_{i,i}$ 
+* **Calcolo dell'inversa di una matrice**: dal momento che $A$ e' invertibile, le colonne della
+  matrice inversa di $A$ saranno le soluzioni dei sistemi di equazioni che hanno $A$ come matrice
+  dei coefficienti e il vettore $e^n$ della base canonica di $\mathbb{R}^n$. In altri termini, sono
+  le colonne *n-esime* della matrice identita' di ordine $n$. Il costo computazionale e' pari a $O
+  \left( \frac{4}{3} n^3 \right)$
 
-
+La strategia di pivoting discussa in precedenza e' applicabile anche alla fattorizzazione $LU$. Sia
+$P^{(k, s)} la matrice di permutazione ottenuta scambiando la *k-esima* e *s-esima* riga tra loro.
+Si puo' dimostrare che la fattorizzazione $LU$ con pivoting parziale produce la fattorizzazione
+$$
+PA = LU
+$$
+Dove $P$ e' la matrice di permutazione in cui vengono inserite tutte gli scambi che vengono
+effettuati dalla strategia di pivoting ad ogni passo
+$$
+P = P^{(k_m, s_m)} \cdot P^{(k_{m-1}, s_{m-1})} \dots P^{(k_1, s_1)}
+$$
+Si puo' successivamente procedere con la soluzione di sistemi nel modo precedente, facendo solo
+qualche accortezza del momento che bisogna tener conto della permutazione anche nel vettore dei
+termini noti $b$:
+$$
+Ax = b \leftrightarrow PAx = Pb \leftrightarrow LUx = Pb
+$$
+e di conseguenza
+$$
+det(A) = (-1)^{\#(P)} \prod^n_{i=1} u_{i,i}
+$$
