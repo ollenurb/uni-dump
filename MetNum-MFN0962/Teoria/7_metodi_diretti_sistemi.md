@@ -512,7 +512,7 @@ La fattorizzazione $LU$ e' inoltre particolarmente utile per diverse ragioni tra
   \left( \frac{4}{3} n^3 \right)$
 
 La strategia di pivoting discussa in precedenza e' applicabile anche alla fattorizzazione $LU$. Sia
-$P^{(k, s)} la matrice di permutazione ottenuta scambiando la *k-esima* e *s-esima* riga tra loro.
+$P^{(k, s)}$ la matrice di permutazione ottenuta scambiando la *k-esima* e *s-esima* riga tra loro.
 Si puo' dimostrare che la fattorizzazione $LU$ con pivoting parziale produce la fattorizzazione
 $$
 PA = LU
@@ -523,7 +523,7 @@ $$
 P = P^{(k_m, s_m)} \cdot P^{(k_{m-1}, s_{m-1})} \dots P^{(k_1, s_1)}
 $$
 Si puo' successivamente procedere con la soluzione di sistemi nel modo precedente, facendo solo
-qualche accortezza del momento che bisogna tener conto della permutazione anche nel vettore dei
+qualche accortezza, dal momento che bisogna tener conto della permutazione anche nel vettore dei
 termini noti $b$:
 $$
 Ax = b \leftrightarrow PAx = Pb \leftrightarrow LUx = Pb

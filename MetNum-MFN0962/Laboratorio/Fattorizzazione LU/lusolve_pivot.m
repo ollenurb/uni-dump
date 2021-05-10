@@ -1,4 +1,4 @@
-function x=lusolve_pivot(LU,b)
+function x=lusolve_pivot(A,b)
 % Risolve il sistema lineare con termine noto b
 % LU è l'output di ludecomp_pivot
 % ovvero 
@@ -15,19 +15,22 @@ function x=lusolve_pivot(LU,b)
 % i comandi LU=ludecomp_pivot(A);x=lusolve_pivot(b,LU)
 % dovrebbero fornire lo stesso risultato di x=A\b
 
-N=length(b);
+n=length(b);
+
+LU = ludecomp_pivot(A);
 
 % Risolviamo il sistema triangolare inferiore L*y=P*b
-y=b(LU.P); %senza pivoting era: y=b;
+y=b(LU.P); % senza pivoting era: y=b;
+
 for i=2:n
-    y(i) = ... 
-    % dovremmo dividere per L(i,i) che però è 1
+    J = 1:i-1;
+    y(i) = b(LU.P(i)) - LU.B(LU.P(i), J) * y(J);
 end
 
 % Risolviamo il sistema triangolare superiore U*x=y
 x=y; % Serve solo a dimensionare la variabile x
      % Questa volta U(i,i) non è 1...
 for i=n:-1:1
-    x(i) = ...
+    J = i+1:n;
+    x(i) = (y(i) - LU.B(LU.P(i), J) * x(J)) / LU.B(LU.P(i),i); % solo la riga e' permutata...
 end
-%NB Non e` necessario definire x e y; potrei operare direttamente su b...
