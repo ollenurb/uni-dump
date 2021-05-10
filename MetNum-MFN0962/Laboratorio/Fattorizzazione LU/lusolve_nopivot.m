@@ -16,13 +16,14 @@ A = ludecomp_nopivot(A);
 % Risolviamo il sistema L*y=b
 y=b; % y(1) è già corretto: y(1)=b(1)/L(1,1)=b(1)
 for i=2:n
-    y(i) = ...
-    % dovremmo dividere per L(i,i) che però è 1
+    y(i) = b(i) - A(i, 1:i-1) * y(1:i-1);
 end
 
 % Risolviamo il sistema U*x=y
 x=y; % Serve solo a dimensionare la variabile x
      % Questa volta U(i,i) non è 1...
+% in questo caso, b = y. Bisogna tener conto degli A(i,i) dal momento che non
+% sono piu' uguali a 1.
 for i=n:-1:1 % ciclo all'indietro
-    x(i) = ...
+    x(i) = (y(i) - A(i, i+1:n) * x(i+1:n)) / A(i,i);
 end

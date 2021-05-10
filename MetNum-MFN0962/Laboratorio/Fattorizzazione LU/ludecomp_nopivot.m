@@ -10,13 +10,13 @@ function A=ludecomp_nopivot(A)
 n=max(size(A)); % assumiamo che A sia quadrata...
 
 % k = numero del passo
-for k=1:(n-1)
-    for i=... %ciclo sulle righe
+for k = 1:(n-1)
+    for i = (k+1):n %ciclo sulle righe
         % calcoliamo il moltiplicatore k-esimo
-        A(i,k)= ...
+        A(i,k) = A(i,k)/A(k,k);
         % trasformiamo la riga k-esima
-        for j=... %ciclo sulle colonne
-            A(i,j) = ...
+        for j = (k+1):n %ciclo sulle colonne
+            A(i,j) = A(i,j) - A(i,k) * A(k, j);
         end
     end
 end
