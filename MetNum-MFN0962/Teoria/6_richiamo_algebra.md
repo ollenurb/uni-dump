@@ -121,7 +121,7 @@ e' minore stretta della molteplicita' algebrica la matrice viene detta ***difett
   
 ## Matrici di forma particolare
 
-**Definizione**: Una matrice e' detta ***triangolare superiore*** (analogamente **triangolare
+**Definizione**: Una matrice e' detta ***triangolare superiore*** (analogamente ***triangolare
 inferiore***) se e' composta da tutti elementi nulli al di sopra (analogamente al di sotto) della
 diagonale principale. Quando una matrice e' sia diagonale superiore che inferiore e' detta matrice
 ***diagonale***.
@@ -174,7 +174,7 @@ $$
 X^{-1}AX = D = diag(\lambda_1, \dots, \lambda_n)
 $$
 In altri termini, una matrice diagonalizzabile e' una matrice simile ad una matrice diagonale $D$.
-Quando $X$ e' unitaria (cioe' XX^T = X^TX = I) allora si dice che $A$ e' ***unitariamente
+Quando $X$ e' unitaria (cioe' $X X^{T} = X^{T} X = I$) allora si dice che $A$ e' ***unitariamente
 diagonalizzabile***.  
 Non tutte le matrici sono diagonalizzabili, a tal proposito, diciamo che una matrice $A$ e'
 diagonalizzabile se e solo se ammette $n$ autovettori linearmente indipendenti.
@@ -202,7 +202,7 @@ Tale diagonalizzazione e' detta ***fattorizzazione spettrale***, perche' utilizz
 gli autovettori di una matrice per ottenere la sua diagonale. 
 
 **Definizione**: Una matrice quadrata $A$ di ordine $n$ e' detta ***diagonalmente dominante*** per
-righe se 
+righe [se](se) 
 $$
 a_{ii} \geq \sum^n_{j=1, j \neq i} | a_{ij} |, \quad i=1, \dots, n
 $$
