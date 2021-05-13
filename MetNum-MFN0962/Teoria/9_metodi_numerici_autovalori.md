@@ -154,7 +154,7 @@ $$
 Ossia (notare il primo >) l'autovalore con modulo massimo e' $\lambda_1$ e ha molteplicita'
 algebrica pari a $1$. Inoltre non esistono altri autovalori con lo stesso modulo.  
 Fissando un vettore $t_0 \in \mathbb{R}^n$ iniziale (detto **vettore d'innesto**), sotto l'ipotesi
-precedente si puo' definire la successione $\{y_k\}_{k=1,2,\dots}$ nel modo seguente
+precedente si puo' definire la successione di vettori $\{y_k\}_{k=1,2,\dots}$ nel modo seguente
 $$
 \begin{cases}
     y_1 = A \cdot t_0,\\
@@ -196,7 +196,8 @@ y_{k+1} = \lambda_1^{k+1} \bigg[ \alpha_1 x_1 + \sum^n_{i=2} \alpha_i \bigg( \fr
 $$
 
 Avendo $y_{k+1}$ e $y_k$, possiamo valutare il seguente rapporto, dove $(y_k)_r$ e' l'*r-esima*
-componente del vettore $y_k$ (lo stesso vale per $y_{k+1}$)
+componente del vettore $y_k$, dal momento che siccome vale per l'intero vettore, vale anche per ogni
+sua componente (lo stesso vale per $y_{k+1}$)
 $$
 \frac{(y_{k+1})_r}{(y_k)_r} =
 \lambda_1 \frac{\alpha_1 (x_1)_r + \sum^n_{i=2} \alpha_i \bigg( \frac{\lambda_i}{\lambda_1}\bigg)^{k+1}
@@ -212,7 +213,7 @@ Cioe' che da un certo indice $k$ in poi, l'autovalore $\lambda_1$ di massimo mod
 approssimato mediante il rapporto $\frac{(y_{k+1})_r}{(y_k)_r}$.
 
 Analogamente, possiamo ottenere l'autovettore $x_1$ dividendo $y_k$ per $\lambda_1^k$ e passando al
-limite 
+limite (e' bastato eliminare $\lambda_1^k$ da $y_k$)
 $$
 \lim_{k \rightarrow \infty} \frac{y_k}{\lambda_1^k} = \alpha_1 x_1
 $$
@@ -296,5 +297,82 @@ e anche in questo caso la convergenza dipende dal rapporto $\big| \frac{\lambda_
 La normalizzazione in norma 2, pero', risulta piu' conveniente in casi in cui la matrice $A$ e'
 normale. E' dimostrabile che in questi casi, $\sigma_k \rightarrow \lambda_1$ con $k \rightarrow
 \infty$ come $\big| \frac{\lambda_2}{\lambda_1} \big|^{2k}$.
+
+Siccome il metodo delle potenze richiede ad ogni passo la moltiplicazione di una matrice per un
+vettore, il suo costo computazionale e' di $\approx kn^2$ flops. Il metodo inoltre puo' essere
+modificato sia per calcolare l'autovalore minimo, sia per migliorare delle approssimazioni degli
+autovalori che sono state localizzate mediante teoremi di localizzazione quali Gerschgorin o Hirsch.
+Vediamo ora piu' nel dettaglio in cosa consistono tali modifiche.
+
+## Metodo delle potenze inverse
+Come detto in precedenza, il metodo delle potenze puo' essere modificato per permettere di calcolare
+l'autovalore di modulo minimo. L'idea alla base della modifica e' che se $A$ e' una matrice che ha 
+autovalori
+$$
+| \lambda_1 | \geq | \lambda_2 | \geq \dots \geq | \lambda_{n-1} | > | \lambda_n | > 0
+$$
+Ossia che $\lambda_n$ e' l'autovalore di minimo modulo con molteplicita' algebrica pari a 1, e che
+non esistono autovalori con lo stesso modulo.
+Per la proprieta' degli autovalori, la matrice inversa $A^{-1}$ avra' i seguenti autovalori
+$$
+\bigg| \frac{1}{\lambda_n} \bigg| > \bigg| \frac{1}{\lambda_{n-1}} \bigg| \geq 
+\dots \geq \bigg| \frac{1}{\lambda_{2}} \bigg| \geq \bigg| \frac{1}{\lambda_{1}} \bigg|
+$$
+per cui per approssimare l'autovalore di minimo modulo di $A$, e' sufficiente calcolare l'autovalore
+di massimo modulo di $A^{-1}$ e farne l'inverso.  
+In sostanza il metodo sara' analogo al metodo delle potenze normali, con la differenza che si avra'
+$A^{-1}$ al posto di $A$, per cui la successione (normalizzata in norma $\infty$) risulta essere la
+seguente:
+$$
+\begin{cases}
+    u_k = A^{-1} \cdot t_{k-1},\\
+    t_k = \frac{u_k}{||u_k||_{\infty}}, \quad k = 1, 2, \dots
+\end{cases}
+$$
+Per calcolare quindi $\lambda_n$ si considera l'inverso della successione $\beta_k$, poiche' in caso
+contrario si otterrebbe $\frac{1}{\lambda_n}$
+$$
+\frac{(t_k)_m}{(u_{k+1})_m}
+$$
+
+Il problema del metodo e' che richiede di conoscere l'inversa di $A$. Nell'implementazione
+dell'algoritmo non si calcola direttamente la matrice inversa, perche' potrebbe essere troppo
+costoso, ma si risolve ad ogni passo il sistema lineare (basta portare $A^{-1}$ al primo membro
+nella prima equazione della successione)
+$$
+Au_k = t_{k-1}
+$$
+nell'incognira $u_k$. Il costo computazionale diventa cosi' $\approx k\frac{n^3}{3}$, mentre con la
+fattorizzazione $LU$ prima di eseguire l'algoritmo e risolvendo cosi' due sistemi triangolari ad
+ogni ciclo e' $\frac{n^3}{3} + kn^2$.
+
+## Metodo delle potenze inverse con shift
+Il metodo delle potenze inverse con shift ci permette di migliorare un'approssimazione iniziale di
+un autovalore ad ogni passo. Tale approssimazione potrebbe essere stata localizzata mediante i
+teoremi visti in precedenza, in modo da rendere la convergenza del metodo piu' veloce.
+
+Osserviamo innanzitutto, che se $(\lambda, x)$ e' autocoppia (cioe' autovalore e autovettore
+associati) di $A$, allora $(\lambda - p, x)$ e' autocoppia di $(A - pI)$:
+$$
+Ax = \lambda x \quad \rightarrow \quad (A - pI)x = (\lambda - p) x
+\quad \rightarrow \quad (A - pI)^{-1}x = (\lambda - p)^{-1} x
+$$
+Quindi, se $p$ e' un'approssimazione (molto scadente) di $\lambda$, possiamo ottenere
+un'approssimazione con cifre piu' significative. Infatti, quanto piu' $p$ si avvicina a \$lambda$,
+tanto piu' il modulo del rapporto 
+$$
+\mu = \bigg| \frac{1}{\lambda - p} \bigg|
+$$
+diventa grande. Quindi, calcolando l'autovalore $\mu$ di modulo massimo della matrice $(A -
+pI)^{-1}$ usando il metodo delle potenze con 
+$$
+u_k = (A - pI)^{-1} t_{k-1} \quad \rightarrow \quad (A - pI)u_k = t_{k-1}
+$$
+Quindi sempre risolvendo il sistema lineare con $(A - pI)$ matrice dei coefficienti come nel caso
+precedente. Si nota fin da subito quindi che
+$$
+p + \frac{1}{\mu} \quad \rightarrow \quad p + (\lambda - p) \quad \rightarrow \quad \lambda 
+$$
+fornisce un'approssimazione piu' accurata di $\lambda$.
 
 
