@@ -234,6 +234,14 @@ La convergenza delle successioni $\frac{(y_{k+1})_r}{(y_k)_r}$ e $\frac{y_k}{(y_
 massimo $\lambda_2$ da $\lambda_1$, cioe' dal rapporto $\big| \frac{\lambda_2}{\lambda_1} \big|$.
 Essa sara' tanto piu' rapida tanto quando il rapporto sara' piccolo.  
 
+Si vuole ricordare inoltre che la convergenza del metodo delle potenze e' garantita se e solo se le
+seguenti 3 condiziioni sono verificate:
+
+* A e' diagonalizzabile
+* Il vettore d'innesto $t_0$ ha una componente non nulla lungo l'autovettore $x_1$ corrispondente
+  all'autovalore $\lambda_1$
+* L'autovalore di modulo massimo e' separato dagli altri (non ne esistono con lo stesso valore)
+
 ## Metodo delle potenze con normalizzazione
 Dalla dimostrazione metodo delle potenze fatta in precedenza, e' possibile osservare che per $k
 \rightarrow \infty$ si puo' verificare la seguente situazione
@@ -358,7 +366,7 @@ Ax = \lambda x \quad \rightarrow \quad (A - pI)x = (\lambda - p) x
 \quad \rightarrow \quad (A - pI)^{-1}x = (\lambda - p)^{-1} x
 $$
 Quindi, se $p$ e' un'approssimazione (molto scadente) di $\lambda$, possiamo ottenere
-un'approssimazione con cifre piu' significative. Infatti, quanto piu' $p$ si avvicina a \$lambda$,
+un'approssimazione con cifre piu' significative. Infatti, quanto piu' $p$ si avvicina a $\lambda$,
 tanto piu' il modulo del rapporto 
 $$
 \mu = \bigg| \frac{1}{\lambda - p} \bigg|

@@ -11,11 +11,9 @@ vmaxexa = V(:,4)/norm(V(:,4));
 lminexa=2;
 
 toll=1e-6;
-[lambdamax,vmax,it,L] = potenze(A,toll,1000);
+[lambdamax,vmax,it,L] = potenze_toll(A,toll,1000);
 %Errore sull'autovalore
-fprintf('Errore su lambdamax=%5.3e (toll=%5.3e) \n',lambdamax-lmaxexa,toll)
-%Test di parallelismo fra vmax e vmaxexa
-% ... COMPLETARE ...
+fprintf('Errore su lambdamax=%5.3e (toll=%5.3e) \n',lambdamax-lmaxexa,toll);
 
 %Errore sull'autovettore
 vmax=vmax*(vmaxexa(1)/vmax(1));
