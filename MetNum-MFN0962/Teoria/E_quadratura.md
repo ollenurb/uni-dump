@@ -49,7 +49,7 @@ $$
 Dove per rappresentare $p_n$ e' stata scelta la forma del polinomio interpolante di Lagrange.
 Per la linearita' dell'integrale, si ottiene quindi che
 $$
-I_n(x) = \sum^{n}_{j=0} \int^b_a L_j(x) dx, 
+I_n(x) = \sum^{n}_{j=0} f(x_j) \int^b_a L_j(x) dx, 
 $$
 Abbiamo quindi trovato che il singolo peso della formula $\alpha_j$ equivale a
 $$
@@ -85,29 +85,29 @@ $$
 Per le proprieta' di linearita' dell'integrale, la generica formula di quadratura diventa quindi
 (raccolgo solo $h$):
 $$
-I_n(f) = h \sum^n_{i=0} f(x_i) \alpha_j, \qquad \text{ con } \alpha_j = \int^u_l L_j(x_0 + ht) dt
+I_n(f) = h \sum^n_{j=0} f(x_j) \alpha_j, \qquad \text{ con } \alpha_j = \int^u_l L_j(x_0 + ht) dt
 $$
 dove
 
-* $l = 0$, $u = n$ in caso di formule chiuse 
-* $l = n+1$, $u = -1$ in caso di formule aperte 
+* $l=0$, $u=n$ in caso di formule chiuse 
+* $l=-1$, $u=n+1$ in caso di formule aperte 
 
 Tramite l'ultima formula generica, si possono poi derivare le cosiddette formule di Newton-Cotes
 elementari:
 
 * **Formula dei trapezi (n=1, chiusa)**:
 $$
-\int^a_b f(x) dx = \frac{b-a}{2}[f(a) + f(b)]
+\int^b_a f(x) dx = \frac{b-a}{2}[f(a) + f(b)]
 $$
 
 * **Formula di Simpson (n=2, chiusa)**
 $$
-\int^a_b f(x) dx = \frac{h}{3} [f(a) + 4 f(\frac{a+b}{2}) + f(b)], \text{ con } h = \frac{b-a}{2}
+\int^b_a f(x) dx = \frac{h}{3} [f(a) + 4 f(\frac{a+b}{2}) + f(b)], \text{ con } h = \frac{b-a}{2}
 $$
 
 * **Formula del rettangolo (n=0, aperta)**
 $$
-\int^a_b f(x) dx = b-a f(\frac{a+b}{2})
+\int^b_a f(x) dx = b-a f(\frac{a+b}{2})
 $$
 
 In generale, le formule elementari sono utili solo in casi in cui la funzione integranda e' molto
