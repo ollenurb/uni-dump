@@ -201,4 +201,98 @@ vettore $x^{(k)}$ e il vettore $x^{(k+1)}$.
 
 ## Metodo di Gauss-Seidel
 E' una modifica del metodo di Jacobi che utilizza un solo vettore ad ogni iterazione (e non due).
+L'idea e' quella di sfruttare le componenti $k+1$*-esime* che sono gia' state calcolate. In altri
+termini
+$$
+x_i^{(k+1)} = \frac{b_i - \sum^{i-1}_{j=1} a_{ij} x_j^{(k+1)} - \sum^{n}_{j=i+1} a_{ij}
+x_j^{(k)}}{a_{ii}}
+$$
+Dall'espressione si nota come sia molto simile a quella del metodo di Jacobi, con la differenza che
+si sfruttano le componenti ($k+1$*-esime*)precedenti all'iterazione *i-esima* (prima sommatoria). 
+$$
+\begin{alignedat}{2}
+    a_{ii} x_i^{(k+1)} + \sum^{i-1}_{j=1} a_{ij} x_j^{(k+1)} 
+    &= b_i - \sum^{n}_{j=i+1} a_{ij} x_j^{(k)} & & \qquad (\emph{moltiplico per} a_{ii})\\
+    \sum^{i}_{j=1} a_{ij} x_j^{(k+1)}
+    &= b_i - \sum^{n}_{j=i+1} a_{ij} x_j^{(k)} & & \qquad (\emph{linearita' sommatoria})\\
+\end{alignedat}
+$$
+L'ultima relazione ottenuta in forma matriciale corrisponde al sistema lineare seguente
+$$
+\underbrace{
+\begin{bmatrix}
+a_{11} & 0   & \dots & 0\\
+a_{21}   & a_{22}  & \dots & 0\\
+\vdots  & \vdots   & \ddots & \vdots\\
+a_{n1}   & a_{n1}   & \dots & a_{nn}\\
+\end{bmatrix}
+}_{L}
+x^{(k+1)}
+=
+b-
+\underbrace{
+\begin{bmatrix}
+0 & a_{12} & a_{13} & \dots & a_{1n}\\
+0 & 0 & a_{23} & \dots & a_{2n}\\
+\vdots & \vdots & \vdots   & \ddots & \vdots\\
+0   & 0 & 0 & \dots & a_{nn}\\
+\end{bmatrix}
+}_{A-L}
+x^{(k)}
+$$
+Il che equivale in forma compatta a
+$$
+Lx^{(k+1)} = b-(A-L)x^{(k)}
+$$
+Per ottenere la funzione di iterazione $\psi$, manipoliamo algebricamente quest'ultima relazione
+$$
+\begin{alignedat}{2}
+    Lx^{(k+1)} &= b-(A-L)x^{(k)} & & \\
+            &= L^{-1}(L-A)x^{(k)} + L^{-1}b & & \qquad (\emph{moltiplico per }L^{-1})\\
+            &= (I - L^{-1}A)x^{(k)} + L^{-1}b & & \qquad (\emph{espando la prima moltiplicazione})\\
+\end{alignedat}
+$$
 
+Abbiamo quindi trovato la relazione di $\psi$, da cui si nota subito la similarita' rispetto al
+metodo di Jacobi. Piu' precisamente, il metodo di Gauss-Seidel differisce dal metodo di Jacobi solo
+nella scelta della matrice di precondizionamento, dal momento che in Jacobi e' $D$, mentre in GS e'
+$L$.  
+Si puo' dimostrare che il metodo di Gauss-Seidel converge:
+
+* Se e solo se $\rho(I - L^{-1}A) < 1$ 
+* Se $A$ e' strettamente diagonalmente dominante
+* Se $A$ e' simmetrica e definita positiva (se tutti i suoi autovalori sono definiti positivi)
+
+Inoltre, e' importante sottolineare il fatto che la convergenza di Gauss-Seidel e quella di Jacobi
+non sono in qualche modo correlazionate. Cio' implica che la convergenza di un metodo non assicura
+la convergenza anche dell'altro e viceversa. Generalmente, pero', quando entrambi convergono
+Gauss-Seidel ha una convergenza superiore.
+
+Un caso specifico in cui questo non accade e' per matrici tri-diagonali, cioe' matrici in cui gli
+elementi sulle 3 diagonali sono diversi da 0, mentre tutti gli altri elementi sono nulli. 
+In questo caso e' stato dimostrato che entrambi i metodi sono convergenti o divergenti, e in caso ci
+sia la convergenza vale
+$$
+\rho(I - L^{-1}A) = (\rho(I-D^{-1}A))^2
+$$
+Cio' significa che asintoticamente sono necessarie meta' iterazioni del metodo di Gauss-Seidel
+per ottenere la stessa precisione del metodo di Jacobi. In altri termini, la velocita' di
+convergenza del metodo Gauss-Seidel e' doppia rispetto a quella di Jacobi.
+
+## Criterio d'arresto
+Come ogni metodo iterativo, Gauss-Seidel e Jacobi dovranno avere un qualche criterio d'arresto che
+puo' essere dato da una tolleranza e da un numero massimo di iterazioni.
+Nel caso della tolleranza, l'idea e' sempre quella di fermarsi quando l'errore della soluzione
+$x^{(k)}$ e' minore di una certa tolleranza $\tau$.
+Dal momento che l'errore e' calcolato in termini della soluzione esatta, sono necessari degli
+stimatori *"a posteriori"* basati sul:
+
+1. Residuo al passo *k-esimo* $r^{(k)}$ 
+    * Errore assoluto: $$||x^{(k)} - x|| \leq ||A^{-1}|| \; ||r^{(k)}||$$
+    * Errore relativo: $$\frac{||x^{(k)} - x||}{||x||} \leq \kappa(A) \varepsilon$$
+2. Incremento $\delta^{(k)} = x^{(k+1)} - x^{(x)}$
+    * Errore assoluto: $$||e^{(k)}||_2 \leq \frac{||\delta^{(k)}||_2}{1 - \rho(B)} \leq \frac{\varepsilon}{1 - \rho(B)}$$
+    * Errore relativo: $$\frac{||e^{(k)}||}{||b||} \leq \frac{\varepsilon}{1- \rho(B)} $$
+   
+Nel secondo caso il controllo dell'incremento e' significativo soltanto se $\rho(B)$ e' molto piu'
+piccolo di 1, poiche' in tal caso l'errore sara' dello stesso ordine di grandezza dell'incremento.
