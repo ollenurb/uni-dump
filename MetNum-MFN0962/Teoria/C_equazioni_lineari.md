@@ -35,13 +35,13 @@ velocita' di convergenza verso la soluzione, introduciamo la seguente
 
 Maggiore e' l'ordine $p$, maggiore e' la riduzione dell'errore che si verifica ad ogni passo, per
 cui e' minore il numero di iterazioni totali necessarie per raggiungere la precisione richiesta.  Il
-valore del limite $C$ viene detto **costante asintotica dell'errore**. Vale inoltre la pena pnotare
+valore del limite $C$ viene detto **costante asintotica dell'errore**. Vale inoltre la pena notare
 alcune caratteristiche quali: 
 
 * Quando un metodo ha ordine $p=1$ allora deve verificarsi $C \leq 1$.
 * Quando $p = 1$ e $C = 0$ si dice che il metodo e' **superlineare**. 
 
-Siccome d'ora in avanti useremo pesantemente i polinomi interpolanti, vale la pena introdurre un
+Siccome d'ora in avanti useremo largamente i polinomi interpolanti, vale la pena introdurre un
 teorema fondamentale dell'analisi:
 
 >***Teorema (Serie di Taylor)**: Sia $f \in C^{(n+1) [a,b]}$. Allora $\forall x_0 \in [a,b]$ e per
@@ -65,7 +65,7 @@ esiste per forza un polinomio di grado $n$ che assume gli stessi valori di $f$ (
 nell'intervallo $[a,b]$.
 
 Come ben si sa, inoltre, le funzioni possono avere una o molteplici radici. Questo fatto puo' essere
-formalizzato dalla seguente
+formalizzato dal seguente
 
 >***Teorema**: Una radice $\alpha$ ha molteplicita' $m$ se e solo se*
 >$$
@@ -74,7 +74,7 @@ formalizzato dalla seguente
 >f^{(m)}(\alpha) & \neq 0
 >\end{aligned}
 >$$
->*Dove $f^{(k)}(\alpha)$ indica la derivata $k$-esima di $f$ calcolata nel punto $\alpha$
+>*Dove $f^{(k)}(\alpha)$ indica la derivata $k$-esima di $f$ calcolata nel punto $\alpha$*
 
 Una radice di un polinomio e' detta semplice se ha molteplicita' $m=1$, mentre viene detta multipla
 se ha molteplicita' $m \geq 2$, o in termini *algebrici*: 
@@ -185,7 +185,7 @@ $$
 |e_{k+1}| \leq \frac{1}{M} |M e_0|^{2k+1} 
 $$
 
-Cio' significa che il metodo converge (e quindi $e \rightarrow \infty$) se $\abs{Me_0} < 1$, il che
+Cio' significa che il metodo converge (e quindi $e \rightarrow 0$) se $\abs{Me_0} < 1$, il che
 avviene quando 
 
 $$
@@ -218,12 +218,7 @@ coefficienti angolari differenti. Tali metodi sono appunti definiti metodi *quas
 ## Metodo delle corde 
 Alternativamente al metodo di Netwon che considera tutte le rette con tangenti a $f$ (e quindi con
 coefficiente angolare che dipende da $f'$), il metodo delle corde considera un valore costante $m_k$
-come coefficiente angolare.
-
-In questo modo, al posto di avere una fascio di rette tangenti, si ottiene un fascio di rette
-secanti, tutte con lo stesso coefficiente angolare. Questo coefficiente angolare sara' uguale al
-coefficiente angolare della prima tangente del punto considerato. ($m=f'(x_0)$)
-
+come coefficiente angolare.  
 Tale metodo, seppur semplice dal punto di vista implementativo, presenta delle prestazioni molto
 poco soddisfacenti nemmeno se comparate con il metodo di bisezione.
 
@@ -239,7 +234,7 @@ In altri termini, si trova la retta con coefficiente angolare tale che sia secan
 due punti dati.  Contrariamente ai metodi Newton e delle corde, questo metodo necessita di due punti
 iniziali anziche' uno. 
 
-In termini algebrici possiamo definire l criterio per la generazione dei punti come 
+In termini algebrici possiamo definire il criterio per la generazione dei punti come 
 $$
 x_{k+1} = \frac{x_{k-1} f(x_k) - x_k f(x_{k-1}) } {f(x_k) - f(x_{k-1})}
 $$

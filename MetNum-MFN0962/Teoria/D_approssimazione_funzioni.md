@@ -135,7 +135,7 @@ Questo errore $E$ e' anche esprimibile nella forma di resto di Lagrange come:
 $$
 E_n(x) = \frac{f^{n+1}(\xi_x)}{(n+1)!} \omega_n(x)
 $$
-dove $\omega_n(x)=(x-x_0)(x-x_1)...(x-x_n)$ ($\omega$ viene chiamato *polinomio modale*)
+dove $\omega_n(x)=(x-x_0)(x-x_1)...(x-x_n)$ ($\omega$ viene chiamato *polinomio nodale*)
 
 Possiamo quindi scrivere che il polinomio $P_n$ approssima $f$ con un certo errore $E$
 $$
@@ -317,7 +317,7 @@ computazionale minore poiche' richiede solamente $\frac{n}{2}$ divisioni e $n^2$
 Inoltre se si volesse aggiungere un punto, il metodo non richiederebbe di calcolare tutti i polinomi
 caratteristici come nel metodo di Lagrange. 
 
-#### Approssimazione ai minimi quadrati
+## Approssimazione ai minimi quadrati
 Spesso quando si vuole approssimare una funzione non si hanno dei valori necessariamente distinti, inoltre
 i dati racconti possono avere dell'errore introdotto. In casi di questo tipo non e' conveniente
 ricorrere all'interpolazione, dal momento che e' nota una forte presenza di errori sui dati.   
