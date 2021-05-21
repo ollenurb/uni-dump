@@ -256,10 +256,10 @@ esponenziale, e rappresentano quindi la peggiore scelta di nodi per l'interpolaz
 Le **costanti di Lebesgue** sono importanti inoltre nello studio della stabilita' della valutazione del 
 polinomio di interpolazione poiche' rappresentano il coeffieciente di amplificazione dell'errore
 numerico di interpolazione. 
-Cio' significa che, per matrici di interpolazione per le quali le costanti di Lebesgue hano un
+Cio' significa che, per matrici di interpolazione per le quali le costanti di Lebesgue hanno un
 andamento fortemente crescente, l'errore totale del polinomio di Lagrange diverge.
 $$
-\norm{p_n - \tilde{p}_n(x)}_{\infty} \leq \Lambda_n (X) \cdot \max_j \abs{\varepsilon_j}
+\norm{p_n - \tilde{p}_n}_{\infty} \leq \Lambda_n (X) \cdot \max_j \abs{\varepsilon_j}
 $$
 In conclusione, $\Lambda_n$ gioca il ruolo del numero di condizionamento per il problema
 dell'interpolazione. 
@@ -284,7 +284,7 @@ $$
 a_n = \frac{y_n - p_{n-1}}{\omega_{n-1}(x_n)}
 $$
 Verrebbe da pensare quindi che sia possibile costruire un polinomio interpolante $p_n$ qualsiasi
-utilizzando tale procedimento ponendo come polinomio di partenza $o_0(x) = y_0$. Esiste pero' un
+utilizzando tale procedimento ponendo come polinomio di partenza $p_0(x) = y_0$. Esiste pero' un
 algoritmo piu' stabile e con minore complessita'.  
 Osserviamo che $a_n$ e' il coefficiente del polinomio con il grado massimo. Possiamo rappresentare
 il coefficiente di grado massimo di un polinomio che interpola la funzione $f(x)$ e i punti di

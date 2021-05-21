@@ -11,5 +11,6 @@ titlepage: true
 title:  'Appunti di Metodi Numerici'
 subtitle: "A.A. 2020-2021"
 author: [Matteo Brunello]
+toc-own-page: true
 ---
 
