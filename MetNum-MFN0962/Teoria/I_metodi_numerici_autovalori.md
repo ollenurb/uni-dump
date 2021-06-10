@@ -14,7 +14,7 @@ problema del calcolo degli autovalori in modo numerico
 >di $A$. Se $\delta A$ e' la matrice delle perturbazioni indotte su $A$ e $\mu$ e' un autovalore di
 >$A + \delta A$, allora esiste almeno un autovalore $\lambda$ di $A$ tale che*
 >$$
-| \lambda - \mu| \leq k(X) \; ||\lambda A||
+| \lambda - \mu| \leq k(X) \; ||\delta A||
 >$$
 >*dove $k(X) = ||X|| \; ||X^{-1}||$ e' l'indice di condizionamento di $X$.*
 
@@ -64,8 +64,9 @@ $\blacksquare$
 
 >***Corollario**: Se $A \in M_{n,n}$ e' **normale** ($A^T \cdot A = A \cdot A^T$), allora*
 >$$
-| \lambda - \mu \leq ||\delta A||_2
+| \lambda - \mu | \leq ||\delta A||_2
 >$$
+
 **Dimostrazione**: Se $A$ e' normale, allora $X$ sara' per forza ortogonale, per cui $X \cdot X^T =
 I = X^T \cdot X$, di conseguenza
 $$

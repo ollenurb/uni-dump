@@ -28,7 +28,8 @@ while (it<maxiter && diffL > toll)
     y = L \ (P*x); % usiamo la matrice P degli scambi per tenere conto del pivoting
     v = U \ y;
     % Questa volta considero l'inverso, siccome l'autovalore 
-    % e' quello massimo di A^-1
+    % e' quello massimo di A^-1. Utilizziamo sempre la formula del
+    % quoziente di Rayleigh
     l = 1 / (x' * v);
     if it>1     % calcolo la differenza solo se ho almeno fatto un'iterazione
         diffL = abs(lp - l)/ abs(lp); 

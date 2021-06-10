@@ -12,7 +12,7 @@ I_n(f) = \sum^{n}_{j=0} \alpha_j f(x_j),
 $$
 In cui:
 
-* I coefficienti $a_i$ sono detti **pesi**
+* I coefficienti $a_j$ sono detti **pesi**
 * I punti $x_j$ sono detti **nodi** 
 
 Ogni formula di quadratura ha inoltre un determinato grado di precisione, detta *precisione

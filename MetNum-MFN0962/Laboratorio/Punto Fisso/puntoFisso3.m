@@ -8,12 +8,13 @@ function [x, nit, INC, L] = puntoFisso3(phi, x0, toll, L, maxIt)
 % * x: Last fixed point method iteration (x_k)
 % * nIt: Last number of iterations
 % * INC: Increments list
-% * L: error constant
+% * L: error constant estimate
 
 if (nargin < 5)
     maxIt = 1000;
 end
 
+% If L hasn't been provided as argument, then setup L to be 1-machine_epsilon
 if (nargin < 4) || (isempty(L))
     L = 1-eps;
     stimaL = true;
@@ -22,7 +23,7 @@ else
 end
 
 if stimaL
-    x1 = x0 % At first x1 is equal to x0
+    x1 = x0; % At first x1 is equal to x0
 end
 
 nit = 0
@@ -34,6 +35,7 @@ while(nit < maxIt) && (est > toll)
     inc = abs(x - x0);
     est = inc / (1 - L);
     
+    % Get an estimate of L
     if stimaL && nit > 1
         L = min((inc / abs(x0 - x1)),  1-eps);
         x1 = x0;

@@ -25,7 +25,7 @@ parti)
 $$
 \begin{cases}
     x^{(0)} \; \rightarrow \; \emph{approssimazione iniziale}\\
-    x^{(k+1)} = \psi(x^{(k)}) \rightarrow  \underbrace{x^{(k)} + b - Ax^{(k)}}_{r^{(k)}}\\
+    x^{(k+1)} = \psi(x^{(k)}) \rightarrow  x^{(k)} + \underbrace{b - Ax^{(k)}}_{r^{(k)}}\\
 \end{cases}
 $$
 Abbiamo quindi ottenuto un metodo di punto fisso per sistemi lineari, in cui $r^{(k)}$ e' il residuo
@@ -36,7 +36,7 @@ Sia $P$ una matrice invertibile "semplice", cioe' che sia triangolare (s/i) oppu
 il momento ci limiteremo a dare solamente queste informazioni riguardo a $P$. E' possibile quindi
 moltiplicare ambo i membri del sistema per $P^{-1}$, ottenendo
 $$
-P^{-1} Ax = P^{-1} b \; \rightarrow \; 0 = P^{-1}b - p^{-1}Ax \; \rightarrow \; 
+P^{-1} Ax = P^{-1} b \; \rightarrow \; 0 = P^{-1}b - P^{-1}Ax \; \rightarrow \; 
 x=\underbrace{x + P^{-1}b-P^{-1}Ax}_{\psi(x)}
 $$
 Notiamo che questa volta possiamo ottenere due funzioni $\psi(x)$ di iterazione differenti, a

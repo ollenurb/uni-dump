@@ -25,8 +25,7 @@ while (it<maxiter && diffL > toll)
     %   2) Ux = y
     y = L \ (P*x); % usiamo la matrice P degli scambi per tenere conto del pivoting
     v = U \ y;
-    % Questa volta considero l'inverso, siccome l'autovalore 
-    % e' quello massimo di A^-1
+    % Consideriamo sempre l'inverso dal momento che muEigval = 1/(lambda - mu)
     l = 1 / (x' * v);
     if it>1     % calcolo la differenza solo se ho almeno fatto un'iterazione
         diffL = abs(lp - l)/ abs(lp); 

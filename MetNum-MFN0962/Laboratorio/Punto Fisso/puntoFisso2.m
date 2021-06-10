@@ -10,19 +10,19 @@ function [x, nit, INC, L] = puntoFisso2(phi, x0, toll, L, maxIt)
 % * INC: Increments list
 % * L: error constant
 
-if (nargin==4)
-    maxIt = 1000
+if (nargin < 5)
+    maxIt = 1000;
 end
 
 nit = 0
 INC=[]
-est=2*toll % Sets a number greater than toll so that it can enter the while
+est=2*toll % Sets a number greater than toll so that it can enter the while loop
 
-while(nit < maxIt) && (est > toll)
+while (nit < maxIt) && (est > toll)
     x = phi(x0);
     inc = abs(x - x0);
     est = inc / (1 - L);
-    if nargin==4
+    if (nargin==4)
         INC(end+1) = inc;  
     end
     x0 = x;

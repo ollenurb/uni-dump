@@ -21,8 +21,8 @@ $$e_k = x_k - \alpha$$
 Avendo quindi definito la nozione di errore, possiamo anche formalizzare il concetto di
 **convergenza**: Un algoritmo numerico e' convergente quando 
 $$\lim_{k \rightarrow \infty} |e_{k}| =0$$ 
-Cioe', se faccio tendere i passi ad infinito, il mio errore sara' sempre piu' piccolo e tendente al
-valore della radice. 
+Cioe', se faccio tendere i passi ad infinito, il mio errore sara' sempre piu' piccolo e tendente a
+zero. 
 
 Si puo' inoltre notare che la convergenza puo' essere piu' o meno veloce. Per quantificare la
 velocita' di convergenza verso la soluzione, introduciamo la seguente
@@ -291,7 +291,7 @@ Diciamo quindi che il metodo converge *se e solo se* $g(x)$ e' una funzione cont
 Una funzione contrattiva e' anche continua, ma non e' necessariamente derivabile. 
 Nel caso in cui essa sia derivabile risulta che 
 $$
-C=max_{x \in I} |g'(x)|
+C=\max_{x \in I} |g'(x)|
 $$
 E quindi possiamo dire che la condizione di contrattivita' per una funzione derivabile risulta essere
 $$

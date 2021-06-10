@@ -17,7 +17,7 @@ x = [0:1:10]
 % Tollerances are always greater than the real errors
 % according to this plot. The error also converges to 
 % 0 so the method is stable.
-semilogy(x, RERRS, x, TOLLS);
+semilogy(x, RERRS, 'r', x, TOLLS, 'b');
 
 % what happens when we set L > 0.7?
 [x1, nit1, INC1, L1] = puntoFisso2(phi, 0.5, toll, 0.9);

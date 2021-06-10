@@ -10,11 +10,11 @@ function [I] = quadN (f,a,b,N,qRule)
 %  I integrale approssimato con la
 %    quadratura composita di tipo qRule
 
-%lunghezza sottointervalli
+% lunghezza sottointervalli
 h = (b-a)/N;
-%estremi sottointervalli
+% estremi sottointervalli
 X = linspace(a,b,h);
-%calcolo dell'integrale approssimato
+% calcolo dell'integrale approssimato
 nq = lenght(qRule.xNodes);
 I = 0;
 for i=1:nq

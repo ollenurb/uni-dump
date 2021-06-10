@@ -1,3 +1,4 @@
+%% Plot the graph of the increments at each step of the algorithm
 nIt = 10;
 phi = @(x) cos(x);
 
@@ -8,6 +9,8 @@ phi = @(x) cos(x);
 aX = [1:1:nIt];
 semilogy(aX, inc1, aX, inc2, aX, inc3); % plotto l'andamento degli incrementi
 
+%% Do the same with another function phi
+
 phi2 = @(x)(x.^2 + 2)./(2*x);
 [r1_2, nit1_2, inc1_2] = puntoFisso(phi2, 1, nIt);
 [r2_2, nit2_2, inc2_2] = puntoFisso(phi2, 1.2, nIt);
@@ -15,6 +18,7 @@ phi2 = @(x)(x.^2 + 2)./(2*x);
 
 semilogy(aX, abs(inc1_2), aX, abs(inc2_2), aX, abs(inc3_2));
 
+%% 
 phif = @(x) -sin(x);
 phi2f = @(x) (2*x*2.*x-(x.^2+2)*2)./(4*x.^2);
 

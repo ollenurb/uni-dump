@@ -9,12 +9,14 @@ yyR = sin(xx);
 
 % Valuto la distanza tra sin(x) e il suo polinomio interpolatore
 % RImuovere i commenti solo per DEBUG
-% plot(xx, yyA, 'b');
-% hold on;
-% plot(xx, yyR, 'g');
+plot(xx, yyA, 'b');
+hold on;
+plot(xx, yyR, 'g');
+
+
 diffs = abs(yyR-yyA);
 max(diffs)
-
+%%
 % Fenomeno di Runge
 f = @(x) 1./(1+25.*x.^2);
 
@@ -29,6 +31,8 @@ yy1 = neville(diffDiv(xx1,f(xx1)), X);
 yy2 = neville(diffDiv(xx2,f(xx2)), X);
 yy3 = neville(diffDiv(xx3,f(xx3)), X);
 yy4 = neville(diffDiv(xx4,f(xx4)), X);
+
+
 
 fplot(f, [-5, 5]);
 hold on;

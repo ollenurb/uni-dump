@@ -65,7 +65,7 @@
 * In generale, per $n \rightarrow \infty$ e' stato dimostrato che le costanti divergono qualunque
   sia la distribuzione dei nodi e ha crescita almeno logaritmica. Le costanti di lebesgue associate
   alla matrice di interpolazione costituita da nodi di Chebichev risulta quasi ottimale, mentre
-  quella costituita da nodi equispaziati e' il caso peggiore con cresita esponenziale.
+  quella costituita da nodi equispaziati e' il caso peggiore con cresit esponenziale.
 * Le costanti di Lebesgue sono utili anche a valutare la stabilita' di un determinato polinomio
   interpolante. (Per dimostrazione esprimi due polinomi $p$ e $\tilde{p}$ nella forma di Lagrange e
   fai $| p - \tilde{p} |$)
@@ -94,4 +94,4 @@
   appunti). 
 * Nota per la risoluzione degli esercizi: con $n=1$ prendi la sottomatrice $(n+1)\times(n+1)$ e
   risolvi il sistema corrispondente.
-  
+  a
