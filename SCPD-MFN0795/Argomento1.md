@@ -60,7 +60,7 @@ essere eseguite per forza in modo sequenziale. La serial fraction comprende qual
 non sia parallelizzabile e che debba essere eseguita in modo sincrono. 
 
 ![Rappresentazione grafica di un problema in cui e' presente una sezione non parallelizzabile
-(*serial section*)\label{figAmdahl}](img/1_amdahl.png)
+(*serial section*) \label{figAmdahl}](img/1_amdahl.png)
 
 La legge di Amdahl calcola lo speedup massimo raggiungibile $S_{max}$:
 $$

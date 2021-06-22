@@ -37,12 +37,12 @@ Esempio:
 * Oggetto: Leonardo da Vinci
 
 che in pseudocodice corrisponde a:
-```
+```xml
 <the Monna Lisa><was created by><Leonardo da Vinci>
 ```
 Mentre un esempio di insieme di triple (e quindi di grafo) in pseudocodice potrebbe essere il
 seguente:
-```
+```xml
 <Bob><is a><Person>
 <Bob><is a friend of><Alice>
 <Bob><is born on><the 4th of July>
@@ -82,7 +82,7 @@ Solo gli oggetti possono essere letterali.
 Sono nodi speciali che permettono di denotare risorse senza l'ausilio di un URI. Un blank node puo'
 essere visto come una variabile che puo' comparire in posizione di soggetto e oggetto nella tripla.
 
-```
+```xml
 <><has_x_coord><12.5>
 <><is a><Tree>
 ```
@@ -97,13 +97,13 @@ quindi che un dataset RDF e' costituito da:
 * Zero o piu' grafi con un nome (named graphs)
 
 ### Il formato Turtle
-RDF e' serializzato in diversi formati tra cui Json LD, N-Triples, RDF/XML e Turtle.  Storicamente
+RDF e' serializzato n diversi formati tra cui Json LD, N-Triples, RDF/XML e Turtle.  Storicamente
 si e' sempre utilizzato e prediletto `XML`, tuttavia `Turtle` si e' imposto come standard di
 condivisione di documenti. Lo standard attuale e' dato dal formato Turtle (*Terse RDF Triple
 Language*) di cui ne vediamo alcune caratteristiche. 
 Diamo ora un esempio di formato Turtle [@rdf_turtle] 
 
-```
+```xml
 @base <http://example.org/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -140,7 +140,7 @@ node e' una risorsa che si vuole descrivere attraverso le sue specifiche ma che 
 un `IRI`. Se si volesse rappresentare il concetto "*qualcuno conosce qualcun'altro di nome Bob*"
 corrisponderebbe alla seguente sintassi:
 
-```
+```xml
 [] foaf:knows [foaf:name "Bob"]
 ```
 
@@ -173,7 +173,7 @@ Gli elementi di RDF e RDFS sono contraddistinti tra di loro tramite namespace di
 Diamo ora un esempio di definizione di vocabolario in RDFS per illustrare come si definiscono 
 classi e sottoclassi e proprieta'.
 
-```
+```xml
 # Definisco il nome del vocabolario
 @prefix animals: <http://www.funny_animals.org#>
 
@@ -251,7 +251,7 @@ specificare ad esempio se un determinato concetto corrisponde esattamente o comu
 similitudini con altri concetti in altri vocabolari. 
 Di seguito e' illustrato un esempio di mapping tra due schemi in SKOS:
 
-```
+```xml
 ex1:referenceAnimalScheme rdf:type skos:ConceptScheme;
     dct:title"Extensivelist of animals"@en.
     

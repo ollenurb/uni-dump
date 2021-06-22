@@ -1,4 +1,4 @@
-## Breve rassegna storica
+# Breve rassegna storica
 Dall'inizio degli anni 60 in poi naque la necessita' di creare nuovi metodi per la rappresentazione
 della conoscenza. Questo perche' fino a quel momento si era utilizzata la logica dei predicati, le
 quali presentavano diversi problemi in temini di adeguatezza espressiva, monotonicita' e di
@@ -48,7 +48,6 @@ Un contesto all'interno del sistema e' costituito da 3 diversi componenti:
 * Un nome
 * Un insieme di ipotesi: Asserzioni che fanno parte del contesto
 * Un flag: Indica se il contesto e' consistente
-
 
 ### Frame Theory 
 Sono un'evoluzione delle reti semantiche finalizzata a rappresentare la conoscenza di tipo
