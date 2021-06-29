@@ -171,11 +171,14 @@ modo tutti gli individui della classe figlia sono anche membri della classe madr
 ```
 *Nota*: Ogni classe e' sottoclasse di se stessa.
 
-OWL introduce anche la possibita' di esprimere l'equivalenza tra classi con l'assioma di classe
-`owl:equivalentClass`.
+Particolarmente utile in casi di merge di due ontologie e' la possibilita' di esprimere
+l'equivalenza tra classi. Inoltre la possiblita' di esprimere equivalenza tra classe permette anche
+di definire le cosiddette *class expressions*.  OWL introduce questa possibita' con l'assioma di
+classe `owl:equivalentClass`.
 ```xml
 :Person owl:equivalentClass :Human;
 ```
+Lo stesso vale per gli individui con gli assiomi `owl:differentFrom` e `owl:sameAs`.
 La disgiunzione tra classi, invece, viene espressa attraverso 2 triple:
 ```xml
 # Woman e Man sono classi disgiunte
@@ -207,11 +210,59 @@ range un tipo di dato *"primitivo"*
 Uno dei principali meccanismi per definire nuove classi a partire da quelle esistenti (definire
 class expressions) e' mediante le restrizioni:
 
-* Su classi mediante operatori insiemistici
-* Su proprieta' (esistenziale, universale, cardinalita')
+* Su classi esistenti mediante operatori insiemistici
+* Mediante proprieta' tramite quantificatori (esistenziale, universale, cardinalita')
 
-**NB: Necessario e sufficiente:**
-Le classi definite come *equivalenti* a un certo insieme di restrizioni sono denominate classi
-definite. Le restrizioni individuano condizioni necessarie e sufficienti per l'appartenenza alla
-classe. Senza l'utilizzo del costrutto EquivalentTo si possono associare a una classe solo
-proprieta' necessarie ma *non sufficienti*.  
+Vediamo ora come definire classi mediante operatori insiemistici, partendo dall'intersezione. Essa
+permette di definire una classe come intersezione di due classi.
+```xml
+# Madre e' la classe degli individui che sono sia donne che genitori
+:Mother owl:equivalentClass [
+        rdf:type owl:Class ;
+        owl:intersectionOf (:Woman :Parent)
+].
+```
+
+Il complemento e' uguale alla differenza di due classi. Ad esempio, la classe dei non genitori
+(*ChildLessPerson*) e' complemento della classe dei genitori (*Parent*). Questo significa che le due
+classi sono disgiunte e non e' possibile che un individuo possa appartenere contemporaneamente ad
+una classe e al suo complemento. 
+```xml
+# Un non genitore sono tutte quelle istanze che non sono genitori 
+:ChildlessPerson owl:equivalentClass [
+                 rdf:type owl:Class;
+                 owl:intersectionOf (:Person [rdf:type owl:Class;
+                                              owl:complementOf :Parent
+                                             ]
+                                    )
+                 ].
+```
+
+Parlando di quantificatori, `owl:someValuesFrom` esprime la quantificazione esistenziale. Mediante
+questo quantificatore, e' possibile esprimere ad esempio che un genitore e' una persona che ha
+almeno un figlio. La quantificazione universale e' similmente espressa con `owl:allValuesFrom`.
+```xml
+# Genitore e' una persona che ha almeno un figlio
+:Parent owl:equivalentClass [
+            rdf:type owl:Restriction;
+            owl:onProperty :hasChild;
+            owl:someValuesFrom :Person
+        ].
+```
+***Nota (Necessario e sufficiente)***: Le classi definite come *equivalenti* a un certo insieme di
+restrizioni sono denominate classi definite. Le restrizioni individuano condizioni necessarie e
+sufficienti per l'appartenenza alla classe. Senza l'utilizzo del costrutto `equivalentClass` (ad
+esempio con `subClassOf`) si possono invece associare a una classe solo proprieta' necessarie ma
+*non sufficienti*. E' bene notare inoltre che solo le classi definite permettono determinate forme
+di ragionamento.
+
+OWL e' un linguaggio *property-centric*. Cio' significa che e' possibile descrivere delle proprieta'
+per cui l'espressivita' di rdf non e' sufficiente. Si possono definire le proprieta' come:
+
+* Simmetriche: vale anche il contrario (*es. coniugeDi*)
+* Funzionali: per cui esiste una corrispondenza N-1 (*es. haPadre*)
+* Inverse: che sono la relazione inversa di altre (*es. figlioDi* inverso di *haPadre*)
+* Riflessive: che valgono anche al soggetto a cui e' applicata (*es. conosce*)
+* Transitive: rispettano la relazione transitiva (*es. contiente*)
+
+
