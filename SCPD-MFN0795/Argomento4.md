@@ -24,7 +24,7 @@ y' = y + \Delta y
 $$
 E' subito chiaro che la natura del problema sia di tipo imbarazzamente parallelo, dal momento che il
 calcolo di ogni pixel e' indipendente dagli altri. L'implementazione parallela consiste quindi nel
-dividere l'immagine in $p$ blocchi, e distribuire poi tali blocchi ai processori. Il risultato sara'
+dividere l'immagine in $p$ blocchi e distribuire poi tali blocchi ai processori. Il risultato sara'
 poi collezionato da un processo unico prefissato.
 
 ### Analisi
