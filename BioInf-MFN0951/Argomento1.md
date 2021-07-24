@@ -120,6 +120,9 @@ migliaia di geni contemporaneamente. (Piu' recentemente si utilizza il deep sequ
 * E' importante notare che il DNA rimane sempre in questa forma compatta con l'eccezione della fase
   di replicazione. Inoltre durante il processo di trascrizione vengono scompattate solo le parti di
   DNA (i genomi) da trascrivere.
+  
+**RNA**:  
+
 * Esistono diverse forme di RNA, ognuna atta a svolgere una funzione specifica. Ad esempio, lo scopo
   dell'mRNA e' quelo di trasportare informazione genomica-protenomica.  
 * Contrariamente al DNA, l'mRNA e' costituito da un singolo filamento formato dagli stessi nucleotidi
@@ -136,9 +139,10 @@ migliaia di geni contemporaneamente. (Piu' recentemente si utilizza il deep sequ
   che hanno la funzione di regolazione 
 * Una di queste sequenze e' la cosiddetta `TATA` box. Essa e' una sequenza situata a 25 nucleotidi
   prima dell'inizio della sequenza del gene e serve essenzialmente a legarsi con una proteina
-  (TBP-TFIIID) il cui scopo e' quello di "sedersi" sopra la struttura del DNA per scompattarla. 
+  (TBP-TFIIID) il cui scopo e' quello di "sedersi" sopra la struttura del DNA per scompattarla e
+  funge da segnalatore per l'inizio della trascrizione. 
   Successivamente altri fattori di trascrizione si assemblano nei pressi del promotore, compresa la
-  proteina DNA-Poly. Infine, un fattore di trascrizione TFIIH, utilizza l'ATP per spezzare il DNA
+  proteina RNA-Poly. Infine, un fattore di trascrizione TFIIH, utilizza l'ATP per spezzare il DNA
   all'inizio del punto di trascrizione dando il via al processo stesso.
 * Esistono principalmente 4 tipi di RNA:
     - mRNA: messaggero dell'informazione genetica
@@ -158,6 +162,40 @@ migliaia di geni contemporaneamente. (Piu' recentemente si utilizza il deep sequ
     2. Splicing alternativo: consiste nella rimozione di alcuni introni (anche tutti), e di alcuni
        esoni. 
   Tramite lo splicing alternativo, quindi si possono ottenere tante combinazioni dalla stessa
-  sequenza di mRNA, e di conseguenza diverse proteine
+  sequenza di mRNA (e di conseguenza diverse proteine)
+* Splicing nel dettaglio:
+    1. Per effettuare lo splicing, all'inizio nei siti `5'-3'` dell'introne, ci sono dei Motif per
+       il riconoscimento, su cui si andranno a legare delle proteine specifiche per la funzione
+       chiamate *Spliceosomi* (contrassegnate con l'iniziale U). Il motif per il riconoscimento del
+       sito `3'` e' un nucleotide di Adenina, ed e' spostato di $x$ posizioni rispetto al sito `3'`.
+    2. Una volta che gli spliceosomi si sono legati ai motif di segnalazione, un ulteriore
+       spliceosoma `U5` si leghera' agli spliceosomi di segnalazione avvicinandoli, formando un
+       "cappio" di mRNA.
+    3. Tramite una reazione biochimica, i siti si dividono nei punti specifici, separando l'introne
+       (a forma di cappio) e dando modo alla sequenza dei due entroni di ricongiungersi formando un
+       solo entrone.  
+    4. L'introne rimosso verra' poi degradato da delle proteine specifiche per la degradazione.
 
-  
+**Traduzione**:
+
+* Quando si parla di traduzione non si parla piu' di una corrispondenza 1-1, ma quello che si
+  ottiene e' una sequenza molto piu' corta di amminoacidi data una sequenza di RNA, poiche' 3
+  nucleotidi vengono tradotti in 1 amminoacido.
+* La traduzione viene effettuata per mezzo dei ribosomi e delle molecole di tRNA. Esse hanno una
+  forma a trifoglio capovolto in cui possono essere individuate 4 zone:
+    - D-loop ("Foglia" sx)
+    - T-loop ("Foglia" dx)
+    - Anticodone ("Foglia" inferiore) -  Complementare del codone
+    - Codone (Gambo superiore) - Ha un amminoacido legato al sito `3'` 
+  Nota: Il tRNA e' il risultato da un processo di trascrizione e di successivo splicing, proprio
+  come l'mRNA
+* Quando l'mRNA e' pronto dopo l'operazione di splicing, entra nel ribosoma che guida la traduzione
+  utilizzando 3 molecole di tRNA in modo progressivo. Ogni molecola di tRNA si lega all'mRNA
+  attraverso il suo anticodone, per poi rilasciare il suo specifico amminoacido. L'operazione si
+  ripete e man mano gli amminoacidi di legano tra di loro a formare una catena. Una volta che il
+  tRNA ha "rilasciato" il suo amminoacido viene rilasciato dal ribosoma
+* Una nota interessante e' che nel codice genetico potrebbero esserci degli errori. Alcune proteine
+  hanno il compito di rilevare e correggere questi errori ma cio' potrebbe non succedere a volte.
+  Quindi, dal momento che con 3 nucleotidi si possono esprimere 64 amminoacidi, alcune sequenze sono
+  ripetute in modo che anche se ci fosse un errore nell'ultimo nucleotide della tripletta, si
+  sintetizzerebbe lo stesso amminoacido.

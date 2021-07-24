@@ -28,4 +28,3 @@ dividere l'immagine in $p$ blocchi e distribuire poi tali blocchi ai processori.
 poi collezionato da un processo unico prefissato.
 
 ### Analisi
-//111
