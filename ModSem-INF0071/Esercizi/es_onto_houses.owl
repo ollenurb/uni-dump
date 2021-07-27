@@ -14,6 +14,34 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#paroleCheInizianoConLaA -->
+
+    <rdfs:Datatype rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#paroleCheInizianoConLaA">
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>[A][a-z]*</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Object Properties
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -80,6 +108,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#nomeComune -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#nomeComune">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -114,6 +151,30 @@
     <!-- http://www.semanticweb.org/matteo/ontologies/houses#Appartamento -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoComuniConA -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#AppartamentoComuniConA">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#situatoIn"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/houses#Comune"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#nomeComune"/>
+                                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#paroleCheInizianoConLaA"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/houses#Appartamento"/>
+    </owl:Class>
     
 
 

@@ -42,9 +42,34 @@
 * $r_i$ indica il valore massimo di $j + Z_j - 1$ per tutti i $1 < j <= i$ tali che $Z_j > 0$
 * $l_i$ indica l'indice iniziale dello ZBox che termina in $r_i$
 * Il tempo richiesto per calcolare tutti gli $Z_i$ e' $O(|S|^2)$
-* Esiste pero' un algoritmo che sfrutta le iterazioni precedente che ha complessita' $O(|S|)$
-* Supponiamo di voler calcolare il valore di $Z_k$
+* Esiste pero' un algoritmo che sfrutta le iterazioni precedente che ha complessita' $O(|S|)$,
+  chiamato Z-Algoritm
+* Per poter capire come funziona a linee generali, facciamo un esempio e supponiamo che $k=121$,
+  $r_{120}=130$, $l_{120}=100$. Si vuole calcolare $Z_{121}$.
  
+![Raffigurazione schematica della situazione descritta
+nell'esempio\label{figExample1}](img/2.1_zalg_example.png){ width=50% }
 
-    
+* Come si vede nella figura \ref{figExample1}, per la definizione di Z-Box e secondo i dati dati dal
+  problema, esiste una stringa $\alpha$ di lunghezza $30$, all'inizio del testo e alla posizione
+  $100$. Allora la sottostringa $\beta$ lunga $10$ che inizia nella posizione $121$, deve matchare
+  la sottostringa $\beta$ lunga $10$ che inizia nella posizione $22$ di *S*, percio' $Z_{22}$ puo'
+  essere utile per calcolare $Z_{121}$. Se $Z_{22}$ e' per esempio $3$, allora anche $Z_{121}$ sara'
+  $3$.
+* Possiamo sfruttare questa caratteristica per sviluppare il cosiddetto *Z-Algorithm*:
+    - All'inizio, $Z_2$ e' trovato confrontando carattere per carattere la sottostringa
+      $S[1\dots|S|]$ con la sottostringa $S[2\dots|S|]$ fino a quando non si trova un mismatch,
+      proprio come nel metodo Naive.
+    - Se $Z_2>0$, $r=Z_2+1$ e $l=2$, altrimenti $r=l=0$ (*non esiste una Z-Box*)
+    - Procediamo poi a calcolare i restanti $Z$. Dati gli $Z_i$ con $2<=i<=k-1$, $l(l_{k-1})$ e
+      $r(r_{k-1})$, $Z_k$ e i  nuovi valori di $l$ e $r$ sono calcolati nel modo seguente:
+        * Se $k>r$, vuol dire che la *Z-box* tra $l$ ed $r$ e' stata *"superata"*, per cui bisogna
+          per forza utilizzare il metodo naive: $Z_k$ viene trovat confrontando i caratteri dalla
+          posizione $k$ con quelli che iniziano nella posizione $1$ di $S$ finche' non si trova un
+          mismatch. Una volta trovato, se $Z_k>0$, aggiorna i valori $r=k+Z_k-1$ e $l=k$.
+        * Altrimenti ($k<r$), la posizione $k$ e' contenuta in uno *Z-box* e $S(k)$ e' contenuto
+          nella sottostringa $\alpha=S[l \dots r]$ tale che $l>1$ ed e' uguale ad un prefisso.
+ 
+![Raffigurazione schematica della situazione descritta
+nell'esempio\label{figExamplee2}](img/2.2_zalg_example.png){ width=50% }
 
