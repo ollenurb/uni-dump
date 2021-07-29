@@ -18,7 +18,6 @@
 >Data una string $P$ chiamata *pattern* e una stringa piu' lunga
 >$T$, trovare tuttre le occorrenze del pattern $P$ nel testo $T$. 
 
-
 * Una soluzione naif a questo problema potrebbe essere quella di prendere i caratteri di $P$ con $T$
   e confrontarli da sinistra a destra, usando $P$ come *"stencil"* e confrontandone carattere per
   carattere. Successivamente si sposta a destra di un carattere rispetto a $T$ e il confronto
@@ -31,9 +30,8 @@
     - Fase di preprocessing: estraggono delle informazioni sulla struttura del pattern e del testo
     - Fase di ricerca: utilizzano l'informazione ottenuta dalla prima fase per effettuare la ricerca 
 
-## Algoritmi di Preprocessing
-
-* Vediamo ora alcuni algoritmi per la fase di preprocessing
+* Per poter prima introdurre algoritmi di preprocessing o di pattern matching, e' necessario prima
+  introdurre alcuni concetti e notazione specifica. 
 * Con $Z_i(S)$ si indica la lunghezza della sottostringa piu' lunga di $S$ che inizia nella
   posizione $i$ e matcha un prefisso di $S$
     - es. $S = a\; a\; b\; c\; a\; a\; b\; x\; a\; a\;$
@@ -56,20 +54,63 @@ nell'esempio\label{figExample1}](img/2.1_zalg_example.png){ width=50% }
   la sottostringa $\beta$ lunga $10$ che inizia nella posizione $22$ di *S*, percio' $Z_{22}$ puo'
   essere utile per calcolare $Z_{121}$. Se $Z_{22}$ e' per esempio $3$, allora anche $Z_{121}$ sara'
   $3$.
+ 
+## Z-Algorithm
+
 * Possiamo sfruttare questa caratteristica per sviluppare il cosiddetto *Z-Algorithm*:
     - All'inizio, $Z_2$ e' trovato confrontando carattere per carattere la sottostringa
       $S[1\dots|S|]$ con la sottostringa $S[2\dots|S|]$ fino a quando non si trova un mismatch,
       proprio come nel metodo Naive.
+      $$
+      \begin{aligned}
+        \overbrace{\underset{\uparrow}{a}bcdefg}^{S[1\dots|S|]} \dots\\
+        a\overbrace{\underset{\uparrow}{b}cdefg}^{S[2\dots|S|]} \dots 
+      \end{aligned}
+      $$
     - Se $Z_2>0$, $r=Z_2+1$ e $l=2$, altrimenti $r=l=0$ (*non esiste una Z-Box*)
-    - Procediamo poi a calcolare i restanti $Z$. Dati gli $Z_i$ con $2<=i<=k-1$, $l(l_{k-1})$ e
-      $r(r_{k-1})$, $Z_k$ e i  nuovi valori di $l$ e $r$ sono calcolati nel modo seguente:
-        * Se $k>r$, vuol dire che la *Z-box* tra $l$ ed $r$ e' stata *"superata"*, per cui bisogna
-          per forza utilizzare il metodo naive: $Z_k$ viene trovat confrontando i caratteri dalla
+    - Procediamo induttivamente a calcolare i restanti $Z$. Dati gli $Z_i$ con $2<=i<=k-1$, $l=l_{k-1}$ e
+      $r=r_{k-1}$, $Z_k$ e i  nuovi valori di $l=l_k$ e $r =r_k$ sono calcolati nel modo seguente:
+        + Se $k>r$, vuol dire che la *Z-box* tra $l$ ed $r$ e' stata *"superata"*, per cui bisogna
+          per forza utilizzare il metodo naive: $Z_k$ viene calcolato confrontando i caratteri dalla
           posizione $k$ con quelli che iniziano nella posizione $1$ di $S$ finche' non si trova un
           mismatch. Una volta trovato, se $Z_k>0$, aggiorna i valori $r=k+Z_k-1$ e $l=k$.
-        * Altrimenti ($k<r$), la posizione $k$ e' contenuta in uno *Z-box* e $S(k)$ e' contenuto
-          nella sottostringa $\alpha=S[l \dots r]$ tale che $l>1$ ed e' uguale ad un prefisso.
+        + Altrimenti ($k \leq r$), denotiamo $Z_k'$ la *Z-Box* corrispondente al prefisso, cioe'
+          $k'=l-k+1$, la situazione e' quella raffigurata in figura \ref{figZalg1}. 
  
-![Raffigurazione schematica della situazione descritta
-nell'esempio\label{figExamplee2}](img/2.2_zalg_example.png){ width=50% }
+![\label{figZalg1} Situazione in cui $k \leq r$](img/2.2_zalg_example.png){ width=50% }
 
+Possiamo ora distinguere due casi differenti:
+
+  - Se $Z_{k'} < \beta$, allora imposta $Z_k = Z_{k'}$ e lascia $l$ ed $r$ invariati 
+  - Se $Z_{k'} \geq \beta$, allora utilizza il metodo naive a partire dalla posizione $r+1$ e
+    $|\beta|+1$ fino a quando non trovi un mismatch. Posto che il mismatch avvenga in una posizione
+    $q \geq r + 1$, allora setta $Z_k=q-k$, $r=q-1$ ed $l=k$ 
+ 
+![](img/2.3_zalg_example_a.png){ width=50% }\ ![](img/2.3_zalg_example_b.png){ width=50% }
+\begin{figure}[!h]
+\begin{subfigure}[t]{0.6\textwidth}
+\caption{Situazione in cui $Z_{k'} \geq \beta$ }
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.4\textwidth}
+\caption{Situazione in cui $Z_{k'} < \beta$ }
+\end{subfigure}
+\end{figure}
+
+Lo *Z-Algorithm* puo' essere utilizzato per cercare un pattern nel testo andando a imporre che la
+stringa $S$ sia la concatenazione di $S=P\gamma T$ dove $\gamma$ e' un carattere che non occorre ne'
+in $P$ ne' in $T$.
+
+## Algoritmo di Boyer-Moore
+
+* Come nell'algoritmo naive, l'algoritmo di Boyer-Moore allinea successivamente $P$ con $T$ e
+  verifica il match carattere per carattere, ma differisce dal metodo naive per 3 caratteristiche.
+    - La scansione avviene da destra a sinistra quando si confrontano i caratteri
+    - Regola di shift del "*bad character*"
+    - Regola di shift del "*good suffix*"
+* Queste idee portano a un metodo che di solito esamina meno di $m+n$ caratteri e ha complessita' in
+  tempo lineare in caso peggiore, proprio come nello *Z_algorithm*.
+* **Bd character shift rule:** Sia $i$ il punto in cui in $P$ si presenta il mismatch, mentre gli
+  $n-i$ caratteri precedenti sono uguali ai corrispondenti in $T$ (ne siamo sicuri dal momento che
+  il confronto avviene da destra a sinistra), e sia $T(k)$ il carattere allineato con $P(i)$.
+* 
