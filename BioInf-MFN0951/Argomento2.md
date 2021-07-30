@@ -105,12 +105,35 @@ in $P$ ne' in $T$.
 
 * Come nell'algoritmo naive, l'algoritmo di Boyer-Moore allinea successivamente $P$ con $T$ e
   verifica il match carattere per carattere, ma differisce dal metodo naive per 3 caratteristiche.
-    - La scansione avviene da destra a sinistra quando si confrontano i caratteri
+    - La scansione del pattern avviene da destra a sinistra quando si confrontano i caratteri
     - Regola di shift del "*bad character*"
     - Regola di shift del "*good suffix*"
 * Queste idee portano a un metodo che di solito esamina meno di $m+n$ caratteri e ha complessita' in
   tempo lineare in caso peggiore, proprio come nello *Z_algorithm*.
-* **Bd character shift rule:** Sia $i$ il punto in cui in $P$ si presenta il mismatch, mentre gli
-  $n-i$ caratteri precedenti sono uguali ai corrispondenti in $T$ (ne siamo sicuri dal momento che
-  il confronto avviene da destra a sinistra), e sia $T(k)$ il carattere allineato con $P(i)$.
-* 
+* **Bad character shift rule:**
+    * Sia $i$ il punto in cui in $P$ si presenta il mismatch, mentre gli $n-i$ caratteri precedenti
+      sono uguali ai corrispondenti in $T$ (ne siamo sicuri dal momento che il confronto avviene da
+      destra a sinistra)
+    * Sia $T(k)$ il carattere allineato con $P(i)$.
+    * Sia $R(x)$ la posizione dell'occorrenza piu' a destra del carattere $x$ in $P$ ($R(x) = 0$ se
+      $x$ non occorre in $P$).
+    * Allora, sposta $P$ a destra di $N$ posizioni, con $N = max\{1, i-R(T(k)) \}$. Se in $P$
+      l'occorrenza piu' a destra di $T(k)$ e' in posizione $j < i$, sposta $P$ in modo che il
+      carattere $j$ di $P$ sia allineato con il carattere $k$ di $T$, altrimenti sposta $P$ di una
+      posizione.
+* La bad character shift rule, non ha effetto se il carattere di $T$ con in quale si trova il
+  mismatch, si trova in $P$ a destra del punto in cui e' stato trovato il mismatch.
+* **Bad character shift rule estesa:** Quando si presenta un mismatch nella posizione $i$ di $P$ e
+  il carattere in $T$ e' $x$, sposta $P$ a destra in modo che il carattere $x$ a sinistra piu'
+  vicino alla posizione $i$ in $P$ sia allineato con $x$ in $T$.
+    * Questa regola ha bisogno di una fase di preprocessing per calcolare le posizioni delle
+      occorrenze piu' vicine a $i$ a sinistra, la quale, per ogni posizione $i$ in $P$ e per
+      ogni carattere $x$, calcola la posizione dell'occorrenza di $x$ piu' vicina a $i$ alla sua
+      sinistra.
+    * Si puo' utilizzare un array bidimensionale $n \times | \Sigma |$ per memorizzare queste
+      informazioni.
+    * Scandendo $P$ da destra a siniistra si possono memorizzare per ognii carattere le posizioni in
+      cui occorre. Ogni lista e' in ordine decrescente, e la loro costruzione richiede sia tempo
+      che spazio $O(n)$.
+
+
