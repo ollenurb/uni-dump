@@ -220,6 +220,7 @@
             </owl:Restriction>
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#Ristorante"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/matteo/ontologies/onto_risto#RistorantePiccolo"/>
     </owl:Class>
     
 
