@@ -41,6 +41,33 @@
   lo stesso individuo. I phase sortal sono indipendenti (-D), anti-rigidi (~R) e hanno un criterio
   di identita' (+I)
 * **Vedere esempi nell'articolo**
-* 
 
+## NeOn Methodology
+
+* Metodologia che si occupa principalmente allo sviluppo di newtork di ontologie, mirata
+  particolarmente agli aspetti collaborativi del loro sviluppo e mantenimento
+* Si articola in 9 scenari, ciascuno associato ad un insieme di attvitia' e documenti. Alcuni esempi
+  possono essere:
+    * Scenario 1: prevede che si produca un documento di requisiti per l'ontologia.
+    * Scenario 3: comporta il fatto di cercare le risorse ontologiche, valutarle, confrontarle e
+      selezionarne un sottoinsieme.
+* **Vedere tutti gli scenari dalle slides**
+* Un punto interessante di NeOn e' l'ontology lifecycle, secondo il quale l'ontologia ha un ciclo di
+  vita strutturato secondo le seguenti fasi
+    * Fase di Inizio
+    * Fase di Design
+    * Fase di Implementazione
+    * Fase di Mantenimento
+
+## Ontology Design Patterns
+
+* Mattoncini per la creazione di ontologie secondo schemi condivisi
+* Tali schemi sono divi in categorie, in base alle finalita' degli stessi
+
+## DOLCE
+
+* Ontlogiaorientata alla cognizione e al linguaggio
+* Distinzione chiave tra:
+    * Perduranti: entita' che hanno natura temporale, nel linguaggio naturale sono i verbi.
+    * Enduranti: entita' che non hanno natura temporale, individui, oggetti ecc..
 
