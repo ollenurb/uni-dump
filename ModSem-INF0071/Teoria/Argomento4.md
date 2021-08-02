@@ -62,12 +62,43 @@
 ## Ontology Design Patterns
 
 * Mattoncini per la creazione di ontologie secondo schemi condivisi
-* Tali schemi sono divi in categorie, in base alle finalita' degli stessi
+* Tali schemi sono divisi in categorie, in base alle finalita' degli stessi
+* Disponibili su [questo](ontologydesignpatterns.org) sito
+* Ad esempio, un esempio di questo pattern e' il pattern `List` per rappresentare Liste
+* Ogni pattern puo' ad esempio importarne altri (essere definito in termini di altri)
+* *Competency Question*: Sono le domande a cui risponde il pattern
 
 ## DOLCE
 
-* Ontlogiaorientata alla cognizione e al linguaggio
+* Ontologia orientata alla cognizione e al linguaggio
 * Distinzione chiave tra:
     * Perduranti: entita' che hanno natura temporale, nel linguaggio naturale sono i verbi.
     * Enduranti: entita' che non hanno natura temporale, individui, oggetti ecc..
+
+
+## PROV (The Provenance Ontology)
+
+* E' stata concepita per l'interscambio sul web di informazioni riguardanti la *provenienza* delle
+  entita'
+* La probenienza delle entita' viene rappresentata in termini dei processi che hanno determinato la
+  creazione di quelle entita'
+* I metadati delle entita' sono affidati a altre ontologie quali FOAF (agenti) e Dublin Core
+  (entita')
+* Un agente assume un certo ruolo per cui puo' essere assegnato un certo grado di responsabilita'
+  per l'attivita' in questione
+* Le attivita' riguardano il come le entita' vengono ad esistere e come i loro attributi cambiano,
+  diventando di fatto altre entita'
+* Un ruolo e' una descrizione della funzione o della parte che un entita' ha preso parte in
+  un'attivita'. I ruoli specificano la relazione tra entita' e attivita'.
+
+![Rappresentazione schematica del modello core di PROV](img/4.1_prov_core.png){ width=50% }
+
+* Esempi di *entita'* possono essere: un documento identificato da un IRI, un file in un filesystem,
+  un'auto, un'idea, ecc..
+* Esempi di *attivita'* possono essere la pubblicazione di un documento nel web, twittare un post,
+  estrarre metadati da un file, editare un file, ecc..
+* Entita' (`prov:Entity`) e attivita' (`prov:Activity`) sono relazionate tra loro tramite un'*associazione* (`prov:Association`)
+* Un vantaggio di questa rappresentazione e' che e' possibile rappresentare diverse attivita' svolte
+  dallo stesso attore, differenziandole ad esempio per il tempo in cui sono state svolte o per altre
+  caratteristiche
 
