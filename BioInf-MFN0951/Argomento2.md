@@ -106,7 +106,7 @@ in $P$ ne' in $T$.
 * Come nell'algoritmo naive, l'algoritmo di Boyer-Moore allinea successivamente $P$ con $T$ e
   verifica il match carattere per carattere, ma differisce dal metodo naive per 3 caratteristiche.
     - La scansione del pattern avviene da destra a sinistra quando si confrontano i caratteri
-    - Regola di shift del "*bad character*"
+    - Regola di shift del "*bad character*" (e conseguentemente la regola "*bad character estesa*") 
     - Regola di shift del "*good suffix*"
 * Queste idee portano a un metodo che di solito esamina meno di $m+n$ caratteri e ha complessita' in
   tempo lineare in caso peggiore, proprio come nello *Z_algorithm*.
@@ -132,8 +132,33 @@ in $P$ ne' in $T$.
       sinistra.
     * Si puo' utilizzare un array bidimensionale $n \times | \Sigma |$ per memorizzare queste
       informazioni.
-    * Scandendo $P$ da destra a siniistra si possono memorizzare per ognii carattere le posizioni in
+    * Scandendo $P$ da destra a sinistra si possono memorizzare per ognii carattere le posizioni in
       cui occorre. Ogni lista e' in ordine decrescente, e la loro costruzione richiede sia tempo
       che spazio $O(n)$.
+* **Strong Good Suffix rule**: Sia $t$ un suffisso che viene matchato sia in $P$ che in $T$ per cui
+  il prossimo carattere fa mismatch. Trova allora un suffisso $t'=t$ in $P$ per cui il carattere
+  successivo non e' uguale a quello che ha fatto mismatch. Trovato il suffisso $t'$, sposta $P$ a
+  destra in modo che la sottostringa $t'$ in $P$ sia allineata con la sottostringa $t$ in $T$ 
+    * In caso $t'$ non esista, allora sposta l'estremita' sinistra di $P$ della minima quantita' in
+      modo che un prefisso del pattern matchi un suffisso di $t$ in $T$, se cio' e' possibile.
+    * Se cio' non e' possibile, sposta $P$ di $n$ posti a destra.
+    * Se si trova un'occorrenza di $P$, sposta $P$ del minimo numero di posizioni in modo che un
+      prefisso proprio di $P$ matchi un suffisso dell'occorrenza di $P$ in $T$, altrimenti sposta
+      $P$ di $n$ posizioni, cioe' oltre $t$ in $T$.
 
-
+Esempio di Strong Suffix Rule:
+\begin{center}
+\begin{verbatim}
+T: PRSTABSTUBABQXRST
+             ||
+P:   QCABDABDAB
+             ||
+P':        QCABDABDAB
+\end{verbatim}
+\end{center}
+ 
+* Anche la good suffix rule ha bisogno di una fase di preprocessing:
+  * Sia $L(i)$ la massima posizione minore di $n$ tale che la stringa $p[i \dots n]$ matcha un
+    suffisso di $P[1 \dots L(i)]. L(i) = 0$ se la condizione non e' soddisfatta
+  * Sia $L'(i)I$ la massima posizione minore di $n$ tale che la stringa $P[i \dots n]$ matcha un
+    suffisso di $P[1 \dots L'(i)]$ e il carattere che precede il suffisso non e' uguale a $P(i-1)$.
