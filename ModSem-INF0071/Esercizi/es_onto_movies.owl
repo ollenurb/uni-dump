@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#"
+     xml:base="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:movies-ontology="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haPersonaggio -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haPersonaggio">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haRuolo -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haRuolo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#interpretaPersonaggio -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#interpretaPersonaggio">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ruoloInFilm -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ruoloInFilm">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#compenso -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#compenso">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#unsignedInt"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#AttoreFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#AttoreFilm">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haRuolo"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ruoloInFilm"/>
+                                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Avventura -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Avventura">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Commedia -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Commedia">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Drama -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Drama">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Produttore -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Produttore">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Regista -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Regista">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RegistaFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RegistaFilm">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#haRuolo"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Regista"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ruoloInFilm"/>
+                                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SciFi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SciFi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Scrittore -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Scrittore">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Ruolo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Thriller -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Thriller">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ChristopherNolan -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ChristopherNolan">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+        <haRuolo rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RegistaTenet"/>
+        <haRuolo rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ScrittoreTenet"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#JohnDavidWashington -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#JohnDavidWashington">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+        <haRuolo rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreProtagonistaTenet"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Neil -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Neil">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RegistaTenet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RegistaTenet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Regista"/>
+        <ruoloInFilm rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet"/>
+        <compenso rdf:datatype="http://www.w3.org/2001/XMLSchema#unsignedInt">1200</compenso>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RobertPattinson -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#RobertPattinson">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Persona"/>
+        <haRuolo rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreNeilTenet"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ScrittoreTenet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#ScrittoreTenet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Scrittore"/>
+        <ruoloInFilm rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet"/>
+        <compenso rdf:datatype="http://www.w3.org/2001/XMLSchema#unsignedInt">3000</compenso>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SpiaProtagonista -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SpiaProtagonista">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Personaggio"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Avventura"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SciFi"/>
+        <haPersonaggio rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Neil"/>
+        <haPersonaggio rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SpiaProtagonista"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreNeilTenet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreNeilTenet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore"/>
+        <interpretaPersonaggio rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Neil"/>
+        <ruoloInFilm rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet"/>
+        <compenso rdf:datatype="http://www.w3.org/2001/XMLSchema#unsignedInt">12000</compenso>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreProtagonistaTenet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#attoreProtagonistaTenet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Attore"/>
+        <haPersonaggio rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#SpiaProtagonista"/>
+        <ruoloInFilm rdf:resource="http://www.semanticweb.org/matteo/ontologies/2021/7/movies-ontology#Tenet"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
