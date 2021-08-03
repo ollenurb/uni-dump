@@ -100,5 +100,5 @@
 * Entita' (`prov:Entity`) e attivita' (`prov:Activity`) sono relazionate tra loro tramite un'*associazione* (`prov:Association`)
 * Un vantaggio di questa rappresentazione e' che e' possibile rappresentare diverse attivita' svolte
   dallo stesso attore, differenziandole ad esempio per il tempo in cui sono state svolte o per altre
-  caratteristiche
-
+  caratteristiche  
+  
