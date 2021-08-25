@@ -1,6 +1,7 @@
 ---
 title:  'Appunti di Bioinformatica'
 subtitle: "A.A. 2020-2021"
+fontfamily: palatino
 author: [Matteo Brunello]
 header-includes: |
     \usepackage{caption}

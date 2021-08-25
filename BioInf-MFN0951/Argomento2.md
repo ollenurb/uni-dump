@@ -103,7 +103,7 @@ in $P$ ne' in $T$.
 
 ## Algoritmo di Boyer-Moore
 
-* Come nell'algoritmo naive, l'algoritmo di Boyer-Moore allinea successivamente $P$ con $T$ e
+* Come nell'algoritmo naif, l'algoritmo di Boyer-Moore allinea successivamente $P$ con $T$ e
   verifica il match carattere per carattere, ma differisce dal metodo naive per 3 caratteristiche.
     - La scansione del pattern avviene da destra a sinistra quando si confrontano i caratteri
     - Regola di shift del "*bad character*" (e conseguentemente la regola "*bad character estesa*") 
@@ -114,15 +114,17 @@ in $P$ ne' in $T$.
     * Sia $i$ il punto in cui in $P$ si presenta il mismatch, mentre gli $n-i$ caratteri precedenti
       sono uguali ai corrispondenti in $T$ (ne siamo sicuri dal momento che il confronto avviene da
       destra a sinistra)
-    * Sia $T(k)$ il carattere allineato con $P(i)$.
+    * Sia $T(k)$ il carattere allineato con $P(i)$ nel testo $T$ (il carattere in cui si presenta il
+      mismatch nel testo).
     * Sia $R(x)$ la posizione dell'occorrenza piu' a destra del carattere $x$ in $P$ ($R(x) = 0$ se
       $x$ non occorre in $P$).
     * Allora, sposta $P$ a destra di $N$ posizioni, con $N = max\{1, i-R(T(k)) \}$. Se in $P$
       l'occorrenza piu' a destra di $T(k)$ e' in posizione $j < i$, sposta $P$ in modo che il
       carattere $j$ di $P$ sia allineato con il carattere $k$ di $T$, altrimenti sposta $P$ di una
       posizione.
-* La bad character shift rule, non ha effetto se il carattere di $T$ con in quale si trova il
-  mismatch, si trova in $P$ a destra del punto in cui e' stato trovato il mismatch.
+* La bad character shift rule, non ha effetto se il carattere $T(k)$ con in quale si trova il
+  mismatch, si trova in $P$ a destra del punto in cui e' stato trovato il mismatch (perche', come
+  detto nel punto precedente, viene spostato di una sola posizione).
 * **Bad character shift rule estesa:** Quando si presenta un mismatch nella posizione $i$ di $P$ e
   il carattere in $T$ e' $x$, sposta $P$ a destra in modo che il carattere $x$ a sinistra piu'
   vicino alla posizione $i$ in $P$ sia allineato con $x$ in $T$.
@@ -132,13 +134,13 @@ in $P$ ne' in $T$.
       sinistra.
     * Si puo' utilizzare un array bidimensionale $n \times | \Sigma |$ per memorizzare queste
       informazioni.
-    * Scandendo $P$ da destra a sinistra si possono memorizzare per ognii carattere le posizioni in
+    * Scandendo $P$ da destra a sinistra si possono memorizzare per ogni carattere le posizioni in
       cui occorre. Ogni lista e' in ordine decrescente, e la loro costruzione richiede sia tempo
       che spazio $O(n)$.
 * **Strong Good Suffix rule**: Sia $t$ un suffisso che viene matchato sia in $P$ che in $T$ per cui
   il prossimo carattere fa mismatch. Trova allora un suffisso $t'=t$ in $P$ per cui il carattere
   successivo non e' uguale a quello che ha fatto mismatch. Trovato il suffisso $t'$, sposta $P$ a
-  destra in modo che la sottostringa $t'$ in $P$ sia allineata con la sottostringa $t$ in $T$ 
+  destra in modo che la sotto stringa $t'$ in $P$ sia allineata con la sotto stringa $t$ in $T$ 
     * In caso $t'$ non esista, allora sposta l'estremita' sinistra di $P$ della minima quantita' in
       modo che un prefisso del pattern matchi un suffisso di $t$ in $T$, se cio' e' possibile.
     * Se cio' non e' possibile, sposta $P$ di $n$ posti a destra.
@@ -158,7 +160,58 @@ P':        QCABDABDAB
 \end{center}
  
 * Anche la good suffix rule ha bisogno di una fase di preprocessing:
-  * Sia $L(i)$ la massima posizione minore di $n$ tale che la stringa $p[i \dots n]$ matcha un
+  * Sia $L(i)$ la massima posizione minore di $n$ tale che la stringa $P[i \dots n]$ matcha un
     suffisso di $P[1 \dots L(i)]. L(i) = 0$ se la condizione non e' soddisfatta
   * Sia $L'(i)I$ la massima posizione minore di $n$ tale che la stringa $P[i \dots n]$ matcha un
     suffisso di $P[1 \dots L'(i)]$ e il carattere che precede il suffisso non e' uguale a $P(i-1)$.
+  * Sia $L(i)$ che $L'(i)$ possono essere calcolati in tempo lineare sulla lunghezza del pattern:
+      * Sia $N_j(P)$ la lunghezza del piu' lungo *suffisso* della sotto stringa $P[1..j]$ (e'
+        l'inverso di $Z_i$ in sostanza)
+      * Dal momento che $N$ e' l'inverso di $Z$ (cioe' vale $N_j(P) = Z_{n-j+1}(P^R)$) possiamo
+        utilizzare lo *Z-algorithm* per calcolare tutti gli $N_j$, applicandolo sulla stringa
+        riflessa $P^R$
+       
+  * Z-Based Boyer Moore Preprocessing
+    ```
+    for i:=1 to n do L'(i) := 0
+    for j:=1 to n-1 do
+        i := n - N_j(P) + 1;
+        L'(i) := j;
+    ```
+
+* Per trattare nella fase di preprocessing anche i casi di $L'(i)=0$ e occorrenza di $P$ trovata,
+  poniamo che $l'(i)$ sia la lunghezza del massimo suffisso di $P[i..n]$ che e' anche prefisso di
+  $P$, e supponiamo che durante la ricerca si presenta un mismatch alla posizione $i-1$ di $P$:
+    * Se $L'(i)>0$, la good suffix rule sposta P a destra di $n-L'(i)$ posizioni in modo che il
+      prefisso di $P$ di lunghezza $L'(i)$ venga allineato al suffisso di $P$ nella posizione
+      precedente
+    * Se $L'(i)=0$ la good suffix rule sposta $P$ di $n-l'(i)$ posizioni
+    * Se si trova un'occorrenza di $P$, lo shift e' di $n-l'(2)$ posizioni
+    * Se il risultato del primo confronto e' un mismatch, $P$ viene spostato di una posizione
+
+## Algoritmo di Knuth-Morris-Pratt
+
+* Viene raramente usato in pratica perche' in molti casi ha prestazioni inferiori rispetto a
+  Boyer-Moore, ma costituisce la base di un noto algoritmo per cui vale la pena studiarlo
+* Sia $sp_i(P)$ la lunghezza del piu' lungo suffisso proprio di $P[1..i]$ uguale ad un prefisso di
+  $P$. $sp_1=0$ per ogni stringa
+* Sia $sp'_i(P)$ la lunghezza del piu' lungo suffisso proprio di $P[1..i]$ uguale ad un prefisso di
+  $P$, e tale che i caratteri $P(i+1)$ e $P(sp'_i + 1)$ siano diversi
+* Per tutte le stringhe e per tutte le posizioni $i$, $sp'_i(P) <= sp_i(P)$
+* Per ogni allineamento di $P$ e $T$, se il primo mismatch si presenta in posizione $i+1$ di $P$,
+  con la corrispondente posizione $k$ in $T$, sposta $P$ in modo che $P[1..sp'_i]$ sia allineato con
+  $T[k-sp'_i..k-1]$. Cioe', di $i-sp'_i$ posizioni in modo che il carattere $sp'_i+1$ di $P$ sia
+  allineato con il carattere $k$ di $T$
+* Se si trova un'occorrenza di $P$, sposta $P$ di $n-sp'_n$ posizioni
+* Anche in questo caso, gli $sp'_i$ e gli $sp_i$ possono essere calcolati in fase di preprocessing
+  utilizzando una versione modificata dello *Z-algorithm*
+* Z-Based Knuth Morris Pratt Preprocessing
+  ```
+  for i:= 1 to n do
+    sp'_i := 0
+  for j := n to 2 do
+    i := j + Z_j(P) - 1
+    sp'_i := Z_j
+  ```
+  
+  
