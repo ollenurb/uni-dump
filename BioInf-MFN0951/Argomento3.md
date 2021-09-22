@@ -90,7 +90,7 @@ $$
 * Possiamo quindi formalizzare il problema del motif finding come un problema di massimizzazione:
     * **Goal**: Dato un insieme di sequenze di DNA, trova un insieme di $t$ *l-mers* per ogni
       sequenza, che massimizzino la funzione score
-    * **Input**: Una matrice $t \time n$ di $DNA$ e $l$, la lunghezza del pattern da trovare 
+    * **Input**: Una matrice $t \times n$ di $DNA$ e $l$, la lunghezza del pattern da trovare 
     * **Output**: Un array di $t$ posizioni che indicano l'inizio di ogni motif nella sequenza
       *i-esima*, che massimizzano la funzione score
 
@@ -147,7 +147,7 @@ return bestWord
     * Siccome ci sono $l$ colonne (tante quante la lunghezza del motif), vale anche
       $Score + TotalDistance = l * t \rightarrow Score = l * t - TotalDistance$
     * Dal momento che $l$ e $t$ sono costanti, minimizzare la distanza totale equivale a
-      massimizzare lo score 
+      massimizzare lo score
 * Il problema della stringa mediana deve esaminare solamente $4^t$ ($|\Sigma|^t$) combinazioni di
   $v$, per cui e' leggermente piu' efficiente della soluzione brute force
 * Per aumentare l'efficienza dell'algoritmo, si puo' pensare di ridurre lo spazio di ricerca,
@@ -156,5 +156,6 @@ return bestWord
   di numeri, applicando la seguente trasformazione: $A = 1, C = 2, G = 3, T = 4$
 * In questo modo per passare alla prossima stringa da considerare basta aumentare di 1 il numero
   della sequenza
-  
+* Added Something
+
 
