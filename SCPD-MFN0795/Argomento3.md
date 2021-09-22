@@ -272,3 +272,5 @@ comp/comm_{ratio} = \frac{t_{comp}}{t_{comm}}
 $$
 Generalmente una buona implementazione parallela ha un rateo di computazione/comunicazione in cui la
 complessita' computazionale e' piu' grande di quella della comunicazione.
+Per grana computazionale si intende la quantita' di dati con la quale si e' suddiviso il problema
+generale. Ad esempio, se decido di suddividere una griglia LxH per 4, la grana sara' (LxH/4).
