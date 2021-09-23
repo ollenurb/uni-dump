@@ -70,5 +70,79 @@ giusto **modello** per svolgere il **task** giusto.
 ### Modelli Descrittivi
 * I modelli descrittivi si occupano di trovare nuova conoscenza all'interno del dataset
 
+# Machine Learning Tasks
+* Gli oggetti sono chiamate *istanze* nel machine learning
+* L'insieme di tutte le possibili istanze e' chiamato *instance space*, denotato con $\mathscr{X}$.
+  Negli esempi precedenti, $\mathscr{X}$ corrisponde a tutte le possibili emails che possono essere
+  scritte con l'alfabeto latino. L'input space e' descritto in termini di ***features***, anche
+  chiamati attributi. Piu' in generale, denotando $\mathscr{F}_i$ l'insieme di valori di una singola
+  feature, abbiamo che $\mathscr{X} = \{ \mathscr{F}_1 \times \mathscr{F}_2 \times \dots \times
+  \mathscr{F}_d \}$, per cui ogni istanza e' un vettore *d-dimensionale* contenente i valori delle
+  features.
+* Il *label space* e' l'insieme delle etichette assegnabili, denotato con $\mathscr{L}$
+* Un *modello* e' una mappa $\hat{m}: \mathscr{X} \rightarrow \mathscr{Y}$, dove $\mathscr{Y}$ e'
+  l'*output space*.
+* Il *training set* ***Tr*** e' definito come l'insieme di istanze chiamti ***esempi*** etichettate
+  $(x, l(x))$, dove $l: \mathscr{X} \rightarrow \mathscr{L}$ e' una funzione etichettatrice
+* Nella maggior parte dei modelli, $\mathscr{Y} = \mathscr{L}$, per cui quello che si vuole ottenere
+  e' un modello $\hat{l}: \mathscr{X} \rightarrow \mathscr{L}$ che sia una buona approssimazione
+  della funzione di labelling reale $l$, conosciuta solo tramite le etichette che sono state
+  assegnate ai dati di training.
+* In casi in cui $\mathscr{Y} \neq \mathscr{L}$, ad esempio se si volesse un modello che dia in
+  output uno score di likelyhood per ogni label, allora $\mathscr{Y} = \mathbb{R}^k$, dove $k =
+  |\mathscr{L}|$
+* Per testare il modello si utilizza il cosiddetto *test set* ***Te***. Spesso il test set viene
+  denotato con un apice per indicare le istanze che appartengono ad una determinata classe. Ad
+  esempio $Te^{\oplus} = \{ (x, l(x)) \; | \; x \in Te \wedge l(x) = \oplus \}$ e' l'insieme dei
+  campioni positivi, mentre Te$^{\ominus}$ dei negativi
 
+## Classificazione
+* Un task di classificazione e' il task piu' comune nel machine learning. Un classificatore e' una
+  mappa $\hat{c}: \mathscr{X} \rightarrow \mathscr{C}$, dove $\mathscr{C} = \{ C_1, C_2, \dots,C_k
+  \}$ e' un insieme (solitamente piccolo) di *labels di classe*.
+* Far imparare un classificatore significa costruire la funzione $\hat{c}$ che sia
+  un'approssimazione piu' precisa possibile di $c$, non solo sul training set ma idealmente
+  sull'intero spazio $\mathscr{X}$
+* La classificazione binaria (o *concept learning*) e' quando l'insieme $\mathscr{C}$ e' composto da
+  due classi: *positiva* (denotata con $\oplus$) e *negativa* (denotata con $\ominus$)
+* Un *feature tree* e' un albero che ha come nodi le features, mentre come foglie il numero
+  complessivo di istanze appartenenti alle classi
+* Un feature tree puo' essere convertito in un *decision tree* semplicemente assegnando la classe
+  maggioritaria in ogni foglia.
+* La performance dei classificatori puo' essere riassunta nella ***tabella di contingenza*** o
+  ***matrice di confusione***. In questa tabella, ogni riga si riferisce alle classi attuali come
+  registrate nel test set, mentre le colonne si riferiscono alle classi che ha predetto il
+  classificatore.
+* Dalla tabella di contingenza e' possibile calcolare diversi indicatori di performance. Uno di
+  questi e' la *precisione* (*accuracy*), calcolabile nel modo seguente:
+  $$
+  acc = \frac{1}{|Te|} \sum_{x \in Te} I[\hat{c}(x) = c(x)]
+  $$
+  Dove la funzione $I[\cdot]$ e' l'*indicator function* che vale $1$ se l'argomento e' *true*, $0$
+  atrimenti
+* Possiamo anche definire un'altro indicatore chiamato *true positive rate* nel modo seguente:
+  $$
+  tpr = \frac{\sum_{x \in Te} I[\hat{c}(x) = c(x) = \oplus]}{\sum_{x \in Te} I[c(x) = \oplus]} 
+  $$
+  A parole: E' il rapporto tra tutti i *true positives* (cioe' i positivi che vengono identificati
+  correttamente) e tutti i *positivi*.
+* $tpr$ da una stima della probabilita' che un positivo arbitrario sia classificato correttamente
+  dal classificatore, formalmente $P_{\mathscr{X}}(\hat{c}(x) = \oplus | c(x) = \oplus)$
+* Analogamente e' definibile il *true negative rate*
+* Queste quantita' sono dette anche *sensivity* e *specificy*, e possono essere viste come stime di
+  accuratezza **per classe**.
+* *Coverage plot*: grafico per valutare le performance dei classificatori. Si costruisce mediante 4
+  ingredienti principali: 
+    * Numero di positivi totali
+    * Numero di negativi totali
+    * Numero di veri positivi
+    * Numero di falsi positivi
+  Gli altri dati possono essere presi facendo il complementare rispetto al totale.
+* In un *coverage plot*, i classificatori con la stessa accuratezza stanno sulla stessa retta di
+  coefficiente angolare pari a $1$.
+* 
+  
+## Scoring e Ranking
+
+## Stima della probabilita'
 
