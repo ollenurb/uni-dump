@@ -140,7 +140,23 @@ giusto **modello** per svolgere il **task** giusto.
   Gli altri dati possono essere presi facendo il complementare rispetto al totale.
 * In un *coverage plot*, i classificatori con la stessa accuratezza stanno sulla stessa retta di
   coefficiente angolare pari a $1$.
-* 
+* *Normalized plot* (ROC plot) e' un coverage plot ma con gli assi normalizzati (sono divisi per il numero
+  totale, in questo caso *Pos* e *Neg*), quindi tutti i punti sono divisi per la scala (pos e neg)
+* In un plot normalizzato una retta con equazione $trp=fpr+y_0$ non ha lo stesso significato di una
+  stessa linea in un coverage plot. In generale in un plot normalizzato, su una linea con
+  coefficiente angolare pari a 1 (e quindi parallela alla diagonale dal momento che si tratta di una
+  griglia con dimensioni 1x1) stanno tutti i classificatori con lo stesso ***average recall***.
+  Analogamente, tutte le rette con coefficiente angolare pari a $neg/pos$ (cioe' pari a $1/clr$)
+  hanno la stessa accuratezza.
+* $avg-rec = (tpr + tnr)/2$
+* *Coverage plot*: Utile quando si vuole tenere esplicitamente conto della distribuzione di classi,
+  per esempio quando si sta lavorando con un singolo dataset
+* *ROC plot*: Utile quando si vogliono combinare risultati proveniente di diversi datasets, con
+  distribuzioni di classi differenti
+* In generale, i classificatori meno efficienti sono quelli che stanno sulla diagonale principale,
+  dal momento che fanno un random guess 50/50. Anche se quelli che stanno sotto hanno piu' negativi
+  che positivi, basterebbe negare il risultato del classificatore per ottenerne uno comunque
+  preciso
   
 ## Scoring e Ranking
 
