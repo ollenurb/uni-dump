@@ -43,8 +43,8 @@ giusto **modello** per svolgere il **task** giusto.
 * Un esempio di regola potrebbe essere quello ad esempio della regola `HTML_IMAGE_RATIO_02`, che si
   attiva quando il rateo tra testo e immagine e' maggiore del 20%
 * Quello che succede e' che per una determinata email si attivano diverse regole dell'insieme
-* La somma di tutti i pesi ($S = \sum_{i} w_i$) delle regole attive determina se la mail e' spam o ham. Nel caso di
-  SpamAssassin, se $S > 5$, allora e' molto probabile che sia spam
+* La somma di tutti i pesi ($S = \sum_{i} w_i$) delle regole attive determina se la mail e' spam o
+  ham. Nel caso di SpamAssassin, se $S > 5$, allora e' molto probabile che sia spam
  
 ## Modelli
 * I modelli di apprendimento automatico possono essere classificati secondo il loro approccio (in
@@ -148,7 +148,7 @@ giusto **modello** per svolgere il **task** giusto.
   griglia con dimensioni 1x1) stanno tutti i classificatori con lo stesso ***average recall***.
   Analogamente, tutte le rette con coefficiente angolare pari a $neg/pos$ (cioe' pari a $1/clr$)
   hanno la stessa accuratezza.
-* $avg-rec = (tpr + tnr)/2$
+* $\text{avg-rec} = (tpr + tnr)/2$
 * *Coverage plot*: Utile quando si vuole tenere esplicitamente conto della distribuzione di classi,
   per esempio quando si sta lavorando con un singolo dataset
 * *ROC plot*: Utile quando si vogliono combinare risultati proveniente di diversi datasets, con
@@ -159,6 +159,76 @@ giusto **modello** per svolgere il **task** giusto.
   preciso
   
 ## Scoring e Ranking
-
-## Stima della probabilita'
-
+* Il task di scoring e' simile al task di classificazione. L'idea e' quella di assegnare degli
+  scores ad ogni classe per una determinata istanza.
+* Uno *scoring classifier* e' definito formalmente come una mappa $\hat{s}: \mathscr{X} \rightarrow
+  \mathbb{R}^k$. Dove il generico $\hat{s}(x) = (\hat{s}_1(x), \dots, \hat{s}_k(x))$, in cui
+  $\hat{s}_i(x)$ indica il punteggio assegnato alla classe $C_i$ per l'istanza $x$
+* Il task di scoring puo' essere visto anche come un task di classificazione binaria quando il
+  numero di classi e' 2
+* Per trasformare un *feature tree* in uno *scoring tree*, si calcola il rapporto tra spam/ham delle
+  foglie e se ne considera il *logaritmo*. Il risultato sara' lo score che assegnera' $\hat{s}$.
+* Se consideriamo $c(x)$ come la *true class function*, che ritorna +1 per gli esempi positivi, -1
+  altrimenti, allora si puo' define la funzione ***margine***, definita come $z(x)=c(x)\hat{s}(x)$.
+* Idealmente, si vogliono penalizzare grossi valori negativi di $z(x)$, mentre si vogliono
+  premiare grossi valori positivi.
+* ***Loss function*** ($L: \mathbb{R} \rightarrow [0, \infty)$): Mappa ogni valore di $z(x)$ alla
+  sua **perdita** corrispondente 
+* Perdita media sul test set $Te$: $\frac{1}{|Te|}\sum_{x \in Te}L(z(x))$ 
+* La **loss function** piu' semplice e' la **0-1 loss** definita come
+  $$
+  L_{01}(z) =
+  \begin{cases}
+    1 & z \leq 0\\
+    0 & z > 0       
+  \end{cases}
+  $$
+  Il problema della 0-1 loss e' che ignora la magnitudine dei margini, tenendo conto solo del loro
+  segno 
+* Un'altra funzione di perdita piu' interessante e' la **hinge loss**, definita nel modo seguente: 
+  $$
+  L_{h}(z) =
+  \begin{cases}
+    (1 - z) & z \leq 1\\
+    0 & z > 1       
+  \end{cases}
+  $$
+* Di seguito altre loss functions viste:
+    * Logistic Loss: $L_{log}(z) = log_2(1+ exp(-z))$
+    * Exponential Loss: $L_{exp}(z) - exp(-z)$
+    * Squared Loss: $L_{sq}(z) =(1-z)^2$
+  
+### Ranking: Verificare e visualizzare le performance
+* Supponiamo che $x$ e $x'$ siano due istanze tali che $x$ riceva uno score piu' alto di $x'$, per
+  cui $\hat{s}(x) < \hat{s}(x')$. In sostanza, il classificatore crede piu' fortemente che la classe
+  di appartenenza di $x'$ sia positiva rispetto a $x$
+* Questa uguaglianza andrebbe bene solo quando effettivamente $x$ e' un negativo e $x'$ e' un
+  positivo. Quando questo non succede si dice che il classificatore commette un ***ranking error***
+* Il ***ranking error rate*** e' definito come 
+  $$
+  rank-err=\frac{
+  \sum_{x \in Te^{\oplus}, x' \in Te^{\ominus}} I[\hat{s}(x) < \hat{s}(x')] + 
+  \frac{1}{2}I[\hat{s}(x) = \hat{s}(x')]
+  }
+  {Pos \cdot Neg}
+  $$
+  Dalla formula risultano evidenti alcuni punti:
+    * Gli errori in cui lo stesso score viene assegnato alle due classi vengono contati per meta'
+      (fattore 1/2)
+    * Il numero massimo di ranking errors e' pari a $|Te^{\oplus} \times Te^{\ominus}| =
+      |Te^{\oplus}| \cdot |Te^{\ominus}| = Pos \cdot Neg$
+* Analogamente, si puo' definire la ***ranking accuracy*** come $1 - \text{rank-err}$. Puo' essere
+  vista come la stima della probabilita' che una coppia arbitraria positiva-negativa sia
+  classificata correttamente (*ranked correctly*)
+* Uno scoring classifier induce implicitamente anche un ranking classifier, semplicemente andando a
+  ordinare le istanze in base allo score assegnato
+* Data una funzione di ranking $h$, uno potrebbe creare diversi classificatori in base ad $h$
+  scegliendo thresholds differenti
+ 
+## Stima delle probabilita' delle classi
+* Un ***class probability estimator*** e' uno *scoring classifier* che ha come output un vettore di
+  probabilita' delle classi. Formalmente, $\hat{p}: \mathscr{X} \rightarrow [0, 1]^k$ e' un cpe che
+  associa ad ogni istanza $x$ un vettore $(\hat{p}_1(x), \dots, \hat{p}_k(x)$ dove $\hat{p}_i(x)$ e'
+  la probabilita' assegnata alla classe $C_i$ (e naturalmente $k$ e' il numero di classi)
+* Essendo che parliamo di probabilita', per ogni vettore in output devono valere gli assiomi della
+  probabilita', tra cui $\sum_{i=1}^k \hat{p}_i(x) = 1$
