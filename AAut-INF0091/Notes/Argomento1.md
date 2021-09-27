@@ -237,7 +237,8 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
   e $x'$ e' un positivo. Quando questo non succede si dice che il classificatore
   commette un ***ranking error***
 * Il ***ranking error rate*** e' definito come
-  $$ rank-err=\frac{ \sum_{x \in
+  $$
+  rank-err=\frac{ \sum_{x \in
   Te^{\oplus}, x' \in Te^{\ominus}} I[\hat{s}(x) < \hat{s}(x')] +
   \frac{1}{2}I[\hat{s}(x) = \hat{s}(x')] } {Pos \cdot Neg}
   $$
@@ -303,4 +304,3 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
   $$
   \dot{p}_i(S) = \frac{n_i + m \cdot \pi_i}{|S| + m}
   $$
-* TODO: Include non-uniform smoothing
