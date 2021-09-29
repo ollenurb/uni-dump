@@ -15,6 +15,7 @@ let
       matplotlib
       pydotplus
       graphviz
+      jupyter
     '';
   };
 in
