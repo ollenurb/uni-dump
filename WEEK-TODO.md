@@ -7,6 +7,7 @@
 * [ ] Review Anki
 
 ## Mercoledi
+* [ ] Aggiorna deck Anki AAUT fino a Regressione
 * [o] Segui una lezione di SCPD
     * [X] Prima ora
     * [ ] Seconda ora
