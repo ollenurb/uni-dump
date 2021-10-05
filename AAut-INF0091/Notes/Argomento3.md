@@ -94,7 +94,8 @@
 * L'idea dietro all'algoritmo e' quella di partire inizialmente dall'ipotesi
   piu' specifica possibile in $H$ (cioe' quella composta da soli $\emptyset$), e
   generalizzarla ogni qual volta che si trovi un esempio che non viene coperto
-  da tale ipotesi.
+  da tale ipotesi. In questo modo si trova l'ipotesi meno generale possibile ma
+  che copre tutti li esempi
     
 ## Percorsi all'interno dello spazio delle ipotesi
 * ***Definizione (Version Space)***: Un concetto si dice *completo* se copre
