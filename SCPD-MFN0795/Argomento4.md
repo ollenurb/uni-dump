@@ -5,6 +5,9 @@ paradigmi di programmazione:
     * Data Parallel
 Lo scopo di tali paradigmi e' di indicare dato un problema, dove si trova (da
 dove viene "*estratto*") il parallelismo.
+In realta' il libro di testo a cui fa riferimento il corso, segue una
+classificazione differente ma comunque le considerazioni ad alto livello fatte
+in questa sezione rimangono valide.
 
 ## Stream Parallel
 Nel caso stream parallel, l'assunzione e' quella di avere uno stream (lista
@@ -64,7 +67,47 @@ come prima approssimazione si ha
 $$
 T_{par} = \frac{T_f}{n}
 $$
-In pratica, se vediamo l'intero sistema come 
+In pratica, se vediamo l'intero sistema come una pipeline in cui $T_E, (T_f =
+T_f/n), T_C$ sono i tempi di esecuzione rispettivamente dell'emitter, della
+funzione e del collector, abbiamo che il tempo di esecuzione reale e' pari a
+quello di una pipeline
+$$
+T_{par} = \max \{ T_E, \frac{T_f}{n}, T_C \}
+$$
+Se assumiamo ora a scopo di semplificazione che $T_E = T_C$(tempo di dispatching
+e collection uguali). Dal momento che abbiamo detto che per una pipeline le
+performance migliori si raggiungono quando i tempi sono tutti uguali, allora
+possiamo imporre che
+$$
+n \leq \frac{T_f}{T_E}
+$$
+Questa relazione evidenzia come le prestazioni di questo paradigma aumentino
+linearmente fino ad un threshold $\tilde{n}$. Questa situazione evidenzia un
+collo di bottiglia, dato appunto dai tempi di servizio dell'*emitter* e del
+*collector*. Un modo per aumentare $\tilde{n}$ il piu' possibile e' quello di
+fare batching di task (aumentare la grana computazionale).
+
+## Data Parallel
+Nel data parallelism, l'impostazione e' diversa rispetto allo stream
+parallellism. I dati non sono piu' sottoforma di generico stream in cui i dati
+non erano gia' tutti disponibili, ma sono invece gia' tutti presenti all'interno
+di una struttura (lista, matrice, tensore ecc..) per cui e' possibile gia'
+accederli tutti insieme.
+Il paradigma data parallel si occupa di esplicitare il parallelismo dividendo i
+dati (gia' presenti) tra i diversi elementi di calcolo.
+Principalmente, ci sono due sottocategorie principali di data parallelism:
+* Globally Synchronous: *tutti* i processing elements necessitano di
+  sincronizzarsi tra di loro (tipicamente mediante una barrier)
+* Locally Synchronous (o *stencil*): *alcuni* processing elements necessitano di
+  sincronizzarsi tra di loro
+
+Alternativamente possiamo caratterizzare le computazioni data parallel nel modo
+seguente (prendendo come esempio di struttura dati una *lista*):
+* $map f [a_0, \dots, a_n] = [f(a_0), \dots, f(a_n)]$ 
+* $reduce \oplus [a_0, \dots, a_n] = a_0 \oplus \dots \oplus a_n$ 
+* $stencil f [a_0, \dots, a_n] = [ \dots, f(a_{i-1}, a_i, a_{i+1}), \dots]$ (in
+  questo caso si e' presa come esempio una funzione a $3$ parametri, ma in
+  generale ne ha $n$)
 
 # Embarassingly Parallels Computations
 Nella parallelizzazione di programmi sequenziali, quello che si vuole ottenere
@@ -78,5 +121,3 @@ possibile parallelizzare tali operazioni.  Molti problemi hanno questa
 caratteristica, tanto che sono stati chiamati problemi "embarassingly
 parallels", proprio per la facilita' con cui si puo' ottenere una suddivisione
 del problema sequenziale per ottenere una versione parallela.
-
-
