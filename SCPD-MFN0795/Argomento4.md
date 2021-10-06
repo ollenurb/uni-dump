@@ -49,18 +49,22 @@ iniziale che distribuisce gli elementi dello stream ad elementi di calcolo
 diversi, in cui tutti processano la funzione $f$. In questo senso differisce
 dalla pipeline in cui i diversi processi calcolavano le sottofunzioni $f_n$.
 
-![Modello di esecuzione task farm\label{figFarm}](img/4.2_taskfarm.png){
-width=50% }
+![Modello di esecuzione task farm. L'elemento di computazione E(mitter) manda ai
+workers ($f$) gli elementi dello stream da computare. Una volta computati, il
+processo C(ollector) colleziona i risultati dai workers.
+\label{figFarm}](img/4.2_taskfarm.png){ width=50% }
 
-Nel caso sequenziale, il tempo e'
+Il tempo di esecuzione sequenziale di un modello task farm e' pari al tempo di
+esecuzione di $f$ stesso
 $$
 T_{seq} = T_f
 $$
-mentre nel caso parallelo, supponendo che si abbiano $n$ elementi di calcolo,
-come prima approssimazione 
+Nel caso parallelo, supponendo che si abbiano $n$ elementi di calcolo (workers),
+come prima approssimazione si ha
 $$
 T_{par} = \frac{T_f}{n}
 $$
+In pratica, se vediamo l'intero sistema come 
 
 # Embarassingly Parallels Computations
 Nella parallelizzazione di programmi sequenziali, quello che si vuole ottenere
