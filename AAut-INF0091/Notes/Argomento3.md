@@ -1,3 +1,4 @@
+\newpage
 # Concept Learning
 * Alla base dell'apprendimento induttivo si fa un'assunzione importante: se il
   modello riesce ad approssimare la funzione target molto bene dagli esempi,
@@ -39,9 +40,9 @@
   attributi e valori che possono assumere. Consideriamo l'esempio in cui le
   istanze siano rappresentate da un attributo che puo' assumere 3 valori e altri
   5 che possono assumere solo 2 valori. Allora, possiamo calcolare:
-    - # istanze distinte: $3 \cdot 2 \cdot 2 \cdot 2 \cdot 2 \cdot 2 = 96$
-    - # ipotesi sintatticamente valide: $5 \cdot 4 \cdot 4 \cdot 4 \cdot 4 \cdot 4 = 5120$
-    - # ipotesi semanticamente valide: $1 + (4 \cdot 3 \cdot 3 \cdot 3 \cdot 3
+    - *nr.* istanze distinte: $3 \cdot 2 \cdot 2 \cdot 2 \cdot 2 \cdot 2 = 96$
+    - *nr.* ipotesi sintatticamente valide: $5 \cdot 4 \cdot 4 \cdot 4 \cdot 4 \cdot 4 = 5120$
+    - *nr.* ipotesi semanticamente valide: $1 + (4 \cdot 3 \cdot 3 \cdot 3 \cdot 3
       \cdot 3) = 973$
 * Il task dell'apprendimento equivale a ricercare all'interno dello spazio delle
   ipotesi le ipotesi che siano consistenti con il target concept target $c$
@@ -68,7 +69,7 @@
   di tutte, composta da soli 0), mentre al vertice inferiore c'e' l'ipotesi piu'
   generale (composta da tutti punti interrogativi)
 
-## Trovare l'ipotesi specifica massima: L'algoritmo Find-S
+## Trovare massima ipotesi piu' specifica: L'algoritmo Find-S
 * L'algoritmo Find-S si basa su due specifiche ipotesi per poter funzionare:
     1. Lo spazio delle ipotesi $H$ contiene un'ipotesi che descrive il target
        concept $c$
@@ -77,29 +78,168 @@
        labels discordi)
 * Se prendiamo per vere queste due ipotesi, si puo' definire un algoritmo per
   cercare l'ipotesi che meglio approssima $c$, chiamato ***Find-S***:
-* ***Algoritmo (Find-S)***:
-    1. Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset,
-       \dots, \emptyset)$
-    2. For each positive training instance $x_i$:
-        - For each attribute constraint $a_i$ in $h$:
-            - if the constraint $a_i$ in $h$ is satisfied by $x_i$:
-                - do nothing
-            - else
-                - replace $a_i$ in $h$ by the next more general constraint
-                  satisfied by $x_i$
-        - End For
-    3. End For
-    4. Output hypothesis $h$
 
+  
+  \begin{algorithm}[H]
+  \DontPrintSemicolon
+  \SetAlgoLined
+  \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+  \Input{$D$}
+  \Output{The maximal specific hypothesis $h$ that covers every example in $D$}
+  \BlankLine
+  Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
+  \emptyset)$\;
+
+  \For{each each positive training instance $x_i$}{
+    Remove from $VS$ every hypothesis $h$ such that $h(x) \neq c(x)$\;
+    \If{the constraint $a_i$ in $h$ is **not** satisfied by $x_i$}{
+      replace $a_i$ in $h$ by the next more general constraint satisfied by
+      $x_i$\;
+    }
+  }
+  \caption{Find-S}
+  \end{algorithm} 
+ 
 * L'idea dietro all'algoritmo e' quella di partire inizialmente dall'ipotesi
   piu' specifica possibile in $H$ (cioe' quella composta da soli $\emptyset$), e
   generalizzarla ogni qual volta che si trovi un esempio che non viene coperto
   da tale ipotesi. In questo modo si trova l'ipotesi meno generale possibile ma
   che copre tutti li esempi
-    
-## Percorsi all'interno dello spazio delle ipotesi
+* Gli esempi considerati per generalizzare $h$, pero', sono solo gli esempi
+  positivi per cui *vengono ignorati gli esempi negativi*. Questo perche' il
+  target concept non copre nessun esempio negativo, di conseguenza non e'
+  necessaria nessuna revisione dell'ipotesi $h$
+* La proprieta' chiave dell'algoritmo find-S e' che tutte le ipotesi all'interno
+  di $H$ siano rappresentate come insieme di *congiunzioni* di vincoli
+* $h$ e' l'ipotesi piu' specifica in $H$ in grado di coprire tutti gli esempi.
+  $h$ e' inoltre consistente anche con gli esempi negativi, posto che: 
+    * I dati siano corretti
+    * Il target concept $c$ sia presente in $H$ 
+* L'algoritmo find-S, pero', presenta alcune limitazioni evidenziate dai punti
+  seguenti:
+    * Non si ha modo di capire, ne di avere una misura su quanto il learner
+      abbia effettivamente confluito sul target concept
+    * In caso ci siano piu' ipotesi consistenti con gli esempi di train, Find-S
+      scegliera' sempre la piu' specifica, scartando le altre che potrebbero
+      essere l'effettivo target concept
+    * Non sempre i dati di train sono consistenti e l'algoritmo non ha modo di
+      riconoscere quando questo accade
+    * Nel caso in cui ci siano multiple ipotesi piu' generali in grado di
+      coprire tutti gli esempi, l'algoritmo non fa nessuna scelta informata tra
+      le scelte
+
+## L'algoritmo Candidate-Elimination e il Version Space
 * ***Definizione (Version Space)***: Un concetto si dice *completo* se copre
   tutti gli esempi positivi. Un concetto e' *consistente* se non copre nessun
   esempio negativo. Il ***version space*** e' l'insieme di tutti i concetti
-  *completi* e *consistenti*. Tale set e' *convesso*, per cui e' definito
-  interamente da i suoi due concetti meno e piu' generali.
+  *completi* e *consistenti*. Formalmente si dice che l'ipotesi $h$ e'
+  consistente con i dati di train $D$ se:
+  $$
+  Consistent(h, D) = (\forall (x, c(x)) \in D) h(x) = c(x)
+  $$
+  dove $c$ e' il *target concept*.
+  Analogamente, il versio space e' definito formalmente come
+  $$
+  VS_{H,D} = \{ h \in H | Consistent(h, D) \}
+  $$
+* Un modo ovvio per rappresentare il version space e' semplicemente quello di
+  enumerare ogni elemento in una lista. L'algoritmo chiamato
+  *List-Then-Eliminate* segue questo principio:
+   
+  \begin{algorithm}[H]
+  \DontPrintSemicolon
+  \SetAlgoLined
+  \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+  \Input{$D$}
+  \Output{The Version Space $VS$}
+  \BlankLine
+  $VS \leftarrow$ list containing every hypothesis in $H$\;
+  \For{each training example $(x, c(x))$}{
+      Remove from $VS$ every hypothesis $h$ such that $h(x) \neq c(x)$\;
+  }
+  Return $VS$
+  \caption{List then Eliminate}
+  \end{algorithm} 
+ 
+  Sfortunatamente, l'algoritmo richiede di enumerare ogni possibile elemento
+  all'interno del version space, che e' computazionalmente insostenibile
+* Il *Version space* puo' essere anche definito in termini dei suoi limiti:
+    * Un **general boundary** chiamato $G$ contenente i membri generalmente
+      massimi, consistenti con $D$
+    * Uno **specific boundary** chiamato $S$ contenente i membri specificamente
+      massimi, consistenti con $D$
+* $G$ ed $S$ definiscono l'intero version space 
+* **Piu' esempi muovono $S$ verso il basso** (piu' generali), mentre **meno
+  esempi muovono $G$ verso l'alto** (piu' specifici)
+* L'algoritmo Candidate-Elimination funziona con lo stesso principio
+  dell'algoritmo *List-Then-Eliminate* ma utilizza una rappresentazione molto
+  piu' compatta del version space. Piu' nello specifico, il version space e'
+  rappresentato da $G$ ed $S$
+    * Nel primo passo considera l'intero version space, impostando $G$ ed $S$ a
+      contenere l'ipotesi piu' generale e quella piu' specifica rispettivamente
+    * Una volta che l'algoritmo termina, l'intero versio space specificato dai
+      due limiti $G$ ed $S$ contiene solo ed esclusivamente ipotesi consistenti
+      con gli esempi
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{$D$}
+\Output{The Version Space defined in terms of $G$ and $S$}
+\BlankLine
+Initialize $G$ to the set of maximally general hypothesis in $H$
+($?, \dots, ?$)\;
+Initialize $G$ to the set of maximally specific hypothesis in $H$
+($\emptyset, \dots, \emptyset$)\;
+\For{each training example $d$}{
+    \eIf{$d$ is a positive example}{
+        Remove from $G$ any hypothesis inconsistent with $d$\;
+        \For{each hypothesis $s$ in $S$ that is not consistent with $d$}{
+            Remove $s$ from $S$\;
+            Add to $S$ all minimal generalizations $h$ of $s$ such that $h$ is
+            consistent with $d$ and some member of $G$ is more general than $h$\;
+            Remove from $S$ any hypothesis that is more general than another
+            hypothesis in $S$
+        }
+    }{
+        Remove from $S$ any hypothesis inconsistent with $d$\;
+        \For{each hypothesis $g$ in $G$ that is not consistent with $d$}{
+            Remove $g$ from $G$\;
+            Add to $G$ all minimal specializations $h$ of $g$ such that $h$ is
+            consistent with $d$ and some member of $S$ is more specific than $h$\;
+            Remove from $G$ any hypothesis that is less general than another
+            hypothesis in $G$
+        }
+    }
+}
+\caption{Candidate Elimination}
+\end{algorithm} 
+
+* Nell'algoritmo, le righe 8 e 15 servono a rendere $S$/$G$ un riassunto di
+  tutte le ipotesi consistenti con gli esempi positivi/negativi
+* Le righe 9 e 16 servono a mantenere tali insiemi minimi, manenendo solo le
+  ipotesi piu'/meno generali
+* Mano a mano che gli esempi vengono considerati dall'algoritmo, i limiti $G$ ed
+  $S$ si avvicinano sempre di piu' monotonicamente, delimitando il version space
+  di ipotesi candidate sempre piu' piccolo.
+* Se in $H$ e' contenuta l'ipotesi univoca che rappresenta il target *target
+  concept* e il numero di esempi e' abbastanza grande, allora l'algoritmo
+  Candidate Elimination convergera' all'ipotesi target univoca.
+* Nel caso invece in cui ci fossero esempi inconsistenti, $G$ ed $S$
+  eventualmente tendono a diventare vuoti con l'aumento del numero di esempi
+  considerati. Tale situazione si verifica anche quando il target concept non
+  puo' essere rappresentato con il linguaggio attuale (congiunzioni di vincoli)
+* Nel caso in cui non si avessero abbastanza esempi per cui il VersionSpace
+  contenga ancora molte ipotesi si potrebbero:
+    * Richiedere altri esempi etichettati ad un oracolo   
+    * Usare le ipotesi del version space per classificare esempi futuri
+* Nel primo caso, consideriamo lo scenario in cui il *learner* abbia accesso in
+  qualche modo ad un *oracolo* esterno. Il learner puo' utilizzare delle *query*
+  (istanze) che vengono classificate correttamente dall'oracolo per aumentare la
+  velocita' di convergenza.
+* Una strategia generale per la generazione di query e' scegliere quelle che
+  vengono classificate correttamente da meta' delle ipotesi nel version space e
+  negativamente dalla restante meta'. In questo modo il version space si
+  dimezza ad ogni esempio, per cui il target concept puo' essere trovato in
+  $log_2(|VS|)$ esperimenti
