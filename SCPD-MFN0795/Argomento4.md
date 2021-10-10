@@ -1,24 +1,26 @@
 # Paradigmi di programmazione paralleli
 Nella programmazione parallela ci sono due macrocategorie principali di
 paradigmi di programmazione:
-    * Stream Parallel (task parallel)
-    * Data Parallel
-Lo scopo di tali paradigmi e' di indicare dato un problema, dove si trova (da
-dove viene "*estratto*") il parallelismo.
+  * Stream Parallel (task parallel)
+  * Data Parallel
+Lo scopo di tali paradigmi e' di indicare dato un problema, dove  viene
+"*estratto*" il parallelismo.
 In realta' il libro di testo a cui fa riferimento il corso, segue una
-classificazione differente ma comunque le considerazioni ad alto livello fatte
+classificazione differente, ma comunque le considerazioni ad alto livello fatte
 in questa sezione rimangono valide.
 
 ## Stream Parallel
 Nel caso stream parallel, l'assunzione e' quella di avere uno stream (lista
-unbounded) di dati. L'accesso ai dati di uno stream richiede che ogni elemento
-sia acceduto in sequenza, per cui e' differente da un array in cui e' possibile
-accedere in modo random in qualsiasi posizione. Le forme di parallelismo piu'
-comuni nel caso stream parallel sono a loro volta *Pipeline* e *farm*.
-Nel caso della pipeline l'idea e' quella di calcolare una funzione $f$ per uno
-stream di dati inbound. Tale funzione e' possibile scomporla in diverse
-sottofunzioni indipendenti tra di loro, formalmente e' possibile rappresentare
-$f$ come composizione di $n$ funzioni
+unbounded) di dati. Un modo per rappresentarlo essenzialmente e' pensare ad uno
+stream come ad una lista di dati che non sono tutti disponibili fin da subito.
+Per questa ragione, l'accesso ai dati di uno stream richiede che ogni elemento
+sia acceduto "in sequenza", per cui e' differente da un array in cui e'
+possibile accedere in modo random in qualsiasi posizione.
+Le forme di parallelismo piu' comuni nel caso stream parallel sono a loro volta
+*pipeline* e *farm*.  Nel caso della pipeline l'idea e' quella di calcolare una
+funzione $f$ per uno stream di dati inbound.  Tale funzione e' possibile
+scomporla in diverse sottofunzioni indipendenti tra di loro, formalmente e'
+possibile rappresentare $f$ come composizione di $n$ funzioni
 $$
 f = f_1 \cdot f_2 \cdot \dots \cdot f_n
 $$
@@ -32,25 +34,26 @@ Se nel caso di una pipeline sequenziale il tempo di esecuzione e'
 $$
 T_{seq} = T_{f1} + T_{f1} + \dots + T_{fn}
 $$
-in una pipeline parallela si ha che il tempo di esecuzione e'
+in una pipeline parallela, invece, si ha che il tempo di esecuzione e'
 $$
 T_{par} = \max_{i \in 0, \dots, n}(T_{fi})
 $$
 In questa forma di parallelismo, il caso migliore e' evidentemente quello in cui
-tutti i tempi di esecuzione delle singole $f$ sono uguali, in modo che il tempo
+***tutti i tempi di esecuzione delle singole $f$ sono uguali***, in modo che il tempo
 massimo non penalizzi gli altri tempi.
 Il problema del pipelining puo' essere essenzialmente evidenziato per mezzo di
 un esempio: Se supponiamo che il tempo piu' grande sia quello di $T_{f3}$ e che
 tutti gli altri tempi siano minori e che si comunichi con primitive di
-comunicazione asincrone bloccanti. Allora il buffer di ricezione del processo
+comunicazione asincrone bloccanti, allora il buffer di ricezione del processo
 che gestisce $f_3$ molto probabilmente soffrira' di overflow per le troppe
-richieste provenienti dai "passi" inferiori della pipeline. Dimensionare tale
+richieste provenienti dai livelli inferiori della pipeline. Dimensionare tale
 buffer e' inoltre impossibile.
 
 Nel caso del paradigma task farm, l'idea e' invece quella di avere un processo
-iniziale che distribuisce gli elementi dello stream ad elementi di calcolo
-diversi, in cui tutti processano la funzione $f$. In questo senso differisce
+iniziale $E$ che si occupa di distribuire i differenti task ad elementi di calcolo
+diversi, ma in cui tutti processano la funzione $f$. In questo senso differisce
 dalla pipeline in cui i diversi processi calcolavano le sottofunzioni $f_n$.
+La Figura \ref{figFarm} riassume graficamente il paradigma.
 
 ![Modello di esecuzione task farm. L'elemento di computazione E(mitter) manda ai
 workers ($f$) gli elementi dello stream da computare. Una volta computati, il

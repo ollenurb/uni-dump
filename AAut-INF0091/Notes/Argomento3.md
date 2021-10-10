@@ -243,3 +243,22 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
   negativamente dalla restante meta'. In questo modo il version space si
   dimezza ad ogni esempio, per cui il target concept puo' essere trovato in
   $log_2(|VS|)$ esperimenti
+
+* Unbiased Learner: modello che utilizza il linguaggio dell'intera logica
+  (disgiunzioni, congiunzioni, negazioni). Il numero di concetti esprimibili e'
+  enorme, ed e' pari al power set $P(X)$. **Sicuramente** $H$ conterra' il
+  target concept
+* Un unbiased learner e' impossibile da avere. Il bias e' un concetto
+  fondamentale che sta alla base dell'apprendimento.
+
+## Inductive Bias
+* Serve per fare l'inductive leap
+* I larners possono essere classificati anche in base al loro bias induttivo:
+    * **Rote learner**: Salva esempi, classifica $x$ se e solo se matcha un
+      esempio precedente (nessun bias induttivo = nessuna abilita' di
+      generalizzare) 
+    * **Version Space candidate elimination**: Classifica gli esempi se tutti i
+      membri del version space concordano. (bias induttivo = lo spazio delle
+      ipotesi $H$ contiene il concetto target $c$) 
+    * **Find-S**: TODO
+    
