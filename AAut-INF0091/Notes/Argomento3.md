@@ -262,3 +262,4 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
       ipotesi $H$ contiene il concetto target $c$) 
     * **Find-S**: TODO
     
+
