@@ -1,19 +1,15 @@
 % Gini Index
 
-Il *Gini Index* e' un indice che serve a calcolare l'[impurita'](Impurita.md)
-di un [dataset](Dataset.md). La misura indica la probabilita' che un esempio
-qualsiasi sia stato etichettato erroneamente, supponendo che le istanze siano
-state etichettate campionando randomicamente dalla distribuzione di classi del
-dataset.
-
-## Formula
-Siano $k$ il numero di classi nel dataset $D$, allora il *Gini Index* di $D$ si
-calcola con la seguente formula:
-$$
-\sum^{k}_{i=0} \dot{p}_i(1 - \dot{p}_i)
-$$
-dove $\dot{p}_i$ indica la *probabilita' empirica* che l'istanza sia etichettata
-con la classe $i$.
+* Serve a calcolare l'[impurita'](Impurita.md) di un [dataset](Dataset.md)
+* Indica la probabilita' che un esempio qualsiasi sia stato etichettato
+  erroneamente, **supponendo** che le istanze siano state etichettate
+  campionando randomicamente dalla distribuzione di classi del dataset
+* Si calcola mediante la seguente formula
+  $$
+  \sum^{k}_{i=0} \dot{p}_i(1 - \dot{p}_i)
+  $$
+  $\dot{p}_i$ indica la *probabilita' empirica* che l'istanza sia etichettata
+  con la classe $i$.
 
 ## Derivazione della formula 
 Sia $D$ un dataset le cui istanze sono state etichettate mediante la *true class
