@@ -18,3 +18,6 @@
 * Per costruire un feature tree a partire dai dati di training si utilizza
   l'algoritmo [GrowTree](GrowTree.md), utilizzato dalla maggior parte dei tree
   learners
+* Ogni *nodo* (che sia *foglia* o un *nodo* intermedio), dal momento che copre
+  un certo numero di positivi e negativi, puo' essere rappresentato in un
+  *[coverage space](CoverageSpace.md)* come un segmento. 
