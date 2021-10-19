@@ -68,7 +68,7 @@
 \Input{Data $D$, the set of features $F$}
 \Output{Feature tree $T$ with labelled leaves}
 \BlankLine
-\If{$Homogeneus(D)$} { return $Label(D)$\; }
+\If{$Homogeneus(D)$} { \Return $Label(D)$\; }
 $S \leftarrow BestSplit(D, F)$\;
 split $D$ into subsets $D_i$ according to feature values in $S$\;
 \For{each $i$}{
@@ -76,7 +76,7 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
     {$T_i \leftarrow GrowTree(D_i, F)$\;}
     {$T_i$ is a leaft labelled with $Label(D)$\;}
 }
-return a tree whose root is labelled with $S$ and whose children are $T_i$\;
+\Return a tree whose root is labelled with $S$ and whose children are $T_i$\;
 \caption{GrowTree algorithm}
 \end{algorithm} 
 
@@ -165,7 +165,7 @@ $I_{min} \leftarrow 1$ \;
     $f_{best} \leftarrow f$\;
     }
 }
-return $f_{best}$\;
+\Return $f_{best}$\;
 \caption{BestSplit algorithm}
 \end{algorithm} 
 
@@ -331,9 +331,54 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
     2. Col risultato del prodotto calcolato al passo 1, utilizziamo il criterio
        della classe di maggioranza. Se $>1$ allora assegnamo la label della
        classe a numeratore, altrimenti quella a denominatore.
-* Una volta effettuato il labelling sulle foglie, e' possibile che figli dello
-  stesso padre abbiano la stessa classe assegnata. In questo caso e' possibile
-  effettuare un ***pruning***, cioe' una rimozione dei nodi figli.  Il pruning
-  e' particolarmente utile in casi in cui si voglia trasmettere il modello
-  (siccome pesa meno) o se lo si voglia leggere. Il problema e' che peggiora la
-  precisione del modello, al momento che l'*AUC* risultante e' minore.  
+
+## Semplificazione di alberi 
+* Un aspetto importante dei modelli predittivi (e quindi anche dei modelli ad
+  albero), e' che e' dimostrato che l'aumentare della complessita' del modello
+  (numero di nodi), l'errore del modello sul *test set* e sul *training set*
+  tende a diminuire fino ad una certa soglia.
+* Da questa soglia in poi, l'aumentare del numero di nodi fa diminuire l'errore
+  solamente sul *training set*, mentre l'errore sul *test set* continua a
+  crescere. Questa situazione e' gia' stata vista e rappresenta l'*overfitting*
+  del modello.
+* Ci sono diversi modi per diminuire la complessita' dei modelli e evitare cosi'
+  il conseguente overfitting.
+ 
+### Pruning
+* E' possibile applicare una fase di postprocessing di potatura chiamata pruning
+* Puo' essere effettuato dopo il labelling, in caso i figli dello stesso padre
+  predicano predicano la stessa classe, si considererebbe solo il nodo padre. In
+  questo caso, e' particolarmente utile in casi in cui si voglia trasmettere il
+  modello (siccome pesa meno) o se lo si voglia leggere. Il problema e' che
+  peggiora la precisione del modello, al momento che l'*AUC* risultante e'
+  minore. 
+* Alternativamente puo' essere impiegato un passaggio dell'algoritmo di
+  *post-processing* `PruneTree`.
+* L'algoritmo utilizza un dataset separato (*pruning set*) per testare se la
+  precisione del modello semplificato (output dell'algoritmo) e' maggiore di
+  quello precedente 
+ 
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Labelled data $D$, decision tree $T$}
+\Output{Pruned tree $T'$}
+\BlankLine
+\For{every internal node $N$ of $T$, starting from the bottom}{
+    $T_N \leftarrow$ subtree of $T$ rooted at $N$ \;
+    $D_N \leftarrow \{ x \in D \; | \; x \;\text{is covered by} \; N\}$ \;
+    \If{accuracy of $T_N$ over $D_N$ is worse than majority class in $D_N$}
+    { 
+    replace $T_N$ in $T$ by a leaf labelled with the majority class in $D_N$\;
+    }
+}
+\Return pruned version of $T$\;
+\caption{PruneTree(T, D) algorithm - reduce-error pruning of a decision tree}
+\end{algorithm} 
+
+### Stima degli errori di generalizzazione
+* Alternativa alla fase di post processing discussa in precedenza (`PruneTree`)
+  che diversamente e' impiegata durante la fase di apprendimento
+* Si associa un valore $k$ ad ogni foglia. Se la foglia non diminuisce l'errore
+  del padre di almeno $k+1$, allora non viene creata a priori
