@@ -1,4 +1,4 @@
-% Impurezza'
+% Impurezza
 
 * E' una misura che viene impiegata come euristica nella scelta dello split
   migliore dall'algoritmo [GrowTree](GrowTree.md)

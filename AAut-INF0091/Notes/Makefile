@@ -8,7 +8,7 @@ NOTES_DEFAULTS := metadata.yaml -d dispense.yaml
 NOTES_OPTIONS := --template eisvogel --citeproc --listings --number-sections
 NOTES_FILENAME := AAUT
 
-all: wiki
+all: notes
 
 # Notes-based build rule
 notes:

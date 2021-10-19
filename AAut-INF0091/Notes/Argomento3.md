@@ -78,27 +78,25 @@
        labels discordi)
 * Se prendiamo per vere queste due ipotesi, si puo' definire un algoritmo per
   cercare l'ipotesi che meglio approssima $c$, chiamato ***Find-S***:
-
   
-  \begin{algorithm}[H]
-  \DontPrintSemicolon
-  \SetAlgoLined
-  \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-  \Input{$D$}
-  \Output{The maximal specific hypothesis $h$ that covers every example in $D$}
-  \BlankLine
-  Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
-  \emptyset)$\;
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{$D$}
+\Output{The maximal specific hypothesis $h$ that covers every example in $D$}
+\BlankLine
+Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
+\emptyset)$\;
 
-  \For{each each positive training instance $x_i$}{
-    Remove from $VS$ every hypothesis $h$ such that $h(x) \neq c(x)$\;
-    \If{the constraint $a_i$ in $h$ is **not** satisfied by $x_i$}{
-      replace $a_i$ in $h$ by the next more general constraint satisfied by
-      $x_i$\;
-    }
-  }
-  \caption{Find-S}
-  \end{algorithm} 
+\For{each each positive training instance $x_i$}{
+\If{the constraint $a_i$ in $h$ is \textbf{not} satisfied by $x_i$}{
+  replace $a_i$ in $h$ by the next more general constraint satisfied by
+  $x_i$\;
+}
+}
+\caption{Find-S}
+\end{algorithm} 
  
 * L'idea dietro all'algoritmo e' quella di partire inizialmente dall'ipotesi
   piu' specifica possibile in $H$ (cioe' quella composta da soli $\emptyset$), e
@@ -261,5 +259,3 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
       membri del version space concordano. (bias induttivo = lo spazio delle
       ipotesi $H$ contiene il concetto target $c$) 
     * **Find-S**: TODO
-    
-

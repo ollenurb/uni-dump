@@ -102,4 +102,3 @@
 * ***Predictive clustering***: Apprendere una funzione di labelling $l$ da dati
   **non etichettati**. Cosi' come un classificatore, anche un cluster e' una
   mappa $\hat{q}(x): \mathscr{X} \rightarrow \mathscr{L}$
-
