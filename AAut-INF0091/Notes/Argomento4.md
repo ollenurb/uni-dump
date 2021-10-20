@@ -318,10 +318,10 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   2. Un **probability estimator**: applicando una stima di probabilita' ad ogni
      foglia calcolata mediante *Laplace* oppure *m-smoothing*
   3. Un **classificatore**: scegliendo il *punto di operazione ottimale*
-     (decision threshold) come l'intersezione della curva isometrica (diagonale)
-     nel *ROC plot* e la curva con coefficiente angolare pari a $\frac{1}{c
-     \cdot clr}$. Come risultato, le foglie associate ai segmenti doppo il punto
-     di operazione predirranno positivi, mentre le rimanenti negativi.
+     (decision threshold) come l'intersezione della curva del classificatore nel
+     *ROC plot* e la curva con coefficiente angolare pari a $\frac{1}{c \cdot
+     clr}$. Come risultato, le foglie associate ai segmenti doppo il punto di
+     operazione predirranno positivi, mentre le rimanenti negativi.
 * Ovviamente esiste un altro metodo piu' semplice per scegliere la classe senza
   dover effettuare una costruzione geometrica:
     1. Nella foglia *i-esima* calcoliamo il prodotto $\frac{n_i^-}{n_i^+} \cdot
@@ -381,4 +381,54 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
 * Alternativa alla fase di post processing discussa in precedenza (`PruneTree`)
   che diversamente e' impiegata durante la fase di apprendimento
 * Si associa un valore $k$ ad ogni foglia. Se la foglia non diminuisce l'errore
-  del padre di almeno $k+1$, allora non viene creata a priori
+  del padre di almeno $k+g$, allora non viene creata a priori. 
+  In altri termini significa che non viene creata la foglia se la
+  classificazione rispetto al nodo padre non migliora di almeno $g$ istanze.
+* $E_{tot} = \sum^N_{i=1} e_i + N \cdot g$ (errore di generalizzazione)
+
+## Sensitivita' rispetto alla distribuzione delle classi 
+> I criteri di impurezza del *Gini index* e quello dell'*entropia attesa*,
+  sono sensibili ai cambiamenti nella distribuzione delle classi, mentre
+  $\sqrt{Gini}$ non lo e'.
+  
+* Se si volessero inoltre includere i costi nel criterio di splitting, si
+  potrebbe decidere di introdurre delle *copie* di esempi positivi/negativi
+  all'interno del train set.
+  * Supponiamo ad esempio che i costi sui positivi siano 10 volte piu' costosi
+    della controparte negativa
+  * E' possibile *inflazionare* il dataset di train inserendo per ogni esempio
+    positivo 10 copie dello stesso
+* Il metodo dell'inflazione rappresenta un'*alternativa* per includere il
+  *cost-ratio* rispetto al metodo discusso in precedenza (per determinare le
+  condizioni operative del modello)
+* L'inflazione del dataset aumenta i tempi di training
+
+## Apprendimento di alberi come riduzione della varianza
+* Quando si parla di predizione di una classe, lo scopo e' quello di predirre
+  una variabile Booleana (*Bernoulli*) incerta che ha una certa probabilita' di
+  accadere $\dot{p}$
+* L'apprendimento di un albero consiste nella minimizzazione di una funzione
+  obiettivo, rappresentata dalla varianza di tale variabile pari a $(1-\dot{p})$
+* Possiamo definire negli stessi termini un problema di ***regressione***, in
+  cui la varianza e' calcolata come
+  $$
+  Var(Y) = \frac{1}{|Y|}\sum_{y \in Y} (y - \overline{y})^2
+  $$
+
+### Regression trees
+* Negli alberi di regressione le variabili target son ocontinue e non discrete
+  come visto fino ad ora
+* Per apprendere un feature tree che verra' utilizzato per il task di
+  regressione, si devono apporre delle modifiche alle procedure gia' viste per
+  l'agoritmo `GrowTree`:
+    * Si utilizza al posto della misura di impurita' $Imp(Y)$ la varianza
+      $Var(Y)$ nell'algoritmo `BestSplit`
+    * La funzione `Label(Y)` ritorna il valor medio di tutti i valori nella
+      foglia $Y$
+    * La funzione `Homogeneus(Y)` ritorna `true` se la *varianza* della foglia
+      $Y$ e' al di sotto di un certo limite (*threshold*)
+* Gli alberi di regressione sono piu' suscettibili all'overfitting dal momento
+  che le foglie conterranno molti meno esempi 
+ 
+### Clustering trees
+
