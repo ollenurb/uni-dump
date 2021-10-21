@@ -431,4 +431,76 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   che le foglie conterranno molti meno esempi 
  
 ### Clustering trees
+* Introduciamo una funzione $dis: X \times X \rightarrow \mathbb{R}$ che indica,
+  data una *coppia* di istanze nello spazio degli esempi la loro
+  *dissimilarita'*
+* La nozione di dissimilarita' puo' essere estesa ad un intero set $D$:
+  $$  
+  Dis(D) = \frac{1}{|D^2|} \sum_{x_1 \in D} \sum_{x_2 \in D} dis(x_1, x_2)
+  $$
+* $Dis(D)$ puo' essere quindi utilizzata come indice di impurezza nell'algoritmo
+  `BestSplit`. Piu' bassa e' la dissimilarita' di un dataset $D_j$ migliore
+  sara' il cluster delle istanze $D$.
+* La dissimilarita' di uno split e' data dalla media pesata di ogni split
+  *j-esimo*
+  $$
+  Dis(\{ D_1, \dots, D_l \}) = \frac{|D_j|}{|D|} Dis(D_j)
+  $$
+  (*probabilita' di passare dal nodo padre al nodo j-esimo moltiplicata per la
+  dissimilarita' dello split j-esimo*)
+* La dissimilarita' $dis(x_1, x_2)$ puo' essere calcolata mediante distanza
+  euclidea: se l'istanza e' espressa solo in termini di features numeriche, si
+  puo' definire come 
+  $$
+  dis(\vec{x_1}, \vec{x_2}) = (\vec{x_1} - \vec{x_2})^2 = \sum^d_{j=1} [x_{1j} -
+  x_{2j}]^2
+  $$
+* E' dimostrabile sostituendo la formula di $dis(x_1, x_2)$ all'interno di
+  $Dis(D)$ che $Dis(D) = 2 \cdot Var(D)$
+* Gli split quindi diminuiscono la varianza rispetto alle features di valori
+  numerici. Ogni split avra' quindi sempre varianza minore del padre.
+* I clusters molto piccoli avranno una dissimilarita' molto piccola, per cui
+  sarebbe necessario un *pruning* di tali nodi per evitare un overfitting
+* I clusters composti invece da singole istanze, dovrebbero essere ignorati
+  quando viene calcolata la dissimilarita' di uno split, poiche' ritornano la
+  dissimilarita' piu' ottimistica possibile ($0$)
+
+### Coesione e Separazione di Clusters 
+* La varianza di una dataset $D$ (e conseguentemente la sua dissimilarita') son
+  costanti
+* Consideriamo $k$ cluster $(D_1, \dots, D_k)$ di $D$
+* Il centroide complessivo del dataset e' definito come
+  $$
+  \vec{c} = \frac{1}{|D|} \sum_{\vec{x} \in D \vec{x}}
+  $$
+
+* Possiamo definire diverse quantita':
+    * **TSSE** = (*Total Sum of Squared Errors*)
+      $$
+      TSSE = \sum_{\vec{x} \in D} (\vec{x} - \vec{c})^2 = |D| \cdot Var(D) =
+      \frac{|D|}{2} Dis(D)
+      $$
+    * WSSE = (*Within Sum of Square Errors*) - Indica quanto i clusters sono
+      coesi, ottenuta calcolando quanto le istanze si discostano dal
+      ***centroide interno***, cioe' l'istanza che piu' si avvicina alla media.
+      (il centroide *i-esimo* e' il centroide calcolato rispetto al cluster
+      *i-esimo*).
+      $$
+      WSSE = \sum_{i=1}^k \sum_{\vec{x} \in D_i} (\vec{x} - \vec{c_i})^2
+      $$
+    * BSSE = (*Between Sum of Square Errors*) - Indica quanto i clusters sono
+      separati tra di loro, ottenuta calcolando quanto i centroidi interni
+      dei singoli clusters si discostano dal centroide complessivo (quello
+      dell'intero dataset $D$)
+      $$
+      BSSE = \sum_{i = 1}^k |D_i| (\vec{c_i} - \vec{c})^2
+      $$
+* E' possibile derivare che $TSSE = WSSE + BSSE$, per cui quello che si vuole
+  ottenere e':
+    * Una minimizzazione del termine $WSSE$, siccome si vuole che le istanze di
+      un cluster siano il *piu' coese possibile* tra loro
+    * Una massimizzazione del termine $BSSE$, siccome si vuole che le istanze di
+      un cluster siano il *piu' separate possibile* dalle istanze degli altri
+      clusters
+
 
