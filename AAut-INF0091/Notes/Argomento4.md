@@ -1,3 +1,4 @@
+\newpage
 # Modelli ad Albero 
 * I modelli ad albero in generale nel libro vengono descritti come *feature
   trees*. Questi alberi generali possono poi essere specializzati in diversi
@@ -113,7 +114,7 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
 * La ***purezza*** di una partizione $D$, costituita da $n^+$ esempi positivi e
   $n^-$ esempi negativi e' data dalla *probabilita' empirica*
   $$
-  \dot{p} = \frac{n^+}{n^+ = n^-}
+  \dot{p} = \frac{n^+}{n^+ + n^-}
   $$
 * Purezza massima: $0$ oppure $1$, che indica la presenza di soli positivi o
   soli negativi
@@ -180,7 +181,7 @@ $I_{min} \leftarrow 1$ \;
       \right \rceil = \left \lceil 2.58 \right \rceil = 3$ bits di informazione
     * Supponiamo ora di trovare un "*suboutcome*", cioe' una quantita' di
       informazione minore ma dipendente comunque dall'outcome finale, ad
-      esempio, la ***parita'*** del dado
+      esempio, la ***parita'*** del risultato del lancio
     * Per rappresentare la parita', sarebbero necessari $b_1 = \left \lceil
       log_2 \: 2 \right \rceil  = 1$ bits.
     * Dopo il lancio, se abbiamo l'informazione sulla parita', si riduce la
@@ -502,5 +503,3 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
     * Una massimizzazione del termine $BSSE$, siccome si vuole che le istanze di
       un cluster siano il *piu' separate possibile* dalle istanze degli altri
       clusters
-
-
