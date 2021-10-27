@@ -259,3 +259,5 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
       membri del version space concordano. (bias induttivo = lo spazio delle
       ipotesi $H$ contiene il concetto target $c$) 
     * **Find-S**: TODO
+
+> TODO: Inserire esercizi
