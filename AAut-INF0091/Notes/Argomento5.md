@@ -49,9 +49,44 @@ la stessa (siccome e' sempre quella migliore)*
 * Come gia' visto anche, i modelli a regole rispetto i modelli ad albero,
   utilizzano anche la *copertura* del segmento come euristica di scelta delle
   regole
+  
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Labelled training data $D$}
+\Output{Rule list $R$}
+\BlankLine
+{$R \leftarrow \emptyset$ \;}
+\While{$D \neq \emptyset$}{
+    {$r \leftarrow LearnRule(D)$\;}
+    {append $r$ to the end of $R$\;}
+    {$ D \leftarrow D \ \{x \in D \; | \; x\text{ is covered by } r\}$}
+}
+\Return $R$\;
+\caption{LearnRuleList(D) - learn an ordered list of rules}
+\end{algorithm} 
 
-> TODO: Inserisci algoritmo `LearnRuleList(D)`
-> TODO: Inserisci algoritmo `LearnRule(D)`
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Labelled training data $D$}
+\Output{rule $r$}
+\BlankLine
+{$b \leftarrow true$ \;}
+{$L \leftarrow$ set of available literals \;}
+\While{not $Homogeneous(D)$}{
+    {$l \leftarrow BestLiteral(D, L)$\;}
+    {$b \leftarrow b \land l$\;}
+    {$ D \leftarrow \{x \in D \; | \; x\text{ is covered by } b\}$}
+    {$ L \leftarrow L \ \{l' \in L \; | \; l'\text{ uses same feature as }l\}$}
+}
+{$C \leftarrow Label(D)$ \;}
+{$R \leftarrow$ if $b$ then $Class=C$ \;}
+\Return $r$\;
+\caption{LearnRule(D) - learn a single rule}
+\end{algorithm} 
 
 * Un *feature tree* con branching a destra (*se falso, considera la prossima
   foglia*) corrisponde ad una lista di regole a letterali singoli
@@ -59,6 +94,7 @@ la stessa (siccome e' sempre quella migliore)*
 ## Liste di regole come rankers 
 > *Liste di regole ereditano la proprieta' degli alberi di decisione di avere
 una coverage curve **convessa** nel training set*
+
 * L'ordine delle probabilita' empiriche associate ad ogni regola (l'ordine di
   ranking) e' diverso dall'ordine appreso dal modello
 * *Vedere esempio sulle slides che dimostra che nel ROC plot la curva con AUC
