@@ -1,11 +1,12 @@
 ---
-papersize: a4
+papersize: A4
 numbersections: true
 titlepage: true
 title:  'Appunti di Sistemi di Calcolo Paralleli e Distribuiti'
 subtitle: "A.A. 2020-2021"
 author: [Matteo Brunello]
 header-includes:
-    \usepackage{float}
-    \floatplacement{figure}{H}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 ---

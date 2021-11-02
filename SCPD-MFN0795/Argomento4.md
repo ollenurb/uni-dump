@@ -1,13 +1,26 @@
 # Paradigmi di programmazione paralleli
 Nella programmazione parallela ci sono due macrocategorie principali di
 paradigmi di programmazione:
+
   * Stream Parallel (task parallel)
   * Data Parallel
+  
 Lo scopo di tali paradigmi e' di indicare dato un problema, dove  viene
 "*estratto*" il parallelismo.
 In realta' il libro di testo a cui fa riferimento il corso, segue una
 classificazione differente, ma comunque le considerazioni ad alto livello fatte
-in questa sezione rimangono valide.
+in questa sezione rimangono valide. 
+
+* Stream Parallel
+    * Task Farm
+        * Embarassingly Parallel
+    * Pipeline
+        * Pipelined Computations
+* Data Parallel
+    * Synchronous Computations
+        * Locally Synchronous
+        * Globally Synchronous
+    * Asynchronous Computations
 
 ## Stream Parallel
 Nel caso stream parallel, l'assunzione e' quella di avere uno stream (lista
@@ -17,7 +30,10 @@ Per questa ragione, l'accesso ai dati di uno stream richiede che ogni elemento
 sia acceduto "in sequenza", per cui e' differente da un array in cui e'
 possibile accedere in modo random in qualsiasi posizione.
 Le forme di parallelismo piu' comuni nel caso stream parallel sono a loro volta
-*pipeline* e *farm*.  Nel caso della pipeline l'idea e' quella di calcolare una
+*pipeline* e *farm*. 
+
+### Pipeline
+Nel caso della pipeline l'idea e' quella di calcolare una
 funzione $f$ per uno stream di dati inbound.  Tale funzione e' possibile
 scomporla in diverse sottofunzioni indipendenti tra di loro, formalmente e'
 possibile rappresentare $f$ come composizione di $n$ funzioni
@@ -49,6 +65,7 @@ che gestisce $f_3$ molto probabilmente soffrira' di overflow per le troppe
 richieste provenienti dai livelli inferiori della pipeline. Dimensionare tale
 buffer e' inoltre impossibile.
 
+### Task Farm
 Nel caso del paradigma task farm, l'idea e' invece quella di avere un processo
 iniziale $E$ che si occupa di distribuire i differenti task ad elementi di calcolo
 diversi, ma in cui tutti processano la funzione $f$. In questo senso differisce
@@ -99,6 +116,7 @@ accederli tutti insieme.
 Il paradigma data parallel si occupa di esplicitare il parallelismo dividendo i
 dati (gia' presenti) tra i diversi elementi di calcolo.
 Principalmente, ci sono due sottocategorie principali di data parallelism:
+
 * Globally Synchronous: *tutti* i processing elements necessitano di
   sincronizzarsi tra di loro (tipicamente mediante una barrier)
 * Locally Synchronous (o *stencil*): *alcuni* processing elements necessitano di
@@ -106,21 +124,10 @@ Principalmente, ci sono due sottocategorie principali di data parallelism:
 
 Alternativamente possiamo caratterizzare le computazioni data parallel nel modo
 seguente (prendendo come esempio di struttura dati una *lista*):
+
 * $map f [a_0, \dots, a_n] = [f(a_0), \dots, f(a_n)]$ 
 * $reduce \oplus [a_0, \dots, a_n] = a_0 \oplus \dots \oplus a_n$ 
 * $stencil f [a_0, \dots, a_n] = [ \dots, f(a_{i-1}, a_i, a_{i+1}), \dots]$ (in
   questo caso si e' presa come esempio una funzione a $3$ parametri, ma in
   generale ne ha $n$)
 
-# Embarassingly Parallels Computations
-Nella parallelizzazione di programmi sequenziali, quello che si vuole ottenere
-idealmente e' una suddivisione del problema in parti diverse (idealmente $p$)
-che saranno eseguite in parallelo dai diversi $p$ processori. Molti problemi
-sono facilmente divisibili mentre altri no. La disivibilita' deriva
-principalmente dalla presenza o meno di dipendenze tra operazioni che devono
-essere eseguite in un ordine preciso. Quando questa dipendenza e' assente, le
-operazioni possono essere eseguite indipendentemente su ogni dato, per cui e'
-possibile parallelizzare tali operazioni.  Molti problemi hanno questa
-caratteristica, tanto che sono stati chiamati problemi "embarassingly
-parallels", proprio per la facilita' con cui si puo' ottenere una suddivisione
-del problema sequenziale per ottenere una versione parallela.

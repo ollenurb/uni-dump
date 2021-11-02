@@ -1,0 +1,141 @@
+\newpage
+# Embarassingly Parallels Computations
+Nella parallelizzazione di programmi sequenziali, quello che si vuole ottenere
+idealmente e' una suddivisione del problema in parti diverse (idealmente $p$)
+che saranno eseguite in parallelo dai diversi $p$ processori. Molti problemi
+sono facilmente divisibili mentre altri no. La divisibilita' deriva
+principalmente dalla presenza o meno di dipendenze tra operazioni che devono
+essere eseguite in un ordine preciso. Quando questa dipendenza e' assente, le
+operazioni possono essere eseguite indipendentemente su ogni dato, per cui e'
+possibile parallelizzare tali operazioni. Molti problemi hanno questa
+caratteristica, tanto che sono stati chiamati problemi "*embarassingly
+parallels*", proprio per la facilita' con cui si puo' ottenere una suddivisione
+del problema sequenziale per ottenere una versione parallela.
+
+> Nelle computazioni embarassingly parallels le comunicazioni tra le unita' di
+computazione e' ridotta al minimo se non del tutto assente
+
+Siccomes stiamo parlando di computazioni che ricadono nel paradigma *Task farm*,
+le computazioni embarassingly parallels sono anch'esse costituite da un
+`Master` e diversi `Workers`.
+Come gia' detto, una computazione embarassingly parallel e' riassumibile nei
+seguenti passi:
+
+1. Il `Master` divide il lavoro per il numero di `Workers`
+2. Il `Master` comunica il lavoro ad ogni `Worker`
+3. Il `Master` colleziona i risultati dei `Workers`
+
+I workers possono essere sia creati *staticamente* (e quindi partono insieme al
+master) oppure *dinamicamente* (per cui vengono inizializzati dal master).
+Analizziamo ora alcuni esempi di computazioni di questo genere.
+
+## Processing di immagini a basso livello
+Nel caso di processing di immagini, l'idea e' quella di dividere una matrice di
+valori `RGB` per un certo numero di workers. Il concetto di grana qui e' molto
+semplice: si tratta appunto del "*quadrato*" di pixels che viene assegnato al
+singolo worker. Al posto di mandare un singolo pixel ad ogni worker, si
+aggregano i dati in modo da risparmiare sui tempi di inizializzazione della
+comunicazione $t_0$.
+Ogni worker poi calcolera' la funzione sulla sua porzione di immagine associata,
+ad esempio un Gaussian Blurring, un filtro mediano o qualsiasi altro filtro per
+image processing.
+
+## Calcolo dell'insieme di Mandelbrot
+L'insieme di Mandelbrot e' essenzialmente un insieme di punti nel piano
+complesso per cui una funzione $z_k$ non diverge oltre un certo limite
+*threshold*. Il generico passo $k+1$ e' calcolabile nel modo seguente  
+$$
+z_{k + 1} = z_k^2 + c
+$$
+Dove $c$ e' il punto nel piano complesso che si sta considerando, mentre $z_0 =
+0$.
+Il calcolo della funzione viene re-iterato fin quando una di queste due
+condizioni viene soddisfatta:
+
+1. $z_{length} = \sqrt{a^2 + b^2} > 2$, cioe' la magnitudine di $z = a + bi$ e'
+   piu' grande di 2
+2. $k \geq t$, cioe' il numero di iterazioni $k$ raggiunge un certo limite $t$
+
+Per plottare l'insieme, si colora il pixel in base a quante iterazioni $k$ sono
+necessarie per superare la norma (o il threshold).
+Siccome ogni punto e' calcolabile in maniera indipendente, possiamo applicare il
+paradigma, dividendo l'immagine in un numero di righe pari al numero di worker
+per poi far calcolare ad ognuno di essi la loro porzione. 
+Un problema evidente di questo tipo di approccio, e' che alcune zone
+dell'insieme di mandelbrot hanno una densita' piu' alta di punti che non
+convergono rispetto ad altre, con la conseguenza che alcuni workers dovranno
+computare molto piu' di altri. Questo problema e' un problema di *bilanciamento
+del carico*, e puo' essere risolto con l'assegnazione dei task dinamica.
+Possiamo quindi distinguere due tipologie di assegnamento dei tasks:
+
+* **Dinamica** (*on-demand*): le unita' di computazione richiedono la prossima
+  parte da computare al master dopo aver computato la precedente
+* **Statica**: dividi semplicemente la regione in un numero fisso di parti,
+  ognuna assegnata ad un'unita' di computazione. La regola di assegnazione e'
+  arbitraria (dettata dalla policy di schedulazione).
+
+Nella maggior parte dei casi, l'assegnazione *on-demand* e' quella ottimale,
+proprio grazie alla sua caratteristica di bilanciamento automatico e naturale
+del carico. Come contro, l'assegnazione *on-demand* soffre nei problemi in cui
+la grana computazionale e' particolarmente "fine". Questo perche' i workers
+potrebbero stare tanto tempo ad aspettare che il master comunichi i task ai
+workers prima di lui. Quindi, all'aumentare della finezza della grana si
+accentua questo fenomeno in cui i workers passano sempre piu' tempo ad aspettare
+che il worker gli comunichi il prossimo task da esguire.
+  
+## Calcolo del Pi-Greco con il metodo Monte Carlo
+Impiegare il metodo montecarlo per il di $\pi$ consiste essenzialmente nella
+generazione random di un numero arbitrario di punti $(x, y)$ (mediante due
+generatori di numeri casuali) all'interno di un quadrato. L'intuizione e' che
+contando i punti dentro al cerchio e i punti fuori dal cerchio e considerandone
+il rapporto si ottiene un'aprrossimazione del valore di $\pi$.
+Tanto piu' il numero di punti $n \rightarrow \infty$ tanto sara' piu' precisa
+l'approssimazione. Questo poiche' il rapporto tra l'area del cerchio e l'area
+del quadrato inscritto in esso e' pari a $\pi$.
+
+Un'altra applicazione particolarmente interessante del metodo e' per stimare il
+valore di un integrale in funzioni non integrabili o particolarmente complesse
+da integrare. Per calcolarlo basta sfruttare le somme di *Riemann*
+$$
+\int_{x_1}^{x_2} f(x) dx = \lim_{N \rightarrow \infty} \sum^{N}_{i = 1}
+f(x_r)(x_2 - x_1)
+$$
+in cui $x_r$ e' un punto generato casualmente.
+
+### Generazione di numeri casuali
+Un'accortezza particolare per questo tipo di applicazioni deve essere prestata
+per la generazione di numeri casuali in applicazioni parallele. 
+
+> *Non c'e' modo di avere un'implementazione sequenziale che usi un determinato
+generatore di numeri sequenziali e un'implementazione equivalente parallela che
+usi lo stesso generatore. In generale, non possono mai produrre lo stesso
+risultato.*
+
+Supponiamo di avere un programma sequenziale che utilizza un solo processore
+$P$. Tale programma inoltre utilizza un generatore $s_0$, che genera la sequenza
+$r_1, r_2, \dots, r_n$ di numeri casuali. Il problema sorge quando si vuole
+parallelizzare tale programma. L'idea e' che se si volesse far generare dei
+numeri casuali a piu' processori $P_i$ con lo stesso generatore di numero
+casuale, si finirebbe col generare $n$ volte la stessa sequenza. La situazione e'
+descritta graficamente in Figura \ref{figRngParallel}.
+
+![A sinistra (verde) l'implementazione sequenziale utilizza $s_0$ per generare
+la sequenza. A destra (blu), dal momento che ogni processore $P_i$ utilizza
+$s_0$ genera la stessa sequenza di numeri casuali, di fatto portando a $n$
+duplicati della stessa sequenza  \label{figRngParallel}](img/5.1_rngs.png){
+width=80% }
+
+Per risolvere questo problema senza sacrificare la determinabilita' (data dal
+seed) si procede nel modo seguente:
+
+1. Inizialmente un processo prediletto si occupa di generare randomicamente
+   mediante un determinato algoritmo (ad esempio *Mersenne Twister*) un seed per
+   ogni processo.
+2. I processi, dopo aver ricevuto il seed dal processo prediletto, utilizzano un
+   *algoritmo differente* (as esempio *Modulo $p$*) da quello utilizzato per
+   generare i seeds, per generare la loro sequenza.
+ 
+In questo modo non si sacrifica la determinabilita' ma si ottengono sequenze
+statisticamente corrette per ogni processo coinvolto nella computazione. L'unico
+problema e' che non c'e' modo di ottenere una controparte sequenziale a singolo
+generatore.

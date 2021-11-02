@@ -262,3 +262,6 @@ alla popolazione di origine
 \caption{WeightedCovering(D) - learn overlapping rules by weighting examples}
 \end{algorithm} 
 
+* L'euristica che e' guidata dal peso e' *"nascosta"* all'interno dell'algoritmo
+  `BestLiteral(D, L)` 
+

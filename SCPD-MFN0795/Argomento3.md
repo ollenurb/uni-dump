@@ -230,15 +230,13 @@ protocollo di send/receive:
 Le primitive di comunicazione collettiva sono quelle principali discusse in
 precedenza, piu' altre primitive meno utilizzati ma non meno importanti: 
 
-```
-MPI_Bcast()           - Manda un messaggio in broadcast 
-MPI_Gather()          - Primitiva Gather
-MPI_Scatter()         - Primitiva Scatter
-MPI_Alltoall()        - Invia i dati da tutti i processi a tutti i processi
-MPI_Reduce()          - Primitiva Reduce
-MPI_Reduce_scatter()  - Combina i valori e utilizza scatter sul risultato della combinazione 
-MPI_Scan()            - Distribuisce ai vari processi tutti i prefissi accumulati
-```
+* `MPI_Bcast()`: Manda un messaggio in broadcast 
+* `MPI_Gather()`: Primitiva Gather
+* `MPI_Scatter()`: Primitiva Scatter
+* `MPI_Alltoall()`: Invia i dati da tutti i processi a tutti i processi
+* `MPI_Reduce()`: Primitiva Reduce
+* `MPI_Reduce_scatter()`: Combina i valori e utilizza scatter sul risultato della combinazione 
+* `MPI_Scan()`: Distribuisce ai vari processi tutti i prefissi accumulati
 
 Tutte queste primitive di comunicazione hanno come effetto collaterale anche la
 necessita' di sincronizzazione. La barrier e' una primitiva atta alla
@@ -254,22 +252,32 @@ sincronizzarli tutti.
 Nella valutazione di programmi sequenziali si usa spesso come metrica il numero
 di istruzioni che vengono eseguite. Per un algoritmo parallelo, le cose si
 complicano leggermente ed e' necessario tener conto anche del tempo che passa il
-programma a far comunicare i processi tra loro.  E' possibile quindi exprimere
-il tempo di esecuzione parallela $t_{p}$ come la somma di due parti: il tempo di
-computazione e il tempo di comunicazione
+programma a far comunicare i processi tra loro. In questo caso, quello che si
+misura e' il cosiddetto *work-clock* time, cioe' il tempo misurato *"a
+orologio"*.
+Come prima approssimazione e' possibile esprimere il tempo di esecuzione
+parallela $t_{p}$ come la somma di due parti: il tempo di computazione e il
+tempo di comunicazione
 $$
 t_{p} = t_{comp} + t_{comm}
 $$
-In questa relazione, il tempo di computazione viene valutato allo stesso modo
-dei programmi sequenziali. Mentre nel caso in cui piu' di un processo venga
-eseguito in parallelo, si tiene conto solo del processo che ha tempo di
-esecuzione massimo.  L'unita' di tempo di $t_{comp}$ viene misurata in numero di
-istruzioni eseguite. Tipicamente nella valutazione delle prestazioni, il tempo
-computazionale viene suddiviso in diverse parti, separate dai momenti in cui
-avvengono gli scambi di messaggi.
+In realta' il tempo di comunicazione sarebbe piu' propriamente chiamato tempo di
+*overhead*, in modo da comprendere tutte quelle parti (come la sincronizzazione,
+load balancing ecc..) che non verrebbero comprese altrimenti.
+Nel caso in cui piu' di un processo venga eseguito in parallelo, si tiene conto
+solo del processo che ha tempo di esecuzione massimo.  L'unita' di tempo di
+$t_{comp}$ puo' essere misurata in numero di istruzioni eseguite ma molto spesso
+si tratta di vere e proprie "*fasi*" che il programma ha bisogno di eseguire per
+computare il risultato. Possiamo quindi eseprimere il tempo computazionale come
+la somma del tempo necessario ad eseguire le fasi che lo compongono, separate
+dai momenti in cui avvengono gli scambi di messaggi.
 $$
 t_{comp}=t_{comp1}+t_{comp2}+\dots
 $$
+
+> Per utilizzare queste relazioni, ovviamente, bisogna supporre che tutte le
+macchine/processori operino alla stessa velocita'.
+
 Il tempo di comunicazione $t_{comm}$, invece, dipende direttamente dal numero di
 messaggi, dalla grandezza di un singolo messaggio, dalla tipologia di rete di
 interconnessione e dalla modalita' di trasmissione. Siccome l'indice e'
@@ -280,9 +288,13 @@ t_{comm} = t_{startup} + w t_{data}
 $$
 Questa relazione indica che il tempo di comunicazione e' dato dal tempo di
 startup ($t_{startup}$) (essenzialmente il tempo necessario a mandare un
-messaggio senza nessun dato) piu' il tempo necessario a inviare un messaggi
+messaggio senza nessun dato) piu' il tempo necessario a inviare un messaggio
 ($t_{data}$) moltiplicato per il numero di messaggi inviati ($w$). 
-
+Anche in questo caso, il tempo di comunicazione complessivo e' dato dalla somma
+dei singoli tempi di comunicazione
+$$
+t_{comm} = t_{comm1} + t_{comm2} + t_{comm3} +  ...
+$$
 Una volta ottenuti i valori di $t_s$, $t_{comp}$ e di $t_{comm}$ e' possibile
 calcolare il fattore di speedup (descritto in precedenza). Riscriviamo la
 relazione sostituendo il valore di $t_{p}$
@@ -292,7 +304,7 @@ $$
 Da questa relazione, risulta inoltre evidente come il tempo di comunicazione
 influenzi direttamente il fattore di speedup. In alcune implementazioni, ad
 esempio, si potrebbe verificare la condizione in cui il programma passi
-significativamente piu' tempo a comunicare che a effettuare calcoli effettivi
+significativamente piu' tempo a comunicare che ad effettuare calcoli
 all'aumentare della grandezza del problema. In altri termini, se la complessita'
 computazionale del tempo di computazione e del tempo di comunicazione sono le
 stesse, allora difficilmente le performance aumenterebbero all'aumentare della
@@ -303,6 +315,15 @@ comp/comm_{ratio} = \frac{t_{comp}}{t_{comm}}
 $$
 Generalmente una buona implementazione parallela ha un rateo di
 computazione/comunicazione in cui la complessita' computazionale e' piu' grande
-di quella della comunicazione.  Per grana computazionale si intende la quantita'
-di dati con la quale si e' suddiviso il problema generale. Ad esempio, se decido
-di suddividere una griglia LxH per 4, la grana sara' (LxH/4).
+di quella della comunicazione. Questo rapporto e' anche espresso spesso come
+$G$, che indica la *granularita'* (o grana) della computazione.
+
+> Per grana computazionale si intende la quantita' di dati con la quale si e'
+suddiviso il problema generale. (Cioe' la grandezza di un task) Ad esempio, se
+decido di suddividere una griglia LxH per 4, la grana sara' (LxH/4).
+
+### Valutazione Empirica
+Tutte le considerazioni fatte nella sezione precedente, valgono solo se il 
+paradigma scelto per la computazione parallela e' noto. Nonostante una
+valutazione teorica sia in linea di massima preferibile, in alcuni casi e'
+necessario valutare empiricamente le prestazioni del programma parallelo. 
