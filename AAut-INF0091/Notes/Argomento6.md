@@ -174,7 +174,8 @@ quella originale. Corrispondono a degli errori nella misurazione.
   un'ipotesi di fondo
 
 > L'ipotesi di fondo delle *SVM* e' che i dati siano linearmente separabili.
-Cioe' che esiste una retta che separa perfettamente positivi e negativi.
+  Cioe' che esiste una retta che separa **perfettamente** positivi e negativi
+  senza errori.
 
 * Possiamo quindi distinguere tra due tipi di margine:
     * Funzionale: da un'indicazione sulla correttezza della classificazione del
@@ -232,14 +233,16 @@ Cioe' che esiste una retta che separa perfettamente positivi e negativi.
   $$
 
 > Gli esempi sulla frontiera sono chiamati ***Support Vectors*** (siccome gli
-  esempi sono rappresentati come dei vettori)
+  esempi sono rappresentati come dei vettori), per cui la definizione precedente
+  e' anche quella di vettore di supporto.
 
 ### Margine Geometrico
 
 ![Margine Geometrico](img/geometric_margin.png){ width=50% }
 
 * La figura precedente, mostra graficamente il margine geometrico.
-  Esso e' rappresentato dalla distanza tra i due outliers $x_+, x_-$.
+  Esso e' rappresentato dalla distanza tra i due outliers $x_+, x_-$ (freccia
+  nera).
     * Dal momento che vogliamo la loro distanza, vogliamo calcolare $x_+ - x_-$,
       e successivamente proiettarlo per renderlo ortogonale alla retta.
     * Sappiamo inoltre che $w$ ha la proprieta' di essere un vettore ortogonale
@@ -251,7 +254,7 @@ Cioe' che esiste una retta che separa perfettamente positivi e negativi.
   $$
   \begin{split}
   \mu &= (x_+ - x_-) \cdot \frac{w}{||w||} \\
-    &= \frac{w_+ \cdot w}{||w||} - \frac{w_- \cdot w}{||w||}
+    &= \frac{x_+ \cdot w}{||w||} - \frac{x_- \cdot w}{||w||}
   \end{split}
   $$
   Sappiamo inoltre che $x_+$ e $x_-$ sono esempi nella frontiera, per cui
@@ -268,20 +271,158 @@ Cioe' che esiste una retta che separa perfettamente positivi e negativi.
   $$
   che e' la definizione finale di *margine geometrico*.
 
-* Infine e' possibile definire il problema delle SVM nel modo seguente
+### Formulazione Primale
+* Avendo tutti gli ingredienti necessari, possiamo quindi definire il problema
+  delle SVM nel modo seguente
 
-> $$
+>
+  $$
     \begin{split}
     &\underset{w, t}{minimize} \quad \frac{1}{2} ||w||^2 \\
     &\text{subject to} \quad y_i(w \cdot x_i -t) \geq 1; \quad 0 \leq i \leq n
     \end{split}
   $$
+  "Minimizza il *margine geometrico*, soggetto ai vincoli del *margine
+  funzionale*"
 
-* Trovare una soluzione diretta a questo problema non e' possibile. Si
-  utilizzano dei solver (cioe' degli algoritmi di ottimizzazione).
-* Per diverse ragioni si preferisce una forma *duale* (diversa ma equivalente)
-  del problema di ottimizzazione delle SVM
+* La forma di questo problema di ottimizzazione e' detta forma **primale**.
+  Trovare una soluzione diretta a questo problema dal punto di vista matemativo
+  e' un problema difficile, e non esiste una soluzione in forma chiusa, per cui
+  si utilizzano dei solver per ottenere soluzioni approssimate
+* I solver per la soluzione del problema delle SVM pero' non utilizzano la forma
+  del problema in forma primale, ma sfruttano una forma differente ma
+  equivalente chiamata *duale*
 
-### Formulazioni Duali
+### Formulazione Duale
+* Ogni problema di ottimizzazione, anche se concavo, puo' essere trasformato in
+  un problema di ottimizzazione convesso equivalente.
 
+> Dato un problema di ottimizzazione in termini di minimizzazione
+  $$
+  \begin{split}
+  \underset{w}{minimize} \quad & f_0 (x) \\
+  \text{\emph{subject to}} \quad & f_i(x) \leq 0, \quad i = 0, \dots, m \\
+                          & g_i(x) = 0, \quad i = 0, \dots, p
+  \end{split}
+  $$
+  La corrispondente ***funzione duale di Lagrange*** e' per definizione
+  $$
+  \begin{split}
+  g(\alpha, \nu) &= \underset{x}{inf} \Lambda(x, \alpha, \nu) \\ &=
+  \underset{x}{inf} \left ( f_0(x) + \sum^m_{i=1} \alpha_i f_i(x) + \sum^p_{i=1}
+  \nu_i g_i(x) \right)
+  \end{split}
+  $$
+
+* La funzione non e' piu' in termini della variabile originale $x$, ma in
+  termini di due variabili $\alpha, \nu$ (variabili di Lagrange)
+* $inf$ e' una generalizzazione del *minimo* per cui trova il valore piu'
+  piccolo, anche se e' al di fuori dell'insieme originario
+
+* Ci sono due tipi di dualita':
+    * Debole: quando la soluzione del problema duale $d*$ e minore del problema
+      primale $p*$ ($d* \leq p*$)
+    * Forte: quando $d* = p*$
+* Per avere soddisfatta la dualita' forte, devono essere soddisfatte le
+  condizioni di ***Karush-Kuhn-Tucker (KKT)***:
+    * Stazionarita': il gradiente deve essere pari a 0 nel punto ottimale
+    * Fattiblita' primale: i vincoli del problema primale sono soddisfatti nel
+      punto ottimale
+    * Fattibilita' duale: i vincoli del problema duale sono soddisfatti
+    * ***Complementary Slackness***: il prodotto tra la variabile di Lagrange e
+      il vincolo primale deve essere sempre uguale a 0 ($\alpha_i f_i(x*) = 0$
+      dove $x*$ e' il punto ottimale)
+* Data la definizione di dualita' di Lagrange, possiamo quindi ottenere la forma
+  duale corrispondente del problema delle Support Vector Machines
+  $$
+  \begin{split}
+  \Lambda (w, t, \alpha_1, \dots, \alpha_n) &= \frac{1}{2} ||w||^2 - \sum^n_{i =
+  1} \alpha_i (y_i (w \cdot x_i - t) - 1) \\
+  &= \frac{1}{2} ||w||^2 - \sum^n_{i = 1} \alpha_i y_i (w \cdot x_i) + \sum^n_{i
+  = 1} \alpha_i y_i t + \sum^n_{i = 1} \alpha_i \\
+  &= \frac{1}{2} w \cdot w - w \cdot \left ( \sum^n_{i = 1} \alpha_i y_i x_i
+  \right ) + t \left ( \sum^n_{i = 1} \alpha_i y_i \right ) + \sum^n_{i = 1}
+  \alpha_i
+  \end{split}
+  $$
+* In sostanza si aggiunge una variabile di Lagrange ($\alpha_i$) per ogni
+  vincolo nel problema originale, per cui $n$ (poiche' ci sono tanti vincoli
+  quante istanze)
+* Per ottenere il problema duale finale, vogliamo il minimo di $\Lambda$, per
+  cui deriviamo l'intera quantita' rispetto a $t$ e $w$ e le poniamo
+  successivamente a 0 (vettore di 0)
+  $$
+  \begin{split}
+  \frac{\partial \Lambda}{\partial t} = \sum_i \alpha_i y_i & \qquad
+  \frac{\partial \Lambda}{\partial w} = w - \sum_i \alpha_i y_i x_i \\
+  \sum_i \alpha_i y_i = 0 & \qquad
+  w = \sum_i \alpha_i y_i x_i
+  \end{split}
+  $$
+* Sostituendo le due uguaglianze trovate possiamo infine ottenere la
+  formulazione del problema duale delle support vector machines:
+
+>
+  $$
+    \begin{split}
+    \underset{\alpha}{maximise} \quad&  -\frac{1}{2} \sum^n_{i=1} \sum^n_{j=1}
+    \alpha_i \alpha_j y_i y_j x_i x_j + \sum^n_{i=1} \alpha_i \\
+    \text{subject to} \quad& \alpha_i \geq 0, \quad \leq i = 1, \dots, n\\
+                      \quad& \sum_i y_i \alpha_i = 0
+    \end{split}
+  $$
+
+* Guardando il problema duale, abbiamo guadagnato diversi insights sul problema:
+    1. I moltiplicatori di Lagrange strettamente positivi sono sempre associati
+       a vettori di supporto, per cui i moltiplicatori per gli altri esempi sono
+       uguali a 0
+    2. $w$ e' ottenuto come combinazione lineare dei vettori di supporto
+    3. Sia l'apprendimento che la classificazione puo' essere fatta utilizzando
+       soltanto prodotti scalari dei vettori di supporto
+
+* La 1. segue dalle condizioni di KTT, per cui $\alpha_i (y_i(w \cdot x_i -
+  t)-1) = 0$ deve valere. Ma poiche' i vincoli impongono che $\alpha_i > 0$, per
+  rendere vera la condizione deve valere $(w \cdot x_i - t) = 1$ che e' appunto
+  la definizione di margine funzionale (per cui $x_i$ e' un vettore di supporto)
+* Perche' comunque utilizziamo una forma duale e non primale dal momento che
+  entrambi sono problemi di ottimizzazione convessi e possono essere risolti con
+  lo stesso algoritmo?
+
+> La forma duale del problema delle SVM puo' essere utilizzata (mediante kernel
+trick) per apprendere funzioni *non lineari* all'interno dello spazio degli
+esempi. Per cui puo' anche non valere l'ipotesi iniziale della separabilita'
+perfetta
+
+### Ammettere errori nel margine
+#### Forma Primale
+* Il problema formulato fin'ora non ammette gli errori nel margine funzionale.
+  Cio' significa che se il vincolo $y_i (w \cdot x_i - t) \geq 1$ non viene
+  soddisfatto la soluzione non viene considerata
+* Quello che si vuole ottenere e' un errore nel margine, dipendente da ogni
+  istanza $x_i$
+  $$
+  y_i (w \cdot x_i) - t \geq 1 - \xi_i
+  $$
+  L'idea e' quindi quella di introdurre una **variabile di slack** $xi_i$ per
+  ogni esempio
+  $$
+  \begin{split}
+  \underset{w, t, \xi}{minimize} \quad& \frac{1}{2} ||w||^2 + C \sum^n_{i=1}
+  \xi_i \\
+  \text{subject to} \quad& y_i(w \cdot x_i -t) \geq 1 - \xi_i; \quad 1 \leq i
+  \leq n \\
+                      \xi_i \geq 0;\quad 1 \leq i \leq n
+  \end{split}
+  $$
+
+* Tramite l'ultimo vincolo si ottiene un rilassamento del vincolo del margine
+  funzionale ma il rilassamento e' penalizzato nella funzione oviettivo,
+  inserendo la una costante moltiplicativa dell'errore complessivo $C$ (che e'
+  un parametro definito dall'utente)
+* $C$: **costante di complessita'**, ci dice quanto vogliamo penalizzare
+  l'errore totale sul margine. Controlla la complessita' del sistema.
+
+#### Forma Duale
+* Anche in questo caso possiamo ottenere una fomulazione duale del problema
+* 
 
