@@ -423,6 +423,60 @@ perfetta
   l'errore totale sul margine. Controlla la complessita' del sistema.
 
 #### Forma Duale
-* Anche in questo caso possiamo ottenere una fomulazione duale del problema
-* 
+* Anche in questo caso possiamo ottenere una fomulazione duale del problema. Per
+  prima cosa calcoliamo $\Lambda$
+  $$
+  \begin{split}
+  \Lambda (w, t, \xi_i, \alpha_i, \beta_i) &= \frac{1}{2} ||w||^2 + C \sum^n_{i
+  = 1} \xi_i - \sum^n_{i=1} \alpha_i(y_i(w \cdot x_i -t) - (1 - \xi_i)) -
+  \sum^n_{i=1} \beta_i \xi_i \\
+  &= \frac{1}{2} ||w||^2 + \sum^n_{i = 1} C \xi_i - \sum^n_{i=1} \alpha_i(y_i(w
+  \cdot x_i -t) - 1) - \sum^n_{i=1} \alpha_i \xi_i - \sum^n_{i=1} \beta_i \xi_i \\
+  &= \Lambda(w, t, \alpha_i) + \sum^n_{i = 1} C \xi_i - \sum^n_{i=1} \alpha_i
+  \xi_i - \sum^n_{i=1} \beta_i \xi_i \\
+  &= \Lambda(w, t, \alpha_i) + \sum^n_{i = 1} \xi_i (C - \alpha_i - \beta_i) \\
+  \end{split}
+  $$
+* Siccome le derivate rispetto a $w$ e $t$ di $\Lambda$ si conoscono gia',
+  rimane da derivare $E(\xi_i) = \sum^n_{i = 1} \xi_i (C - \alpha_i - \beta_i)$ rispetto a
+  $\xi_i$, per cui si ottiene
+  $$
+  \frac{\partial E}{\partial \xi_i} = C - \alpha_i - \beta_i
+  $$
+  settando la derivata calcolata a 0, si ottiene che
+  $$
+  \Lambda(w, t, \xi_i, \alpha_i, \beta_i) = \Lambda(w, t, \alpha_i)
+  $$
+* Ottenendo infine tutti gli ingredienti necessari a scrivere la formulazione
+  duale del problema delle SVM con i vincoli rilassati
 
+>
+$$
+\begin{split}
+\underset{\alpha}{maximise} \quad&  -\frac{1}{2} \sum^n_{i=1} \sum^n_{j=1}
+\alpha_i \alpha_j y_i y_j x_i x_j + \sum^n_{i=1} \alpha_i \\
+\text{subject to} \quad& 0 \leq \alpha_i \leq C, \quad i = 1, \dots, n\\
+                  \quad& \sum_i y_i \alpha_i = 0
+\end{split}
+$$
+
+* Una delle condizione KKT implica che $\beta_i \xi_i = 0$ per cui cio' ci dice
+  che se $\xi_i > 0$ (ho un errore nel margine), allora segue che $\beta_i = 0$.
+  Sostituendo le uguaglianze si ottiene $C - \alpha_i - \beta_i = 0 \rightarrow
+  alpha_i = C$.
+  Seguendo la stessa linea di ragionamento possiamo concludere che:
+    * $\alpha_i = C$ sono errori del margine
+    * $\alpha_i = 0$ sono esempi al di fuori del margine
+    * $0 < \alpha_i < C$ sono vettori di supporto
+
+## Kernels
+* Il cosiddetto *kernel trick* e' un metodo per estendere i modelli lineari a
+  problemi non lineari
+
+> Una *funzione kernel* e' una funzione $K: \mathbb{V \times V} \rightarrow
+\mathbb{R}$ che prende in input una coppia di vettori e restituisce in input un
+valore reale per cui vale la condizione che eiste una mappa $\phi(x): \mathbb{V}
+\rightarrow \mathbb{F}$ per cui vale
+$$
+K(x, y) = < \phi(x), \phi(y) >
+$$
