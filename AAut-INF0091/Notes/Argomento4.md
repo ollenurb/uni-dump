@@ -1,5 +1,5 @@
 \newpage
-# Modelli ad Albero 
+# Modelli ad Albero
 * I modelli ad albero in generale nel libro vengono descritti come *feature
   trees*. Questi alberi generali possono poi essere specializzati in diversi
   tipi di modello ad albero in base al task da risolvere quali:
@@ -19,9 +19,9 @@
 * Per trasformare un feature tree in un decision tree, si associa una label di
   classe nella foglia che rappresenta il concetto. In sostanza si associa una
   stima di classe da a tutti gli esempi coperti da quel concetto.
- 
+
 > Feature tree $\underbrace{\rightarrow}_{Labelling}$ Decision tree
- 
+
 * Alberi diversi possono rappresentare equivalenti concetti ma con forma
   differente. Perche'?
     * Espressioni logiche sintatticamente differenti possono essere
@@ -44,7 +44,7 @@
 ## Feature tree
 * Un feature tree e' un albero in cui ogni **nodo interno** e' etichettato con
   una **feature**. Ogni **diramazione** e' etichettata con un **letterale**
-  (valore possibile della feature) 
+  (valore possibile della feature)
 * L'insieme dei letterali di un dato nodo interno e' chiamato **split**. Ogni
   nodo interno di un feature tree costituisce uno split, cioe' una segmentazione
   dello spazio degli esempi coperto dall'ipotesi
@@ -79,7 +79,7 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
 }
 \Return a tree whose root is labelled with $S$ and whose children are $T_i$\;
 \caption{GrowTree algorithm}
-\end{algorithm} 
+\end{algorithm}
 
 * L'algoritmo `GrowTree` e' la procedura di apprendimento piu' utilizzata dalla
   maggior parte dei tree learners. Segue un approccio *[divide and
@@ -102,7 +102,7 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
       omogeneita'. Nella classificazione, potrebbe essere vero solo quando
       l'intero dataset ha istanze appartenenti ad una sola classe
     * `BestSplit(D, F)`: ritorna la *feature* che genera lo split migliore
- 
+
 ## Decision Trees
 * Introduciamo il criterio di *purezza*, con cui valuteremo gli split e le
   etichette da assegnare alle foglie per trasformare un feature tree in un
@@ -142,14 +142,14 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
   probabilita' che un esempio preso dalla partizione $D$ "ricada" nella
   partizione $D_j$.
 * Purity Gain: Immaginiamo che il dataset $D$ venga splittato in $\{D_1, \dots,
-  D_l\}$ dalla feature $f$. Con purity gain intendiamo la quantita' 
+  D_l\}$ dalla feature $f$. Con purity gain intendiamo la quantita'
   $$
   Imp(D) - Imp(\{D_1, \dots, D_l\})
   $$
   che concettualmente indica il *gain in purezza* che si avrebbe se si
   includesse $f$ come feature di split.
 * Questo concetto di impurezza, viene utilizzato quindi dall'algoritmo
-  `BestSplit` per calcolare lo split che minimizza l'incertezza 
+  `BestSplit` per calcolare lo split che minimizza l'incertezza
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -161,14 +161,14 @@ split $D$ into subsets $D_i$ according to feature values in $S$\;
 $I_{min} \leftarrow 1$ \;
 \For{each $f \in F$}{
     \If{$Imp(\{ D_1, \dots, D_l \}) < I_{min}$}
-    { 
+    {
     $I_{min} \leftarrow Imp(\{ D_1, \dots, D_l \})$\;
     $f_{best} \leftarrow f$\;
     }
 }
 \Return $f_{best}$\;
 \caption{BestSplit algorithm}
-\end{algorithm} 
+\end{algorithm}
 
 ### Entropia
 * L'entropia e' una misura che quantifica la quantita' di confusione di un certo
@@ -187,7 +187,7 @@ $I_{min} \leftarrow 1$ \;
     * Dopo il lancio, se abbiamo l'informazione sulla parita', si riduce la
       *quantita' di confusione* rispetto all'evento, per cui avremmo gia' $b_1$
       bits di informazione su $b$. La differenza $b - b_1$ quantifica quanta
-      informazione rimane da comunicare per sapere l'intero outcome 
+      informazione rimane da comunicare per sapere l'intero outcome
 * Questo e' cio' che capita anche quando vogliamo utilizzare l'entropia per
   scegliere gli split migliori:
     * Il dataset iniziale ha una certa quantita' di confusione, che dipende da
@@ -228,7 +228,7 @@ $I_{min} \leftarrow 1$ \;
       da soli esempi della classe negativa)
     * I segmenti in diagonale corrispondono ai nodi ***massimamente impuri***
       (coprono la sessa quantita' di esempi positivi e negativi)
- 
+
 > L'ordine dei segmenti all'interno del coverage plot non dipende dalla
 struttura dell'albero ma dalla probabilita' empirica dei nodi corrispondenti
 
@@ -248,17 +248,17 @@ struttura dell'albero ma dalla probabilita' empirica dei nodi corrispondenti
   un numero maggiore di esempi
 * L'ordinamento predilige le foglie piu' adatte a coprire piu' esempi positivi
   andando via via verso quelle piu' adatte a coprire esempi negativi
- 
+
 > *I ranking trees ottenuti mediante l'ordinamento delle foglie del feature tree
 secondo empirical probability, produce sempre una curva convessa nel ROC plot
 sui dati di train*
 
 * La citazione e' dimostrabile nel modo seguente:
     * La pendenza di un segmento e' data dal rapporto
-      $\frac{\dot{p}}{(1-\dot{p})}$. 
+      $\frac{\dot{p}}{(1-\dot{p})}$.
     * Al crescere di $\dot{p}$ si ottiene una trasformazione monotona, poiche'
       se scelgo $\dot{p'} > \dot{p}$, allora anche la pendenza
-      $\frac{\dot{p'}}{(1-\dot{p'})} > \frac{\dot{p}}{(1-\dot{p})}$  
+      $\frac{\dot{p'}}{(1-\dot{p'})} > \frac{\dot{p}}{(1-\dot{p})}$
     * Quindi, un *ordinamento decrescente delle probabilita' empiriche* causa un
       *ordinamento decescente delle pendenze*, di fatto generando una curva
       *convessa*
@@ -271,17 +271,17 @@ sui dati di train*
        piu' grandi (padri)
     2. Riodina i segmenti secondo probabilita' empirica associata crescente
 
-## Labelling di un feature tree 
+## Labelling di un feature tree
 * Etichettare un albero consiste nell'apporre delle etichette di classe nei nodi
   foglia
 * Se noi abbiamo $c$ classi e $l$ foglie in un albero, ci sono $c^l$ modi
-  possibili di etichettare le foglie 
+  possibili di etichettare le foglie
 * In un albero con $l$ foglie, ci sono $l!$ possibili *ordinamenti* dei segmenti
   corrispondenti alle foglie nel coverage space
 * Tipicamente per etichettare una foglia generica si utilizza il criterio della
   classe di maggioranza. Questo criterio semplicistico nasconde pero' un
   problema: non tiene conto dei differenti costi a fronte di un errata
-  missclassificazione. 
+  missclassificazione.
 * Spesso si vuole ottenere un labelling basato su dei costi di
   missclassificazione specifici al dominio di riferimento. Ad esempio,
   supponiamo di voler rilevare la presenza di una data malattia potenzialmente
@@ -328,12 +328,12 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
     1. Nella foglia *i-esima* calcoliamo il prodotto $\frac{n_i^-}{n_i^+} \cdot
        \frac{c_{FP}}{c_{FN}}$. In questo modo si tiene conto degli errori di
        missclassificazione come se ogni esempio positivo e ogni esempio negativo
-       venisse missclassificato. 
+       venisse missclassificato.
     2. Col risultato del prodotto calcolato al passo 1, utilizziamo il criterio
        della classe di maggioranza. Se $>1$ allora assegnamo la label della
        classe a numeratore, altrimenti quella a denominatore.
 
-## Semplificazione di alberi 
+## Semplificazione di alberi
 * Un aspetto importante dei modelli predittivi (e quindi anche dei modelli ad
   albero), e' che e' dimostrato che l'aumentare della complessita' del modello
   (numero di nodi), l'errore del modello sul *test set* e sul *training set*
@@ -344,7 +344,7 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   del modello.
 * Ci sono diversi modi per diminuire la complessita' dei modelli e evitare cosi'
   il conseguente overfitting.
- 
+
 ### Pruning
 * E' possibile applicare una fase di postprocessing di potatura chiamata pruning
 * Puo' essere effettuato dopo il labelling, in caso i figli dello stesso padre
@@ -352,13 +352,13 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   questo caso, e' particolarmente utile in casi in cui si voglia trasmettere il
   modello (siccome pesa meno) o se lo si voglia leggere. Il problema e' che
   peggiora la precisione del modello, al momento che l'*AUC* risultante e'
-  minore. 
+  minore.
 * Alternativamente puo' essere impiegato un passaggio dell'algoritmo di
   *post-processing* `PruneTree`.
 * L'algoritmo utilizza un dataset separato (*pruning set*) per testare se la
   precisione del modello semplificato (output dell'algoritmo) e' maggiore di
-  quello precedente 
- 
+  quello precedente
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -370,28 +370,28 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
     $T_N \leftarrow$ subtree of $T$ rooted at $N$ \;
     $D_N \leftarrow \{ x \in D \; | \; x \;\text{is covered by} \; N\}$ \;
     \If{accuracy of $T_N$ over $D_N$ is worse than majority class in $D_N$}
-    { 
+    {
     replace $T_N$ in $T$ by a leaf labelled with the majority class in $D_N$\;
     }
 }
 \Return pruned version of $T$\;
 \caption{PruneTree(T, D) algorithm - reduce-error pruning of a decision tree}
-\end{algorithm} 
+\end{algorithm}
 
 ### Stima degli errori di generalizzazione
 * Alternativa alla fase di post processing discussa in precedenza (`PruneTree`)
   che diversamente e' impiegata durante la fase di apprendimento
 * Si associa un valore $k$ ad ogni foglia. Se la foglia non diminuisce l'errore
-  del padre di almeno $k+g$, allora non viene creata a priori. 
+  del padre di almeno $k+g$, allora non viene creata a priori.
   In altri termini significa che non viene creata la foglia se la
   classificazione rispetto al nodo padre non migliora di almeno $g$ istanze.
 * $E_{tot} = \sum^N_{i=1} e_i + N \cdot g$ (errore di generalizzazione)
 
-## Sensitivita' rispetto alla distribuzione delle classi 
+## Sensitivita' rispetto alla distribuzione delle classi
 > I criteri di impurezza del *Gini index* e quello dell'*entropia attesa*,
   sono sensibili ai cambiamenti nella distribuzione delle classi, mentre
   $\sqrt{Gini}$ non lo e'.
-  
+
 * Se si volessero inoltre includere i costi nel criterio di splitting, si
   potrebbe decidere di introdurre delle *copie* di esempi positivi/negativi
   all'interno del train set.
@@ -429,14 +429,14 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
     * La funzione `Homogeneus(Y)` ritorna `true` se la *varianza* della foglia
       $Y$ e' al di sotto di un certo limite (*threshold*)
 * Gli alberi di regressione sono piu' suscettibili all'overfitting dal momento
-  che le foglie conterranno molti meno esempi 
- 
+  che le foglie conterranno molti meno esempi
+
 ### Clustering trees
 * Introduciamo una funzione $dis: X \times X \rightarrow \mathbb{R}$ che indica,
   data una *coppia* di istanze nello spazio degli esempi la loro
   *dissimilarita'*
 * La nozione di dissimilarita' puo' essere estesa ad un intero set $D$:
-  $$  
+  $$
   Dis(D) = \frac{1}{|D^2|} \sum_{x_1 \in D} \sum_{x_2 \in D} dis(x_1, x_2)
   $$
 * $Dis(D)$ puo' essere quindi utilizzata come indice di impurezza nell'algoritmo
@@ -451,7 +451,7 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   dissimilarita' dello split j-esimo*)
 * La dissimilarita' $dis(x_1, x_2)$ puo' essere calcolata mediante distanza
   euclidea: se l'istanza e' espressa solo in termini di features numeriche, si
-  puo' definire come 
+  puo' definire come
   $$
   dis(\vec{x_1}, \vec{x_2}) = (\vec{x_1} - \vec{x_2})^2 = \sum^d_{j=1} [x_{1j} -
   x_{2j}]^2
@@ -466,7 +466,7 @@ foglie rispetto all'assegnamento con il criterio della classe maggioritaria*
   quando viene calcolata la dissimilarita' di uno split, poiche' ritornano la
   dissimilarita' piu' ottimistica possibile ($0$)
 
-### Coesione e Separazione di Clusters 
+### Coesione e Separazione di Clusters
 * La varianza di una dataset $D$ (e conseguentemente la sua dissimilarita') son
   costanti
 * Consideriamo $k$ cluster $(D_1, \dots, D_k)$ di $D$

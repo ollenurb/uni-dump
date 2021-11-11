@@ -1,12 +1,12 @@
-newpage
+\newpage
 # Modelli a Regole
-## Apprendimento di liste di regole 
+## Apprendimento di liste di regole
 * Una regola si manifesta come un'implicazione logica. Piu' di preciso e'
   formata da un *antecedente* e da una *conseguenza*. La conseguenza e'
   l'assegnamento della classe, mentre l'antecedente e' una congiunzione logica
-  di vincoli sugli attributi. 
+  di vincoli sugli attributi.
 * Una serie di regole puo' essere vista concettualmente anche nel modo seguente
- 
+
 ```
 if Literal1 then class=X
 else if Literal2 then class=Y

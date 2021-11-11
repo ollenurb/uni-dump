@@ -438,8 +438,8 @@ perfetta
   \end{split}
   $$
 * Siccome le derivate rispetto a $w$ e $t$ di $\Lambda$ si conoscono gia',
-  rimane da derivare $E(\xi_i) = \sum^n_{i = 1} \xi_i (C - \alpha_i - \beta_i)$ rispetto a
-  $\xi_i$, per cui si ottiene
+  rimane da derivare $E(\xi_i) = \sum^n_{i = 1} \xi_i (C - \alpha_i - \beta_i)$
+  rispetto a $\xi_i$, per cui si ottiene
   $$
   \frac{\partial E}{\partial \xi_i} = C - \alpha_i - \beta_i
   $$
@@ -475,8 +475,43 @@ $$
 
 > Una *funzione kernel* e' una funzione $K: \mathbb{V \times V} \rightarrow
 \mathbb{R}$ che prende in input una coppia di vettori e restituisce in input un
-valore reale per cui vale la condizione che eiste una mappa $\phi(x): \mathbb{V}
-\rightarrow \mathbb{F}$ per cui vale
+valore reale e per cui vale la condizione che esiste una mappa $\phi(x):
+\mathbb{V} \rightarrow \mathbb{F}$ per cui vale
 $$
 K(x, y) = < \phi(x), \phi(y) >
 $$
+cioe' che corrisponde al prodotto scalare dei valori mappati dentro uno *spazio
+di Hilbert*. In altri termini, $K$ prende una coppia di vettori, li mappa in uno
+spazio di Hilbert e ne calcola il prodotto scalare
+
+* Una funzione $< \cdot, \cdot>$ e' un ***prodotto interno*** se soddisfa le
+  seguenti proprieta':
+  1. $<x, y> = <y, x>$ (*Simmetria*)
+  2. $<ax + by, z> = a<x, z> + b<y, z>$ (*Linearita' sul primo argomento*)
+  3. $<x, x> \geq 0; \; <x, x> = 0 \leftrightarrow x = 0$ (*Definizione
+     positiva*)
+* Il prodotto interno e' una generalizzazione del prodotto scalare dal momento
+  che soddisfa le proprieta' del prodotto interno
+* Ci sono diverse ragioni per utilizzare i kernels:
+    * Rappresentazionali: si possono estendere i classificatori a problemi non
+      lineari
+    * Computazionali: il calcolo del prodotto interno nel nuovo spazio viene
+      spesso effettuata senza dover fare la proiezione in modo esplicito, per
+      cui costa meno computazionalmente
+    * Teorici: i kernel hanno un sacco di proprieta' interessanti, ad esempio e'
+      possibile comporli tra di loro
+
+* Alcuni Kernel importanti sono:
+    * Kernel Polinomiale di grado $d$ ($K(x, y) = (x \cdot y)^d$ oppure $= (x
+      \cdot y + 1)^2$): mappa i punti in uno spazio in cui i le rette
+      (classificatori) corrispondono a dei polinomi di grado $d$ nello spazio di
+      origine (*come nell'esempio del video*)
+        * Se $d = 1$ allora abbiamo un Kernel Lineare (identita')
+        * Se $d = 2$ allora abbiamo un Kernel quadratico
+    * Kenel Gaussiano ($K(x, y)=exp(-\frac{||x-y||^2}{2\sigma^2})$): impiega
+      una funzione Gaussiana per determinare la similarita' di esempi. Decresce
+      esponenzialmente seguendo una curva gaussiana man mano che ci si allontana
+      da un esempio
+    * Molti altri kernel esistono e possono essere creati in base al dominio del
+      problema. Ad esempio
+
