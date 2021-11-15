@@ -512,6 +512,35 @@ spazio di Hilbert e ne calcola il prodotto scalare
       una funzione Gaussiana per determinare la similarita' di esempi. Decresce
       esponenzialmente seguendo una curva gaussiana man mano che ci si allontana
       da un esempio
-    * Molti altri kernel esistono e possono essere creati in base al dominio del
-      problema. Ad esempio
+* Molti altri kernel esistono e possono essere creati in base al dominio del
+  problema, poiche' ci permettono di manipolare dati la cui forma non potrebbe
+  essere utilizzata con le SVM.
 
+* Intuitivamente un kernel puo' essere pensato come una *funzione di
+  similarita'* nello spazio delle features
+    * Infatti, vettori "simili" tra di loro, puntano nella stessa direzione, per
+      cui il loro prodotto scalare sara' molto grande (molto simili)
+    * Contrariamente, se sono poco simili tra di loro, punteranno i direzioni
+      sempre piu' opposte, rendendo il prodotto scalare piccolo
+
+* Sapendo che un kernel e' una funzione di dissimilarita', come fa uno a sapere
+  se una data funzione di dissimilarita' e' un Kernel? Cioe', data una funzione
+  $K(x, y)$, come possiamo verificare se essa rispetta le condizioni necessarie
+  ad essere un kernel?
+* La risposta sta nelle ***condizioni di Mercer***:
+
+> Una funzione $K$ e' un kernel valido se e solo se per ogni insieme finito di
+punti $\{ x_1, \dots, x_m \}$, la matrice $K$ (definita come $J_{i,j} = K(x_i,
+x_j)$) e' ***simmetrica*** e ***positiva semi-definita***.
+
+* Un proprieta' molto importante dei kernel e' che si possono combinare
+  facilmente:
+    * $K(x, y) = K_1(x, y)K_2(x, y)$ (Approssima l'operazione di `AND`)
+    * $K(x, y) = K_1(x, y) + K_2(x, y)$ (Approssima l'operazione di `OR`)
+    * $K(x, y) = \alpha K_1(x, y)$ per $\alpha > 0$
+    * $K(x, y) = f(x)f(y)$, per ogni funzione $f$
+
+* Questo tipo di manipolazioni sono interessanti perche' se si ha un dataset in
+  cui gli esempi sono descritti con attributi categorici molto diversi tra loro,
+  e' possibile raggruppare ogni categoria con un kernel e combinarli tra loro a
+  seconda dell'intuizione di come vadano combinati
