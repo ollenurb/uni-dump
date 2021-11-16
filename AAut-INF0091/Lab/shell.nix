@@ -23,7 +23,7 @@ pkgs.mkShell {
     overridedPython
     pkgs.graphviz
   ];
-  shellHook = ''
-    jupyter-notebook
-  '';
+#  shellHook = ''
+#    jupyter-notebook
+#  '';
 }
