@@ -83,3 +83,100 @@
   disaccordo con la distanza Euclidea. Si puo' notare come sia piu' piccola tra
   $A$ e $C$ rispetto a $A$ e $B$. Questo accade principalmente perche' la
   direzione del vettore differenza $C - A$ segue la direzione dei dati.
+
+## Centroidi e Medoidi
+* Gli esemplari sono delle istanze nello spazio degli esempi che rappresentano
+  (sono rappresentative) delle classi
+
+> **Teorema**: La media aritmetica $\mu$ di un set di esemplari $D$ e' il punto
+> univoco che *minimizza la somma totale* delle distanze Euclidee al quadrato
+> tra tutte le istanze del set $D$ e $\mu$
+>
+> **Dimostrazione**: Bisogna dimostrare che $\arg \min \sum \|x-y\|^2_2 = \mu$,
+> imponendo che il *gradiente* della somma rispetto a $y$ ($\nabla_y$) sia 0
+> $$
+  \nabla_y \sum_{x \in D} \| x - y\|^2_2 = \\
+  -2 \sum_{x \in D} (x - y) =
+  -2 \sum_{x \in D} x +2 |D| y = \\
+  y = \frac{1}{|D|} \sum_{x \in D} x = \mu
+> $$
+
+* In alcune situazioni non si vuole avere un *baricentro* ideale (in questo caso
+  rappresentato da $\mu$, che pero' non e' descritto in termini di features) ma
+  si vuole un'istanza che renda minime le distanze tra tutti gli altri. In
+  questo caso parliamo di ***medoide*** se l'esempio e' ristretto a far parte
+  esclusivamente del dataset, mentre ***centroide*** quando puo' anche non
+  appartenere per forza al dataset.
+* **Centroide**: Centro della massa ideale di una classe (puo' anche non
+  appartenere al dataset)
+* **Medoide**: Istanza localizzato piu' al centro della classe (piu' vicina al
+  centroide)
+* Rispetto al calcolo del centroide, il medoide richiede di calcolare le
+  distanze tra tutte le coppie di punti, per cui ha complessita' $O(n^2)$
+
+![Esempio di dataset con 10 punti in cui i cerchi sono centroidi e i quadrati
+medoidi. Si noti come l'outlier ("*spinga*") i centroidi verso di
+se](img/centroids_medoids.png)
+
+## Distance Based Classification
+* Sappiamo che un classificatore lineare di base costruisce una linea di
+  decisione dividendo i positivi e i negativi
+* E' possibile ottenere la stessa cosa ma basandosi sul concetto di distanza:
+    * Siano $\mu^{\ominus}, \mu^{\oplus}$ i centroidi delle rispettive classi
+      negative e positive
+    * Quando una nuova istanza $x$ deve essere classificata, si controlla
+        - Se e' piu' vicina a $\mu^{\oplus}$ allora e' un esempio **positivo**
+        - Altrimenti e' un esempio **negativo**
+    * In altri termini, classifica un'istanza con la classe del piu' vicino
+      *esemplare*
+* In caso usassimo la distanza Euclidea, allora si otterrebbe lo stesso ed
+  identico decision boundary ottenuto dal classificatore lineare
+
+> Creare un classificatore lineare puo' essere interpretato da un punto di vista
+di distanza come trovare gli *esemplari* che minimizzino la distanza euclidea al
+quadrato di ogni classe, per poi applicare una regola di decisione basata
+sull'esemplare piu' vicino.
+
+* Questo cambio di prospettiva permette di estendere la classificazione a piu'
+  di due classi molto facilmente.
+* All'aumentare di esemplari (conseguentemente ad un aumento delle classi)
+  alcune regioni dello spazio degli esempi diventano delle regioni convesse
+  chiuse (delimitate dai decision boundaries), dando luogo a quella che si
+  chiama ***tassellazione di Voronoi***.
+
+### Nearest Neighbour Classifier
+* Nella sua forma originale, il classificatore che si basa sui k-vicini piu'
+  prossimi, prende un *voto di classe* per ognuno dei $k$ esemplari piu' vicini
+  e ne predice la classe maggioritaria
+
+> Scegliere un $k$ dispari e' preferibile in modo da evitare *pareggi* nei voti
+
+* `kNN` memorizza (infatti si chiamano anche modelli basati sulla memoria) tutti
+  gli esempi del dataset e ad ogni esempio di test va a cercare le $k$ istanze
+  piu' vicine nel dataset memorizzato, per poi farne la votazione di classe.
+* Per questa ragione, sia la *classificazione di una singola istanza* che il
+  *training del modello* ha complessita' $O(|D|)$
+* Il classificatore 1NN separa perfettamente i positivi e i negativi, per cui ha
+  un **basso bias** e un'**elevata varianza** (molto suscettibile a overfitting
+  in casi in cui il dataset e' poco significativo o poco grande)
+* D'altra parte, all'aumentare di $k$ **diminuiamo la varianza** e **aumentiamo
+  il bias** del modello.
+* Relazione col *bias-variance dilemma*:
+    * Con valori bassi di $k$, abbiamo una varianza alta e un basso bias
+    * Con valori alti di $k$, abbiamo una bassa varianza e un alto bias
+* **Pro**: Facilmente adattabile a valori di target reali per cui si puo'
+  estendere facilmente a task di regressione, o alla stima di probabilita'
+  quando $k > 1$
+* **Contro**: E' affetto dalla maledizione della dimensionalita', cioe' che in
+  spazi con dimensionalita' molto alta gli esempi sono molto distanti tra di
+  loro per cui la distanza e' poco informativa (?)
+
+> Non esiste una regola precisa per trovare il valore di $k$ ottimale per un
+dato dataset
+
+* Una modifica che si puo' fare a kNN e' quella di **pesare il voto** di un
+  certo vicino per il reciproco della distanza tra il vicino e l'istanza di
+  test. In questo modo, piu' e' grande la distanza minore sara' il voto, il che
+  coincide con l'intuizione dal momento che piu' distante e' l'istanza, meno
+  affidabile sara' la sua classe
+
