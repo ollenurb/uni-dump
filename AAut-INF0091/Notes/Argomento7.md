@@ -219,8 +219,9 @@ dato dataset
   elevate. (questo perche' anch'esso si basa su un concetto di distanza)
 * Una difficolta' di DBSCAN e' quella dell'inizializzazione dei parametri
   `MinPts` e `Eps` ($\epsilon$).
-    * Cio' che si puo' fare per risolvere questo problema e' plottare la
-      densita' di punti in base alla loro distanza dai $k$ vicini fissati
+    * Cio' che si puo' fare per risolvere questo problema e' analizzare il
+      ***Reachability Plot***, che si ottiene plottando la densita' di punti in
+      base alla loro distanza dai $k$ vicini fissati
     * Sull'asse delle $y$ si mette la *distanza* che puo' variare
     * Sull'asse delle $x$ si mette la *densita'* di punti
     * Un punto $(x, y)$ rappresenta l'$x$ numero di punti che hanno almeno $k$
@@ -283,10 +284,13 @@ cercho di raggio $y$](img/dbscan_parameters.png)
 \caption{KMeans(D, K) - K-means clustering using Euclidean distance $Dis_2$}
 \end{algorithm}
 
-* K-Means ha uno svantaggio particolare: e' sensibile alla forma di clusters
-  ellittiche, per cui tende a dividerle in modo globulare. Per attenuare il
-  problema si suggerisce una normalizzazione delle features nello stesso range
-  in modo che le features abbiano tutte lo stesso impatto sulla distanza
+* K-Means ha uno svantaggio particolare: e' sensibile ai clusters che hanno
+  grandezza e forma non globulare per cui tende a dividerle in modo errato.
+  Questo perche' il metodo ottimizza i centroidi del cluster, generando una
+  tassellazione di Voronoi nello spazio delle istanze.
+* Per attenuare il problema si suggerisce una normalizzazione delle features
+  nello stesso range in modo che le features abbiano tutte lo stesso impatto
+  sulla distanza
 * Una variante dell'algoritmo *K-Means* e' *K-Medoids*, che al posto di cercare
   i **centroidi** cerca i **medoidi** all'interno del dataset per rappresentare
   i clusters.
