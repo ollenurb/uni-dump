@@ -55,29 +55,69 @@
 * Caratteristiche dei modelli generativi:
     * Un modello generativo richiede di memorizzare la distribuzione di
       probabilita' congiunta, che aumenta esponenzialmente in dimensioni
-      rispetto al numero delle features
-    * E' possibile che l'accuratezza di $P(X)$ potrebbe essere non bilanciata
-      rispetto all'accuratezza di $P(Y | X)$. Nonostante cio', se $P(X)$ e'
-      piccola, sappiamo che sara' molto poco probabile che arrivino esempi di
-      quel tipo, per cui il tasso di missclassificazione rimane molto basso.
-    * L'apprendimento puo' essere visto come un processo di riduzione
-      dell'incertezza (cioe' dell'entropia)
+      rispetto al numero delle features. Tuttavia, e' possibile semplificare lo
+      spazio delle ipotesi introducendo l'indipendenza delle features (*naive
+      Bayes*)
+    * Ci sono casi in cui non riescono a modellare tanto bene come si
+      distribuiscono le features tra le varie classi. Magari in una classe il
+      modello e' molto preciso a descriverla in termini di combinazioni di
+      valori di features mentre in altre no. In altri termini, e' possibile che
+      l'accuratezza di $P(X)$ potrebbe essere non bilanciata rispetto
+      all'accuratezza di $P(Y | X)$. Nonostante cio', se $P(X)$ e' piccola,
+      sappiamo che sara' molto poco probabile che arrivino esempi di quel tipo,
+      per cui il tasso di missclassificazione rimane molto basso.
+    * L'apprendimento dai dati puo' essere visto come un processo progressivo di
+      riduzione dell'incertezza (cioe' dell'entropia)
 
 ## Apprendimento come riduzione dell'incertezza
-* Supponiamo di voler stimare la probabilita' $\theta$ che una email sia spam
-    * La cosa naturale da fare e' stimare $\hat{\theta} = d/n$ dove $d$ e' il
-      numero di istanze che sono spam
-    * Ovviamente questa e' una stima di massimizzazione della propbabilita' a
+* Supponiamo di voler stimare la probabilita' a priori $\theta$ ($P(Y)$)
+  che una email sia spam
+    * Una stima iniziale e' stimare $\hat{\theta} = d/n$ dove $d$ e' il numero
+      di istanze che sono spam
+    * La stima data pero' e' una stima di massimizzazione della probabilita' a
       posteriori, per cui non significa che altri valori di $\theta$ siano
-      completamente esclusi. Per includerli, e' piu' appropriato modellare il
-      valore $\theta$ come una distribuzione di probabilita' binomiale
-      ($\beta$-*distribution*).
-    * Ogni volta che si ispeziona una email, si riduce l'incertezza riguardo la
-      probabilita' di spam $\theta$. In questo modo la distribuzione si
-      "*schiaccia*" aumentando in altezza e diminuendo in larghezza verso uno
-      specifico valore di likelihood di classe.
-    * 
+      completamente esclusi. Per poteri considerare, e' piu' appropriato
+      modellare il valore $\theta$ come una distribuzione di probabilita'
+      binomiale ($\beta$-*distribution*).
+    * Ogni volta che si ispeziona una email si aggiorna la distribuzione, si
+      riducendo l'incertezza riguardo la probabilita' di spam $\theta$. In
+      questo modo la distribuzione si "*schiaccia*" aumentando in altezza e
+      diminuendo in larghezza verso uno specifico valore di likelihood di
+      classe.
 
-* Un classificatore e' detto *Bayes-ottimo* se e' sempre capace di assegnare il
-  valore della classe da predire che rende massima la probabilita' a posteriori
-  della classe una volta che sono state osservate le features dell'esempio $x$
+* In sostanza il metodo puo' essere riassunto nei seguenti passaggi:
+    1. Fai una stima iniziale a priori $P(Y)$
+    2. Aggiorna la stima iniziale guardandondo i dati, producendo una stima a
+       posteriori $P(Y \; | \; X)$
+    3. Riutilizza come stima iniziale a priori la stima prodotta a posteriori
+       $P(Y) = P(Y \; | \; X)$
+
+![Distribuzione di probabilita' di $\theta$ man mano che consideriamo nuovi
+esempi di emails. In questo caso abbiamo 1 non spam e tutte il resto
+spams](img/distribution_theta.png)
+
+* La riduzione di incertezza corrisponde ad una riduzione della varianza.
+  Notiamo che nel picco (con $n=10$) la varianza e' molto bassa significa che
+  l'incertezza e' bassa di conseguenza
+* Andando a modellare la stima attraverso una distribuzione di probabilita'
+  otteniamo inoltre diversi vantaggi:
+    * Possiamo generare un modello *generativo*, per cui campionare dalla
+      distribuzione ci permette di creare nuove istanze verosimili (i metodi
+      Monte Carlo fanno una cosa simile)
+    * Come gia' detto e' possibile misurare l'incertezza misurando semplicemente
+      la varianza rimanente
+    * Possiamo quantificare la probabilita' di affermazioni sul parametro stesso
+
+> *In breve, la prospettiva Bayesiana consiste nell'usare queste distribuzioni
+per codificare le nostre credenze. In questo modo si possono associare delle
+distribuzioni di probabilita' ad ogni cosa: non solo a features e a valori
+targets ma anche a parametri e modelli stessi.*
+
+
+* Un qualunque modello di predizione, se si comporta come si comporterebbe il
+  teorema di Bayes (avendo opportunamente modellato le probabilita'
+  necessarie), e quindi farebbe le stesse conclusioni che farebbe il teorema di
+  Bayes, allora tale modello e' detto **Bayes ottimale**
+
+> *Risultati teorici dicono che un classificatore probabilistico non puo' fare
+meglio del teorema di Bayes, cioe' il teorema di Bayes e' il massimo*
