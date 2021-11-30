@@ -105,12 +105,64 @@ risultato, per cui ogni processo manda la sua parte ad ogni altro processo,
 cosi' come gli altri.
 
 ## Quadratura Adattiva
-* Principalmente da guardare per aspetti di terminazione (la computazione va
-  avanti fino a quando una certa precisione e' stata raggiunta)
-
-TODO: Aggiungere quadratura adattiva
+Precedentemente abbiamo visto nei metodi embarassingly parallel con assegnamento
+di task statico come computare l'AUC (*Area Under the Curve*) di una funzione
+$f$. In quel caso pero', si supponeva di dividere l'area in intervallli di
+lunghezza $\delta$, rendendo di fatto impossibile impiegare l'algoritmo per
+raggiungere una precisione prestabilita.
+Un approccio possibile per risolvere il problema potrebbe essere quello di
+iniziare da un intervallo per ogni unita' computazionale, e ridurlo
+successivamente finquando non si raggiunge la precisione stabilita.
+Un modo per determinare se la precisione e' sufficiente, consisterebbe nel
+considerare 3 aree $A$, $B$ e $C$, controllando successivamente se $C - (A + B)$
+scende al di sotto di un threshold predefinito.
+Siccome il carico di lavoro varia in base alle zone della funzione, e' piu'
+appropriato impiegare tecniche di bilanciamento del carico viste in precedenza.
 
 ## Problema *N-Body*
-TODO: Aggiungere N-Body
-
+L'ultimo problema visto che puo' sfruttare al meglio il metodo di dividi e
+conquista e' proprio l'*N-body problem*. Il problema consiste essenzialmente nel
+calcolare le posizioni di *N* corpi celesti nello spazio, soggetti a a forze
+gravitazionali impresse dagli altri corpi.
+La forza gravitazionale di due corpi di massa $m_a$ e $m_b$ e' data dalla
+legge gravitazionale seguente:
+$$
+F = \frac{Gm_a m_b}{r^2}
+$$
+Un corpo soggetto alla forza gravitazionale degli altri corpi accellerera' di
+conseguenza secondo la seconda legge di Newton
+$$
+F=ma
+$$
+Il cambiamento della forze nel tempo e' spesso descritto in termini di equazioni
+differenziali
+$$
+F = \frac{m dv}{dt}, \quad v = \frac{dx}{dt}
+$$
+Dove $v$ e' il vettore della *velocita'*. Per discretizzarle basta segliere un
+valore $\Delta t$ appropriato, ottenendo di conseguenza
+$$
+F = \frac{m(v^{t + 1} - v^{t})}{\Delta t}, \quad  \quad
+v^{t+1} = v^t = \frac{F\Delta t}{m}
+$$
+Inoltre, la posizione di ogni corpo e' data da
+$$
+x^{t+1} - x^{t} = v \Delta t
+$$
+Si hanno tutti gli elementi per ottenere un codice sequenziale per la soluzione
+del problema
+```c
+for (t = 0; t < tmax; t++) {                /* for each time period */
+    for (i = 0; i < N; i++) {               /* for each body */
+        F = Force_routine(i);               /* compute force on the ith body */
+        v[i]_new = v[i] + F * dt / m;       /* compute ith v(t+1) */
+        x[i]_new = x[i] + v[i]_new * dt;    /* compute ith x(t+1) */
+    }
+    for (i = 0; i < N; i++) {
+        x[i] = x[i]_new;
+        v[i] = v[i]_new;
+    }
+}
+```
+Per la versione parallela, si utilizza l'***algoritmo di Barnes-Hut***
 
