@@ -113,11 +113,178 @@ per codificare le nostre credenze. In questo modo si possono associare delle
 distribuzioni di probabilita' ad ogni cosa: non solo a features e a valori
 targets ma anche a parametri e modelli stessi.*
 
-
 * Un qualunque modello di predizione, se si comporta come si comporterebbe il
   teorema di Bayes (avendo opportunamente modellato le probabilita'
   necessarie), e quindi farebbe le stesse conclusioni che farebbe il teorema di
   Bayes, allora tale modello e' detto **Bayes ottimale**
 
 > *Risultati teorici dicono che un classificatore probabilistico non puo' fare
-meglio del teorema di Bayes, cioe' il teorema di Bayes e' il massimo*
+meglio del teorema di Bayes, cioe' il teorema di Bayes e' il meglio
+raggiungibile da un modello*
+
+## Distribuzione Normale e significato geometrico
+* E' possibile vedere delle connessioni tra i modelli probabilistici e i
+  modelli geometrici. Per far cio' introduciamo prima alcune definizioni
+
+> **Distribuzione Normale Univariata**: La distribuzione normale (o Gaussiana)
+  ha la seguente pdf
+  $$
+  P(x | \mu, \sigma) = \frac{1}{\sqrt{2\pi} \sigma}
+  exp\left( - \frac{1}{2} \left[ \frac{x - \mu}{\sigma}\right]^2 \right)
+  $$
+  dove $\mu$ e' la media e $\sigma$ la deviazione standard.
+
+> **Distribuzione Normale Multivariata**:
+  $$
+  P(x | \mu, \Sigma) = \frac{1}{(2\pi)^{d/2} \sqrt{|\Sigma|}}
+  exp\left( - \frac{1}{2} (x - \mu)^T \Sigma^{-1} (x - \mu) \right)
+  $$
+  in cui $x = (x_1, \dots, x_d)^T \in \mathbb{R}^d$ e $\Sigma$ e' la
+  matrice della covarianza. $\mu = (\mu_1, \dots, \mu_d)$ e' il vettore che
+  contiene le medie rispetto ai singoli valori di $x$
+
+* Vediamo ora come possiamo utilizzare le distribuzioni normali per ottenere un
+  modello probabilistico, chiamato a **mistura di Gaussiane***
+* Consideriamo inizialmente il caso di due classi univariato $x\in \mathbb{R}$
+  (cioe' le istanze possono essere solo positive o negative, e sono descritte da
+  una sola feature reale)
+* Per ottenere un modello a mistura di Gaussiane, ipotizziamo inoltre che
+  ciascuna classe sia stata "generata" da una legge di tipo probabilistico.
+  Cio' significa che ogni classe ha la propria *distribuzione di probabilita'*,
+  che puo' essere diversa dall'altra. Assumeremo inoltre che entrambe siano
+  delle distribuzioni *Gaussiane* (o normali)
+  $$
+  P(x | \oplus) = \frac{1}{\sqrt{2 \pi} \sigma^{\oplus}} exp\left(-\frac{1}{2}
+  \left[ \frac{x - \mu^{\oplus}}{\sigma^{\oplus}} \right]^{2} \right), \quad
+  P(x | \ominus) = \frac{1}{\sqrt{2 \pi} \sigma^{\ominus}} exp\left(-\frac{1}{2}
+  \left[ \frac{x - \mu^{\ominus}}{\sigma^{\ominus}} \right]^{2} \right)
+  $$
+* In realta', stiamo parlando di Likelihood, poiche' il valore della classe e'
+  fissato. In altri termini le funzioni ci descrivono la **probabilita' di
+  ottenere uno specifico esempio in una classe fissata**.
+* Per poter definire il decision boundary del modello, sfruttiamo le proprieta'
+  degli esponenti e definiramo il ***Likelihood Ratio*** come:
+  $$
+  LR(x) = \frac{P(x | \oplus)}{P(x | \ominus)} =
+  \frac{\sigma^{\oplus}}{\sigma^{\ominus}} exp\left(-\frac{1}{2} \left[
+  \left(\frac{x - \mu^{\oplus}}{\sigma^{\oplus}}\right)^{2} - \left( \frac{x -
+  \mu^{\ominus}}{\sigma^{\ominus}}\right)^{2} \right] \right)
+  $$
+
+> Si noti che il decision boundary coincidera' con tutti quei punti in cui **LR
+  = 1**, per cui quando le probabilita' delle due classi sono uguali.
+
+* Consideriamo ora un caso specifico e supponiamo che le due componenti abbiano
+  la stessa deviazione standard $\sigma^{\oplus} = \sigma^{\ominus} = \sigma$.
+  Ne deriva (calcoli omessi) che
+  $$
+  LR(x) = exp \left[ \gamma(x - \mu) \right]
+  $$
+  in cui
+    * $\gamma = (\mu^{\oplus} - \mu^{\ominus})/\sigma^2$ e' la differenza tra le
+      medie in proporzione alla varianza
+    * $\mu = (\mu^{\oplus} + \mu^{\ominus})/2$ e' il **punto medio** tra le medie
+      delle due classi
+* Dalla relazione precedente, ne segue che il punto di decisione e' situato al
+  valore di $x = \mu$ (cioe' il punto medio tra le due classi!), poiche' rende
+  $LR(x) = 1$.
+* Possiamo quindi ottenere un classificatore lineare di base scegliendo come
+  decision boundary come la linea bisettrice perpendicolare al segmento che
+  connette $\mu^{\oplus}$ e $\mu^{\ominus}$. Tale decision boundary e' inoltre
+  ***Bayes ottimale***.
+
+* In generale, quando $\Sigma^{\oplus} = \Sigma^{\ominus}$ il decision
+  boundary interseca il segmento $\mu^{\oplus} - \mu^{\ominus}$ nel mezzo,
+  **ma non con un angolo retto se le features sono correlate**
+* Alternativamente, quando $\Sigma^{\oplus} \neq \Sigma^{\ominus}$ **il decision
+  boundary e' iperbolico** (cioe' coincide con un intervallo delimitato dai punti
+  n cui le pdf si intersecano)
+
+## Principio di Maximum Likelihood Estimation
+* Fino ad ora abbiamo visto la **likelyhood** come un fattore del teorema di
+  Bayes $P(X | Y = y)$, che esprime la probabilita' di osservare una specifica
+  istanza $X$ all'interno di una classe fissata
+* Facciamo l'ipotesi che le istanze del dataset siano state "*generate*" in
+  maniera indipendente l'una dall'altra. Cioe' se prendessimo un campione preso
+  della popolazione, e scegliessimo a caso un'altro campione: la scelta di uno
+  non determina il risultato di quello seguente
+* Utilizzando questa ipotesi di indipendenza, possiamo formulare la likelihood
+  di *tutto il dataset* come la produttoria della likelihood delle singole
+  istanze
+  $$
+  \prod_{X_i \in D} P(X_i | Y = y), \quad y \in \{ \oplus, \ominus \}
+  $$
+* Come visto in precedenza, sappiamo che le likelihood sono descritte da delle
+  distribuzioni Gaussiane $P(x | \oplus)$ e $P(x | \ominus)$ con media $\mu$ e
+  varianza e $\Sigma$. Per stimare $\mu$ data la matrice $\Sigma$, il principio
+  di **maximum likelihood estimation** ci dice che $\mu$ deve coincidere con il
+  valore che massimizza la likelihood di $X$ (assumendo che le istanze che
+  compongono $X$ siano state campionate indipendentemente)
+  $$
+  \begin{aligned}
+  \hat{\mu} &= \arg \max_{\mu} P(x \;|\; \mu, \Sigma) \\
+          & \vdots \\
+          &= \arg \min_{\mu} \sum_{x \in X} (Dis_M(x, \mu \;|\; \Sigma))^2
+  \end{aligned}
+  $$
+  Troviamo quindi che la stima di massimo likelihood corrisponde al punto che
+  minimizza la somma delle distanze di Mahalanobis al quadrato di tutti i punti
+  in $X$. ($\mu$ e' il vettore piu' vicino rispetto a tutti, cioe' il
+  *centroide*)
+* E' possibile inoltre derivare il modello di regressione lineare con questo
+  principio. Si applica il principio di maximum likelihood estimation e si trova
+  lo stesso modello che abbiamo ottenuto nel capitolo precedente
+
+## Modelli Probabilistici per Dati Categorici
+* Sappiamo che una variabile aleatoria $X$ e' una variabile che puo' assumere i
+  valori $\{ x_i \}, i=1, \dots, d$ dove ogni valore $x_i$ ha una certa
+  probabilita' $\theta_i$ di valorizzare la variabile.
+* Rappresentiamo le occorrenze di ogni parola $i$ in un documento con una
+  *variabile aleatoria discreta* $X_i$, in quanto, preso un documento non
+  sappiamo quante occorrenze delle parole contenga a priori.
+* Quando abbiamo classi di documenti (ad esempio *spam* o *ham* nel caso dello
+  spam filter) differenti, e' ragionevole pensare che diverse classi abbiano
+  distribuzione diversa dell'occorrenza di parole, per cui ipotizzando di avere
+  due classi $\oplus, \ominus$, avremo $\theta_i^{\oplus}$ e
+  $\theta_i^{\ominus}$
+* L'occorrenza *di una parola* all'interno di un documento e' modellata da un
+  **test Bernoulliano** (e quindi la v.a. sara' una v.a. Bernoulliana). Piu' in
+  particolare, possiamo modellarla in due modi differenti utilizzando un modello
+  Bernoulliano
+
+### Modello Bernoulliano Multivariato
+* La variabile $X_i$ corrisponente alla *i-esima* parola rappresenta la
+  presenza/assenza in un dato documento, per cui corrisponde a modellare $X$
+  come una variabile **Bernoulliana Binomiale**. Tale variabile ha una
+  distribuzione di due valori: successo ($P(X=1)=\theta$) o fallimento
+  ($P(X=0)=1-\theta$). Dal momento che abbiamo diverse parole nel vocabolario,
+  il modello corrispondera' ad un vettore di variabili Binomiali Bernoulliane
+  *indipendenti*, per cui in questo caso parliamo di **modello Bernoulliano
+  multivariato**.
+* Rappresentiamo un documento come un vettore di bit $X = (X_1, \dots, X_d)$, in
+  cui $X_i \{0, 1\}$ rappresenta la presenza della parola *i-esima* nel
+  documento.
+  La probabilita' di presenza delle parole in un documento sara' rappresentato
+  dal modello multivariato come un vettore di probabilita' $(\theta_1, \dots,
+  \theta_d)$ in cui il singolo $\theta_i$ e' la probabilita' che la parola $i$
+  sia nel documento
+* Il modello in memoria si salva una matrice $M^{n \times d}$, dove $n$ e' il
+  numero di documenti e $d$ sono le parole nel vocabolario. Tale matrice
+  booleana, vale $1$ in corrispondenza della parola $j$ nel documento $i$, e
+  indica la presenza di quella data parola in quel dato documento.
+  E' possibile quindi stimare le probabilita' delle singole parole come:
+  $$
+  \theta_j = \frac{\sum_{i=0}^{n} M(i, j)}{n}
+  $$
+  cioe' il rapporto del numero di documenti che contengono la parola *j-esima*
+  sul numero dei documenti totali.
+
+### Modello Bernoulliano Multinomiale
+* Il modello Bernoulliano Multinomiale e' una generalizzazione di quello
+  Multivariato, in cui non ci si limita a rappresentare se una parola e'
+  presente o meno ma conta la **frequenza** delle occorrenze di una parola
+  all'interno del documento
+* Il modello usa una variabile random $X_i$ che rappresenta il numero di
+  occorrenze della parola $i$ nel documento. La probabilita' $\theta_i$ indica
+  la probabilita' di trova quel numero di occorrenze della parola $i$ nel testo.
+* 
