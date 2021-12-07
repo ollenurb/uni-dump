@@ -284,7 +284,164 @@ raggiungibile da un modello*
   Multivariato, in cui non ci si limita a rappresentare se una parola e'
   presente o meno ma conta la **frequenza** delle occorrenze di una parola
   all'interno del documento
-* Il modello usa una variabile random $X_i$ che rappresenta il numero di
+* Il modello usa una variabile aleatoria $X_i$ che rappresenta il numero di
   occorrenze della parola $i$ nel documento. La probabilita' $\theta_i$ indica
-  la probabilita' di trova quel numero di occorrenze della parola $i$ nel testo.
+  la probabilita' di trovare quel numero di occorrenze della parola $i$ nel
+  testo.
+* La distribuzione **binomiale** modella il numero di eventi di successo $S$ (in
+  questo caso il numero di occorrenze della parola) in $n$ prove che sono
+  indipendenti l'una dall'altra. Le prove consistono nel vedere se nella
+  posizione di un documento composto da $n$ parole c'e' quella parola. La
+  singola prova corrisponde ad un Bernoulli trial
+  $$
+  P(S = k) = \binom{n}{k} \theta^k (1 - \theta)^{(n-k)}
+  $$
+* Se prima nel modello multivariato un Bernoulli trial era il singolo
+  *documento*, in questo caso il singolo trial e' una *singola posizione* di una
+  parola nel documento.
+* Il modello rappresenta il singolo documento con un vettore $X = (X_1, \dots,
+  X_d)$, che rappresenta le *frequenze* (cioe' quante volte compaiono) delle
+  parole all'interno del documento
+* Come gia' detto, il modello vede il documento come un processo di Bernoulli di
+  $n$ prove. La singola probabilita' della parola $i$ di comparire in una
+  qualsiasi prova e' $P(X_i = 0) = \theta_i$ e $P(X_i = 1) = 1 - \theta_i$.
+* Utilizziamo una distribuzione **multinomiale** per modellare la stima della
+  probabilita' tenendo conto delle $d$ variabili in tutte le posizioni del
+  documento composto da $n$ parole:
+  $$
+  P(X=(x_1, \dots, x_d)) = n! \frac{\theta_1^{x_1}}{x_1!} \dots \frac{\theta_d^{x_d}}{x_d!}
+  $$
+  In sostanza non e' altro che la **generalizzazione** della distribuzione
+  binomiale vista poch'anzi. Ongi singola parola ha la sua probabilita' di
+  comparsa $\theta_i$, elevata al numero di volte che compare $x_i$. I
+  fattoriali al denominatore servono a tener conto delle posizioni di comparsa
+  delle parole nel testo.
+
+## Naive Bayes
+* Entrambi i modelli visti in precedenza funzionano grazie all'ipotesi di
+  ***naive Bayes***: utilizzano il teorema di Bayes per stimare la probabilita'
+  della classe, le osservazioni date dalle frequenze per stimare la probabilita'
+  di comparsa delle parole nei documenti di una certa classe, facendo
+  l'assunzione che la comparsa delle parole sia indipendente dalla comparsa
+  delle altre
+* In questo modo possiamo evitare di rappresentare la likelihood condizionata
+  alla classe ma in maniera *congiunta* rispetto a tutte le parole del
+  vocabolario. (si pensi ad esempio che il vocabolario Inglese ha 8000 parole)
+* In generale, l'ipotesi di indipendenza non rispecchia la realta'. Si pensi ad
+  esempio di osservare la parola `Viagra` in un documento, per cui sara' molto
+  piu' probabile che compaia `pills` come parola successiva. Nonostante questo,
+  anche con l'ipotesi di indipendenza il modello da una stima partiolarmente
+  accurata delle distribuzioni
+* Riassumiamo infine formalmente cio' che viene fatto con le ipotesi di Naive
+  Bayes:
+    1. Assumiamo che le istanze siano rappresentate su $d$ attributi
+    2. Applicando il teorema di Bayes, facciamo una stima di massimizzazione a
+       posteriori. Cio' corrisponde a trovare il valore di $Y$ tale che
+       massimizzazi
+       $$
+       P(Y | X_1, \dots, X_d)=
+       \frac{P(X_1, \dots, X_d | Y) P(Y)}{\cancel{P(X_1, \dots, X_d)}}
+       $$
+    3. Stimare $P(X_1, \dots, X_d)$ e' difficile
+    4. Facendo l'ipotesi di indipendenza tra attributi $X_i$ otteniamo
+       $$
+       P(X_1, \dots, X_d | Y) = P(X_1 | Y)P(X_2|Y) \dots P(X_d | Y)
+       $$
+       che e' piu' semplice da stimare
+
+### Regole di Decisione Probabilistiche
+* Con Naive Bayes calcoliamo la probabilita' di ottenere un esempio supponendo
+  di essere in una data classe (*likelihood*). Piu' le likelihood sono
+  differenti tra loro, piu' saranno utili le features di $X$ nella
+  classificazione.
+* Per un singolo esempio $x$ calcoliamo le likelihood della classe positiva $P(X
+  | Y=\oplus)$ e negativa $P(X | Y=\ominus)$, per poi applicare una delle
+  possibili regole di decisione:
+
+    1. `maximum likelihood (ML)` - $\arg \max_y P(X = x | Y = y)$
+    2. `maximum a posteriori (MAP)` - $\arg \max_y P(X = x | Y = y)P(Y= y)$
+    3. `recalibrated likelihood` - $\arg \max_y w_y P(X = x | Y = y)$
+
+* Le regole di decisione 1. e 2. sono equivalenti quando la distribuzione delle
+  classi e' **uniforme**. La terza generalizza le prime due sostituendo la
+  distribuzione delle classi ($P(Y = y)$) con dei pesi appresi dai dati.
+
+### Apprendimento di un modello Naive Bayes
+* Le **stopwords** sono le parole che sono troppo comuni all'interno dei
+  documenti e vengono ignorate
+* Nella pratica, per applicare uno smoothing ai valori di probabilita' si
+  aggiungono degli outliers nel training set. Tali outliers sono semplicemente
+  due pseudo documenti: uno contentente tutte le parole del vocabolario e
+  l'altro senza nessuna di essa. Tale pratica equivale a fare un *Laplace
+  Smoothing*
+* Applicare questo smoothing permette di dare una chance anche quelle parole che
+  sono presenti nel vocabolario ma che non appaiono neanche una volta nel
+  dataset
+
+![Inserimento di outliers per applicare uno smoothing](img/correction_naive_bayes.png)
+
+## Apprendimento Discriminativo tramite ottimizzazione della likelihood
+
+* Fino ad ora abbiamo visto modelli generativi di Naive Bayes, vedremo ora
+  un modello discriminativo: la **Regressione Logistica**
+* Nella regressione lineare le variabili sono connesse tra loro tramite una
+  relazione di tipo lineare, in cui il goal e' quello di predirre l'output $y_i$
+  $$
+  y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}
+  $$
+* Nella regressione logistica, invece, vogliamo predirre il valore di una
+  variabile binaria (ad esempio il valore di una classe *positiva/negativa*)
+  In questo caso si vuole predirre il valore di una variabile casuale $Y_i$ che
+  vale $1$/$0$ in caso la classe sia positiva/negativa per l'esempio $i$
+* Piu' precisamente, vogliamo stimare $P(Y_i|X_i)$. Sappiamo che $Y_i$ e' una
+  variabile con una distribuzione di Bernoulli.
+* Per trasformare una regressione lineare in una regressione logistica, si
+  utilizza una funzione sigmoide, che trasforma il range della retta da $[-
+  \infty; +\infty]$ a $[0,1]$:
+  $$
+  P(Y_i | x_i) = \frac{exp^{\beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}}}
+                    {1+ exp^{\beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}}}
+  $$
+* Nella realta' per semplificare i calcoli si passa attraverso il logaritmo
+  degli odds (probabilita' della classe positiva sulla probabilita' della classe
+  negativa)
+  $$
+  \begin{aligned}
+  Odds(x_i) &= \frac{P(y_i | x_i)}{1 - P(y_i | x_i)} = exp^{\beta_0 + \beta_1
+  x_{i1} + \dots + \beta_d x_{id}} \\[2ex]
+  ln(Odds(x_{i0})) &= \beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}
+  \end{aligned}
+  $$
+  L'interpretazione del logaritmo ci dice che se e' $<0$ allora la probabilita'
+  di predirre una classe positiva e' piu' piccola di quella negativa. Viceversa
+  quando $>0$. Quando il risultato e' $0$ non si riesce a prendere una
+  decisione.
+
+> La regressione logistica e' uno dei modelli piu' utilizzati dagli statistici
+
+* La regressione logistica puo' anche funzionare quando le **variabili sono
+  categoriche**. Per far cio', prendiamo per esempio il caso in cui la feature
+  categorica $X$ possa valere $A$ oppure $B$, per cui si puo' costruire la
+  seguente tabella di contingenza:
+
+![Tabella di contingenza in cui sono segnate le frequenze in cui compare il
+valore $A$ e $B$ negli esempi all'interno delle classi positive e
+negative](img/contingency_table_logreg.png)
+
+* L'$Odds$ dei valori della feature sono facilmente calcolabili:
+  $$
+  \begin{aligned}
+      Odds(A) = \frac{P(Y=1 | X=A)}{P(Y=0 | X=A)} &= \frac{n_{A1}}{n_{A0}}\\[2ex]
+      Odds(B) = \frac{P(Y=1 | X=B)}{P(Y=0 | X=B)} &= \frac{n_{B1}}{n_{B0}}
+  \end{aligned}
+  $$
+  Per ottenere la regressione logistica, si sostituisce nella formula di regressione
+  $$
+  ln(Odds(x_i)) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}
+  $$
+  il valore di $Odds(x_{ij})$ al posto del valore della feature categorica
+  $x_{ij}$
+* L'odds intuitivamente mi dice quanto e' piu' possibile che un esempio
+  osservato con quel valore della feature specifico sia assegnato alla classe
+  positiva piuttosto che alla classe negativa
 * 

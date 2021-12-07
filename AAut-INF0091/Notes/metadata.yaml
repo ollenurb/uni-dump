@@ -5,5 +5,6 @@ author: [Matteo Brunello]
 header-includes:
   - \usepackage[scr=rsfs]{mathalpha}
   - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+  - \usepackage{cancel}
 ---
 
