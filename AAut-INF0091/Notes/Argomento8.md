@@ -379,8 +379,9 @@ binomiale, in cui $k$ (il numero di trials) e' 1*
   di essere in una data classe (*likelihood*). Piu' le likelihood sono
   differenti tra loro, piu' saranno utili le features di $X$ nella
   classificazione.
-* Per un singolo esempio $x$ calcoliamo le likelihood della classe positiva $P(X
-  | Y=\oplus)$ e negativa $P(X | Y=\ominus)$, per poi applicare una delle
+* Dopo aver scelto una delle distribuzioni per modellare i nostri dati, per un
+  singolo esempio $x$ calcoliamo le likelihood della classe positiva $P(X |
+  Y=\oplus)$ e negativa $P(X | Y=\ominus)$, per poi applicare una delle
   possibili regole di decisione:
 
     1. `maximum likelihood (ML)` - $\arg \max_y P(X = x | Y = y)$
@@ -389,28 +390,41 @@ binomiale, in cui $k$ (il numero di trials) e' 1*
 
 * Le regole di decisione 1. e 2. sono equivalenti quando la distribuzione delle
   classi e' **uniforme**. La terza generalizza le prime due sostituendo la
-  distribuzione delle classi ($P(Y = y)$) con dei pesi appresi dai dati.
+  distribuzione delle classi ($P(Y = y)$) con dei pesi appresi dai dati tali che
+  minimizzino la perdita.
+* La regola del recalibrated likelihood si utilizza in caso le distribuioni
+  siano scalibrate.
 
 ### Apprendimento di un modello Naive Bayes
-* Le **stopwords** sono le parole che sono troppo comuni all'interno dei
-  documenti e vengono ignorate
-* Nella pratica, per applicare uno smoothing ai valori di probabilita' si
-  aggiungono degli outliers nel training set. Tali outliers sono semplicemente
-  due pseudo documenti: uno contentente tutte le parole del vocabolario e
-  l'altro senza nessuna di essa. Tale pratica equivale a fare un *Laplace
-  Smoothing*
+* L'apprendimento dei modelli consiste anche nella stima dei parametri delle
+  distribuzioni $\theta$. Ad esempio, nel caso di un modello multivariato
+  possiamo stimarlo come $\hat{\theta}=d/n$, cioe' contando il numero di
+  documenti in cui esce la parola in questione ($d$) sul numero dei documenti
+  totali ($n$)
+* E' possibile pero' che alcune parole non compaiano mai all'interno del
+  training set. Anche se poco probabili devono essere considerate
+  comunque, per cui si applica uno smoothing alla stima $\hat{\theta}$,
+  andando ad aggiungere degli ***pseudo counts*** nel training set. Essi sono
+  essenzialmente 2 documenti: uno contenente tutte le parole e uno che non ne
+  contiene nessuna. L'aggiunta di questi due documenti corrisponde ad effettuare
+  una ***Laplace Smoothing*** rendendo la stima $\hat{\theta}=d+1/n+2$.
 * Applicare questo smoothing permette di dare una chance anche quelle parole che
   sono presenti nel vocabolario ma che non appaiono neanche una volta nel
   dataset
 
-![Inserimento di outliers per applicare uno smoothing](img/correction_naive_bayes.png)
+![Inserimento di outliers (*pseudocounts*) per applicare uno smoothing](img/correction_naive_bayes.png)
 
-## Apprendimento Discriminativo tramite ottimizzazione della likelihood
+* Guardare Esempio 9.5
 
+> Il main takeaway dell'esempio e' che cambia in generale il conteggio in base
+al tipo di distribuzione che si sceglie.
+
+## Regressione Logistica
 * Fino ad ora abbiamo visto modelli generativi di Naive Bayes, vedremo ora
   un modello discriminativo: la **Regressione Logistica**
 * Nella regressione lineare le variabili sono connesse tra loro tramite una
-  relazione di tipo lineare, in cui il goal e' quello di predirre l'output $y_i$
+  relazione di tipo lineare, in cui il goal e' quello di predirre l'output
+  $y_i$, che e' un valore **reale**
   $$
   y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}
   $$
@@ -420,9 +434,16 @@ binomiale, in cui $k$ (il numero di trials) e' 1*
   vale $1$/$0$ in caso la classe sia positiva/negativa per l'esempio $i$
 * Piu' precisamente, vogliamo stimare $P(Y_i|X_i)$. Sappiamo che $Y_i$ e' una
   variabile con una distribuzione di Bernoulli.
-* Per trasformare una regressione lineare in una regressione logistica, si
-  utilizza una funzione sigmoide, che trasforma il range della retta da $[-
-  \infty; +\infty]$ a $[0,1]$:
+* L'intuizione principale, e' quella che la regressione logistica utilizza la
+  regressione lineare per stimare i parametri della distribuzione (cioe' la
+  probabilita' di successo $\hat{\theta}$) che sono poi ***logisticamente
+  ricalibrati***
+* Siccome i parametri della distribuzione sono delle stime di probabilita',
+  bisogna rendere il valore di output della regressione lineare tra 0 e 1.
+  Per far cio' si utilizza una funzione sigmoide (da qui il nome logistica), che
+  trasforma il range del valore in output della regressione da $[- \infty;
+  +\infty]$ a $[0,1]$. Inserendo quindi della regressione lineare all'interno
+  della sigmoide otteniamo:
   $$
   P(Y_i | x_i) = \frac{exp^{\beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}}}
                     {1+ exp^{\beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}}}
@@ -437,10 +458,11 @@ binomiale, in cui $k$ (il numero di trials) e' 1*
   ln(Odds(x_{i0})) &= \beta_0 + \beta_1 x_{i1} + \dots + \beta_d x_{id}
   \end{aligned}
   $$
-  L'interpretazione del logaritmo ci dice che se e' $<0$ allora la probabilita'
-  di predirre una classe positiva e' piu' piccola di quella negativa. Viceversa
-  quando $>0$. Quando il risultato e' $0$ non si riesce a prendere una
-  decisione.
+  L'interpretazione del logaritmo ci dice che se qualora sia $<0$, allora la
+  probabilita' di predirre una classe positiva e' piu' piccola di quella
+  negativa. Viceversa quando e' $>0$. Cosi' come nella likelihood, il decision
+  boundary e' al valore $0$, per cui non si riesce a prendere una decisione tra
+  le due classi.
 
 > La regressione logistica e' uno dei modelli piu' utilizzati dagli statistici
 
@@ -470,4 +492,19 @@ negative](img/contingency_table_logreg.png)
 * L'odds intuitivamente mi dice quanto e' piu' possibile che un esempio
   osservato con quel valore della feature specifico sia assegnato alla classe
   positiva piuttosto che alla classe negativa
+* Nel libro viene trattato in modo leggermente differente:
+    * Supponiamo di avere un regressore $p(x) = w \cdot x - t$ (che corrisponde
+      a $w_1, \dots, w_d = \beta_1, \dots, \beta_d$ e $-t = \beta_0$)
+    * Applichiamo una normalizzazione logistica
+      $$
+      \hat{p}(x) = \frac{exp(w \cdot x - t)}{1 + exp(w \cdot x - t)}
+                   \frac{1}{1 + exp(-(w \cdot x - t))}
+      $$
+   * Se assumiamo che la distribuzione sia di Bernoulli e le classi siano
+     $y=0/1$ per negativa/positiva, per ottenere $P(y_i | x_i)$ basta sostituire
+     il valore del regressore normalizzato $\hat{p}(x)$ al valore $\theta$
+     all'interno della distribuzione di Bernoulli:
+     $$
+     P(y_i | x_i) = \hat{p}(x_i)^{y_i} (1 -  \hat{p}(x_i))^{(1 - y_i)}
+     $$
 *
