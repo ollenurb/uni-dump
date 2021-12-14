@@ -412,7 +412,8 @@ binomiale, in cui $k$ (il numero di trials) e' 1*
   sono presenti nel vocabolario ma che non appaiono neanche una volta nel
   dataset
 
-![Inserimento di outliers (*pseudocounts*) per applicare uno smoothing](img/correction_naive_bayes.png)
+![Inserimento di outliers (*pseudocounts*) per applicare uno
+smoothing](img/correction_naive_bayes.png){ width=70% }
 
 * Guardare Esempio 9.5
 
@@ -473,12 +474,13 @@ al tipo di distribuzione che si sceglie.
 
 ![Tabella di contingenza in cui sono segnate le frequenze in cui compare il
 valore $A$ e $B$ negli esempi all'interno delle classi positive e
-negative](img/contingency_table_logreg.png)
+negative](img/contingency_table_logreg.png){ width=30% }
 
 * L'$Odds$ dei valori della feature sono facilmente calcolabili:
   $$
   \begin{aligned}
-      Odds(A) = \frac{P(Y=1 | X=A)}{P(Y=0 | X=A)} &= \frac{n_{A1}}{n_{A0}}\\[2ex]
+      Odds(A) = \frac{P(Y=1 | X=A)}{P(Y=0 | X=A)} &=
+      \frac{n_{A1}}{n_{A0}}\\[2ex]
       Odds(B) = \frac{P(Y=1 | X=B)}{P(Y=0 | X=B)} &= \frac{n_{B1}}{n_{B0}}
   \end{aligned}
   $$
@@ -498,7 +500,7 @@ negative](img/contingency_table_logreg.png)
     * Applichiamo una normalizzazione logistica
       $$
       \hat{p}(x) = \frac{exp(w \cdot x - t)}{1 + exp(w \cdot x - t)}
-                   \frac{1}{1 + exp(-(w \cdot x - t))}
+                 = \frac{1}{1 + exp(-(w \cdot x - t))}
       $$
    * Se assumiamo che la distribuzione sia di Bernoulli e le classi siano
      $y=0/1$ per negativa/positiva, per ottenere $P(y_i | x_i)$ basta sostituire
@@ -507,4 +509,51 @@ negative](img/contingency_table_logreg.png)
      $$
      P(y_i | x_i) = \hat{p}(x_i)^{y_i} (1 -  \hat{p}(x_i))^{(1 - y_i)}
      $$
+* Il processo di conversione di un valore arbitrario a una probabilta' e'
+  chiamato ***calibrazione***
+* La regressione logistica differisce dalla regressione lineare perche' tende a
+  modellare piu' accuratamente gli esempi piu' vicini al decision boundary (nei
+  punti in cui le due classi si sovrappongono di piu').
+
+#### Apprendimento di regressori logistici
+* L'apprendimento di un Logistic Regressor concerne il trovare i parametri del
+  regressore lineare che massimizzino la likelihood (che corrisponde quindi ad
+  un *Maximum Likelihood Estimation*).
+* Possiamo ottenere la ***conditional likelihood*** nel modo seguente:
+  $$
+  CL(w, t) = \prod_i P(y_i | x_i) = \prod_i \hat{p}(x_i)^{y_i} (1 -
+  \hat{p}(x_i))^{(1 - y_i)}
+  $$
+* Per massimizzare $CL$ ne consideriamo il logaritmo $LCL$ e se ne fa la
+  derivata parziale rispetto a $w$ e $t$, ponendole a $0$.
+* Omessi i calcoli, si ottiene che
+  $$
+  \frac{\partial}{\partial t} LCL(w, t) = \sum_{x_i \in Tr} (\hat{p}(x_i) - y_i)
+  = 0
+  $$
+  otteniamo che per rendere il piu' possibile la quantita' precedente a 0 e'
+  necessario che la probabilita' predetta debba essere uguale alla proporzione
+  dei positivi $pos$. In altri termini ci dice bisogna trovare una stima
+  $\hat{p}$ che minimizzi gli errori ($\hat{p}(x_i) - y_i$)
+* Si noti che i ranking trees hanno questa proprieta' dal momento che assegnano
+  come probabilita' predette le probabilita' empiriche di un segmento
+* L'apprendimento di un modello a regressione logistica puo' essere ridotto
+  quindi al seguente problema di ottimizzazione:
+  $$
+  w*, t* = \arg \max_{w, t} CL(w, t) = \arg \max_{w, t} LCL(w, t)
+  $$
+  (`LCL` e' il logaritmo della conditional likelihood `CL`)
+* Tale problema di ottimizzazione e' ***convesso*** (esiste una e una sola
+  soluzione), per cui esistono diversi metodi combinatori per ottimizzarlo
+* Uno degli approcci piu' semplici che vengono applicati e' quello dato dalla
+  seguente regola di update:
+  $$
+  \textbf{w}' = \textbf{w} + \eta (y_i - \hat{p}_i) \textbf{x}_i
+  $$
+  in cui $\eta$ e' il *learning rate*. Tale metodo e' utilizzato inoltre per
+  l'apprendimento dei *percettroni* nelle Reti Neurali Profonde.
+* In questa regola di update, notiamo come l'errore $(y_i - \hat{p}_i)$ indichi
+  la **direzione** da prendere per il possimo valore: se l'errore e' positivo,
+  il prossimo valore di $\textbf{w}$ sara' piu' grande del precedente, se
+  negativo sara' piu' piccolo.
 *
