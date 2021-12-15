@@ -556,4 +556,156 @@ negative](img/contingency_table_logreg.png){ width=30% }
   la **direzione** da prendere per il possimo valore: se l'errore e' positivo,
   il prossimo valore di $\textbf{w}$ sara' piu' grande del precedente, se
   negativo sara' piu' piccolo.
-*
+
+## Modelli basati sulla Compressione
+* Uno dei problemi dell'apprendimento automatico e' l'overfitting: durante
+  l'apprendimento il modello diventa troppo complesso, adattandosi molto bene ai
+  dati ma perdendo la capacita' di generalizzare
+* Possiamo quantificare un fenomeno del genere modellando i modelli tramite il
+  principio della *quantita' di informazione*
+* L'idea e' quella di rappresentare un modello come se fosse un messaggio:
+    * Piu' il modello e' complesso, piu' e' lungo il messaggio
+    * Viceversa, piu' facile e' il modello piu' corto sara' il messaggio
+* Possiamo anche utilizzare i principi dell'information theory per fare
+  classificazione. Questo perche' esiste una stretta relazione tra probabilita'
+  e *information content* di un evento. Consideriamo, ad esempio, la stima di
+  *a priori maximization*:
+  $$
+  y_{MAP} = \arg \max_y P(X=x \; | \; Y=y)P(Y=y)
+  $$
+* Possiamo trasformarla in una stima di minimizzazione considerandone il
+  logaritmo
+  $$
+  y_{MAP} = \arg \min_y -log \; P(X=x \; | \; Y=y) -log \; P(Y=y)
+  $$
+  Ma l'inverso del logaritmo della probabilita' e' proprio la quantita' di
+  informazione. Per cui possiamo denotare con
+  $$
+  \begin{aligned}
+  IC(X \; | \; Y) &= -\log_2 P(X \; | \; Y) \\
+  IC(Y) &= -\log_2 P(Y)
+  \end{aligned}
+  $$
+  e infine fare una stima $y_{MAP}$ equivalente nel modo seguente
+  $$
+  y_{MAP} = \arg \min_y IC(X=x \; | \; Y=y) + IC(Y=y)
+  $$
+* Come detto nell'introduzione, possiamo utilizzare questi concetti di
+  information theory anche per ridurre l'overfitting del modello.
+* Consideriamo un modello $m$ e denotiamo con $L(m)$ la lunghezza in *bit*
+  della **descrizione di tale modello**. $m$ e' una variabile casuale che ha una
+  certa probabilita' di avverarsi, cioe' i modelli hanno una certa probabilita'
+  di avverare.
+
+> Ci sono vari modi per descrivere un modello. Ad esempio, in un albero di
+  decisione potremmo dire che prima comunichiamo il livello di appartenenza di
+  ogni nodo, poi comunichiamo l'attributo che viene utilizzato dentro il nodo
+  interno per lo split node, infine l'etichetta assegnata alle foglie.
+
+* Denotiamo infine con $L(D \; | \; m)$ la lunghezza in bit di un messaggio che
+  descrive il dato $D$, dato il modello $m$. Intuitivamente, cio' che denota
+  e' questo: $m$ e' un modello che e' stato addestrato dai dati, ma nonostante
+  cio' puo' effettuare degli errori. I dati su cui gli errori vengono fatti sono
+  $D$. Possiamo dire che $L(D \; | \; m)$ quantifica l'errore del modello $m$
+* Il principio di **Minimum Description Length** descrive la capacita' di un
+  modello di essere compresso (compatto) e dall'altra essere accurato. Il
+  modello che minimizza questa quantita' e':
+  $$
+  m_{MDL} = \arg \min_{m \in M} L(m) + L(D \; | \; m)
+  $$
+  quindi, vogliamo trovare il modello $m$ che minimizza la complessita' del
+  modello (data dalla lunghezza del messaggio per trasmetterlo $L(m)$), e la
+  lunghezza dei messaggi che devo mandare a fronte di errori del modello $L(D \;
+  | \; m)$
+* Possiamo vedere il principio intuitivamente nel modo seguente. Supponiamo di
+  voler trasmettere un dataset etichettato. L'idea e' quella di trasmettere
+  prima un modello addestrato sui dati etichettati ($m$) in modo che il
+  ricevente possa ricavarne le etichette. Le etichette pero' non saranno tutte
+  corrette (poiche' il modello puo' fare degli errori di classificazione), per
+  cui dovremmo anche trasmettere i dati in cui il modello fa errori ($D \; | \;
+  m$) per poter ricostruire l'intero dataset etichettato originale.
+
+## Expectation Maximisation
+* Vediamo ora come possiamo utilizzare la prospettiva probabilistica per fare
+  del *clustering* di dati.
+* L'idea e' quella di assegnare una probabilita' di appartenenza per ogni
+  cluster. Cio' e' differente da quello che abbiamo fatto fin'ora poiche'
+  diversi cluster possono essere verosimili dato un esempio.
+* Gli algoritmi di clustering di questo tipo spesso modellano i dati utilizzando
+  delle ***misture finite di distribuzioni di probabilita'***.
+    * Cio' significa che facciamo un'assunzione di partenza che tutti i dati del
+      dataset provengono da un numero **finito** di clusters.
+    * Ogni cluster e' in grado di generare gli esempi che appartengono ad esso
+      utilizzando una legge di tipo probabilistico (funzione di distribuzione di
+      probabilita')
+    * Tipicamente le funzioni di distribuzione sono di tipo Gaussiano, per cui
+      per descrivere ciascun cluster e' necessario stabilire i parametri $\mu,
+      \sigma$ di ogni Gaussiana
+    * Le distribuzioni differenti sono poi combinate tra loro utilizzando dei
+      pesi che modellano l'impatto di un cluster piuttosto che un altro
+* Secondo quanto detto, quindi, il generico cluster *l-esimo* e' rappresentato
+  da
+  $$
+  f_l(x; \mu_l, \sigma_l) = \frac{1}{\sqrt{2 \pi \sigma_l}}
+  e^{\frac{-(x-\mu_l)^2}{2 \sigma_l^2}}
+  $$
+* Sappiamo inoltre che data la ***probabilita' di appartenenza ad un generico
+  cluster*** $P(C_l)$ (si calcola semplicemente andando a vedere quanti sono gli
+  esempi appartenenti a $C_l$) vale
+  $$
+  1 = \sum^k_l P(C_l)
+  $$
+  e quindi possiamo utilizzare $P(C_l)$ come peso per combinare assieme tutte le
+  distribuzioni:
+  $$
+  f(x) = \sum_l^k P(C_l) f_l(x; \mu_l, \sigma_l)
+  $$
+* Se noi sapessimo gia' a quali clusters appartengono tutti i dati, i parametri
+  delle distribuzioni sarebbero facilmente stimabili, cosi' come i pesi. La
+  stessa cosa vale nel caso si conoscessero a priori i parametri delle
+  distribuzioni. Ovviamente cio' non e' possibile nel task di clustering.
+* ***Expectation Maximisation*** risolve questo problema elegantemente, tramite
+  l'iterazione di due passaggi:
+    * Nel primo passo (*expectation step*), fissa i parametri di tutti i
+      clusters ($\mu_c, \sigma_c, P(C_l)$) e determina per ogni istanza il
+      cluster di appartenenza secondo i parametri assegnati
+    * Nel secondo passo (*maximization step*), vengono ricalcolati tutti i
+      parametri $\mu_l, \sigma_l, P(C_l)$ secondo l'assegnazione fatta nel primo
+      step. Si chiama di maximization perche' questo passo massimizza la
+      *likelihood* dei parametri delle Gaussiane, cioe' ci da i parametri piu'
+      verosimili una volta osservati gli esempi.
+* `EM` si aspetta che si sappia a priori il numero di clusters $k$, cosi' come
+  in `k-Means`. In realta' `EM` e' una generalizzazione di `k-Means` ma in una
+  prospettiva probabilistica: entrambi i metodi consistono in una procedura
+  iterativa di assegnamento e ricalcolo.
+
+#### Expectation Step
+* I parametri $\mu_l, \sigma_l, P(C_l)$ di ogni cluster $l$ sono assegnati
+  secondo una regola specifica, che puo' essere anche randomica
+* Per ogni cluster $l$ si calcolano poi dei pesi per ogni istanza $i$
+  $$
+  \hat{P}(C_l \; | \; x_i) = \frac{f(x_i; \mu_l, \sigma_l) P(C_l)}{f(x_i)} =
+  w_{li}
+  $$
+  in cui $f(x_i)$ e' la somma di tutte le distribuzioni pesate per la
+  probabilita' vista precedentemente.
+
+> In questa formula, $f(x_i; \mu_l, \sigma_l)$ e' anche denotato come $f(x_i,
+  C_l)$
+
+#### Maximization Step
+* In questo step avviene la stima vera e propria dei parametri. Anziche' andare
+  a fare la massimizzazione della likelihood complessiva, si vanno a stimare i
+  parametri utilizzando i pesi calcolati nello step `E`:
+  $$
+  \hat{P}(C_l) = \frac{1}{n} \sum_{i=1}^n \hat{P}(C_l \; | \; x_i) =
+                 \frac{1}{n} \sum_{i=1}^n w_{li}
+  $$
+  $$
+  \mu_l = \frac{\sum_{i=1}^n w_{li} x_i}{\sum_{i=1}^n w_{li}}
+  $$
+  $$
+  \sigma_l = \frac{\sum_{i=1}^n w_{li} (x_i - \mu_l)^2}{\sum_{i=1}^n w_{li}}
+  $$
+
+* La procedura termina quando il logaritmo della likelihood si satura
