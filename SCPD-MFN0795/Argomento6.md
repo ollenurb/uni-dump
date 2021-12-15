@@ -151,6 +151,7 @@ x^{t+1} - x^{t} = v \Delta t
 $$
 Si hanno tutti gli elementi per ottenere un codice sequenziale per la soluzione
 del problema
+
 ```c
 for (t = 0; t < tmax; t++) {                /* for each time period */
     for (i = 0; i < N; i++) {               /* for each body */
@@ -164,5 +165,10 @@ for (t = 0; t < tmax; t++) {                /* for each time period */
     }
 }
 ```
+Sono due cicli annidati che "*spazzolano*" le due dimensioni del problema sul
+tempi e il numero di nodi.
+
 Per la versione parallela, si utilizza l'***algoritmo di Barnes-Hut***
+
+
 
