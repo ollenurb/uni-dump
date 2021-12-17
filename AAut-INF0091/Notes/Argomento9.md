@@ -139,3 +139,18 @@ colonne ci sono le tipologie di arrivo](img/feature_transformations.png)
   ranking oppure i gli intervalli (bins) sono *puri* o hanno lo stesso valore di
   feature.
 
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{set of labelled instances $S$ ranked on feature values $f(x)$; scoring
+function $Q$}
+\Output{sequence of thesholds $t_1, \dots, t_{k-1}$}
+\BlankLine
+\If{stopping criterion applies} { \Return $\emptyset$\; }
+split $S$ into $S_l$ and $S_r$ using threshold $t$ thet optimizes $Q$\;
+$T_l = RecPart(S_t, f, Q)$\;
+$T_l = RecPart(S_l, f, Q)$\;
+\Return $T_l \cup \{ t \} \cup T_r$ \;
+\caption{GrowTree algorithm}
+\end{algorithm}

@@ -38,7 +38,7 @@ istanza, allora predico la classe X"*
 *greedy*, cioe' viene scelta sempre la scelta ottimale. Se non si eliminassero
 le istanze coperte dalla regola appena appresa, l'agoritmo sceglierebbe di nuovo
 la stessa (siccome e' sempre quella migliore)*
- 
+
 * Le regole apprese mediante il metodo descritto devono essere interpretate
   nello stesso ordine in cui sono state apprese
 * Un'altra differenza tra l'apprendimento di modelli a regole e modelli ad
@@ -49,7 +49,7 @@ la stessa (siccome e' sempre quella migliore)*
 * Come gia' visto anche, i modelli a regole rispetto i modelli ad albero,
   utilizzano anche la *copertura* del segmento come euristica di scelta delle
   regole
-  
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -65,7 +65,7 @@ la stessa (siccome e' sempre quella migliore)*
 }
 \Return $R$\;
 \caption{LearnRuleList(D) - learn an ordered list of rules}
-\end{algorithm} 
+\end{algorithm}
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -86,7 +86,7 @@ la stessa (siccome e' sempre quella migliore)*
 {$R \leftarrow$ if $b$ then $Class=C$ \;}
 \Return $r$\;
 \caption{LearnRule(D) - learn a single rule}
-\end{algorithm} 
+\end{algorithm}
 
 * Un *feature tree* con branching a destra (*se falso, considera la prossima
   foglia*) corrisponde ad una lista di regole a letterali singoli
@@ -109,7 +109,7 @@ una coverage curve **convessa** nel training set*
        porzione, cioe' quelli che comprendono piu' esempi della classe scelta.
        In altri termini, si sceglie la regola con la precisione piu' alta
        rispetto alla classe scelta
-  
+
 * Questi passaggi producono un insieme di regole. Non c'e' nessun motivo di
   ordinarle dal momento che coprono gli esempi della stessa classe.
 * La differenza degli *insiemi* rispetto alle *liste* di regole, e' che nel
@@ -127,7 +127,7 @@ una coverage curve **convessa** nel training set*
 \BlankLine
 {$R \leftarrow \emptyset$ \;}
 \For{every class $C_i$}{
-    {$D_i \leftarrow D$ \;} 
+    {$D_i \leftarrow D$ \;}
     \While{$D_i$ contains examples of class $C_i$}{
         {$r \leftarrow LEarnRuleForClass(D_i, C_i)$\;}
         {$R \leftarrow R \cup \{ r \}$\;}
@@ -136,8 +136,8 @@ una coverage curve **convessa** nel training set*
 }
 \Return $R$\;
 \caption{LearnRuleSet(D) - learn an unordered set of rules}
-\end{algorithm} 
-  
+\end{algorithm}
+
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -157,7 +157,7 @@ una coverage curve **convessa** nel training set*
 {$r \leftarrow$ if $b$ then $Class = C_i$ \;}
 \Return $r$\;
 \caption{LearnRuleForClass($D_i, C_i$) - learn a single rule for the given class}
-\end{algorithm} 
+\end{algorithm}
 
 ### Miopia
 * Il problema nell'usare la *precisione* come euristica di ricerca e' che tende
@@ -168,7 +168,7 @@ una coverage curve **convessa** nel training set*
 * Succede perche' l'algoritmo non e' in grado di "*vedere*" e quindi considerare
   anche il livello successivo del prossimo passo
 * Questo problema e' detto *miopia* della precisione, ed e' risolubile
-  applicando una correzione di Laplace  
+  applicando una correzione di Laplace
 * Applicando la correzione di Laplace si simulano delle imprecisioni nella
   copertura delle regole fatte di un solo antecedente, in modo da rendere valide
   anche le regole che non sarebbero considerate diversamente dall'algoritmo
@@ -223,7 +223,7 @@ la stima dei segmenti sovrapposti potrebbe non essere precisa abbastanza.*
   sono mappe $\hat{g}: \mathscr{X} \rightarrow \{ true, false \}$)
 * Un sottogruppo puo' essere visto come un sottoinsieme di istanze che
   descrivono qualcosa di differente dal task di origine
-  
+
 > Un buon sottogruppo ha una distribuzione di classi molto differente rispetto
 alla popolazione di origine
 
@@ -243,8 +243,8 @@ alla popolazione di origine
   coperti da una regola che e' stata inferita (assegnando un peso = 0) ma si
   *dimezzano* in peso
 * L'algoritmo `WeightedCovering(D)` permette di imparare delle regole che si
-  sovrappongono tenendo a mente questo principio 
- 
+  sovrappongono tenendo a mente questo principio
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -260,8 +260,8 @@ alla popolazione di origine
 }
 \Return $R$\;
 \caption{WeightedCovering(D) - learn overlapping rules by weighting examples}
-\end{algorithm} 
+\end{algorithm}
 
 * L'euristica che e' guidata dal peso e' *"nascosta"* all'interno dell'algoritmo
-  `BestLiteral(D, L)` 
+  `BestLiteral(D, L)`
 
