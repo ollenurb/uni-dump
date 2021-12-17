@@ -1,3 +1,4 @@
+\newpage
 # Esperimenti nel Machine Learning
 * La scelta delle metriche di performanca da utilizzare, e' guidata dalle
   **assunzioni** che vengono fatte sulle condizioni operative del modello:
@@ -65,3 +66,4 @@
   cosi' via fino a considerare l'ultimo come test set.
 * In questo caso, quindi, si ripete per ogni iterazione la fase di learning e
   quella di testing, per cui si ottengono $n$ modelli differenti
+* :q
