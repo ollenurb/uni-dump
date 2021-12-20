@@ -152,5 +152,109 @@ split $S$ into $S_l$ and $S_r$ using threshold $t$ thet optimizes $Q$\;
 $T_l = RecPart(S_t, f, Q)$\;
 $T_l = RecPart(S_l, f, Q)$\;
 \Return $T_l \cup \{ t \} \cup T_r$ \;
-\caption{GrowTree algorithm}
+\caption{Recursive Partitioning algorithm}
 \end{algorithm}
+
+* La scoring function $Q$ potrebbe non essere per forza l'Information Gain, ma
+  e' valido anche ad esempio il criterio del Minimum Description Length
+* Un alternativa dell'algoritmo ricorsivo che e' di tipo *divisivo* e' data
+  dall'algoritmo `AggloMerge`, che invece e' di tipo *agglomerativo*. L'idea e'
+  quella di partire dai bin piu' fini di tutti (singoli esempi) andandoli a
+  "fondere" in modo da ottenere sottoinsiemi piu' ampi, ripetendo fino alla
+  stopping condition.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{set of labelled instances $S$ ranked on feature values $f(x)$; scoring
+function $Q$}
+\Output{sequence of thesholds $t_1, \dots, t_{k-1}$}
+\BlankLine
+{initialize bins to data points with the same scores \;}
+{merge consecutive pure bins \;}
+\Repeat{no further merges are possible} {
+    {evaluate $Q$ on consecutive bin pairs \;}
+    {merge the pairs with best $Q$ (unless they invoke the stopping criterion) \;}
+}
+\Return{thresholds between bins} \;
+\caption{Recursive Partitioning algorithm}
+\end{algorithm}
+
+* In questo caso, la scoring function e la condizione di stop puo' essere la
+  funzione `Chi-square`.
+
+#### Chi-Square
+* Consideriamo un esempio. Suponiamo che l'algoritmo `AggloMerge` abbia
+  inizializzato i bins nel modo seguente:
+  $$
+  \ominus | \oplus | \ominus \ominus \ominus | \oplus \oplus | [\ominus \oplus] | \ominus \ominus \ominus
+  $$
+  consideriamo solo l'ultimo split ($[\ominus \oplus] | \ominus \ominus
+  \ominus$) e costruiamone la tabella di contigenza
+
+|           | Left Bin | Right Bin |   |
+|-----------|----------|-----------|---|
+| $\oplus$  | 1        | 0         | 1 |
+| $\ominus$ | 1        | 3         | 4 |
+|           | 2        | 3         | 5 |
+
+* Il criterio $\chi^2$ si basa sul confronto delle frequenze osservate (nella
+  tabella di contingenza) rispetto alle frequenze che osserverei nelle due
+  celle se le variabili fossero statisticamente indipendenti
+* Dalla tabella possiamo stimare che $P(LeftBin) = 2/5$,$P(RightBin)=3/5$,
+  $P(\oplus) = 1/5$, $P(\ominus) = 4/5$. Se ipotizziamo che la scelta della
+  classe sia indipendente dalla scelta del bin possiamo calcolare le
+  probabilita' marginali, moltiplicando le probabilita' nel modo seguente:
+  $$
+  \begin{aligned}
+  P(LeftBin) \cdot P(\oplus) \cdot Tot &= \frac{2}{5} \cdot \frac{1}{5} \cdot 5 = 0.4\\
+  P(LeftBin) \cdot P(\ominus) \cdot Tot &= \frac{2}{5} \cdot \frac{4}{5} \cdot 5 = 1.6
+  \end{aligned}
+  $$
+  Per cui possiamo riscrivere la tabella dei valori attesi come:
+
+|           | Left Bin | Right Bin |
+|-----------|----------|-----------|
+| $\oplus$  | 0.4      | 0.6       |
+| $\ominus$ | 1.6      | 2.4       |
+
+* Che ci indica essenzialmente la probabilita' di ottenere positivi/negativi nel
+  bin sinistro/destro in caso le classi e i bins fossero indipendenti.
+* La statistica `Chi-Square`, fa il confronto tra i valori osservati (veri)
+  nella tavola di contingenza con quelli attesi, normalizzando rispetto a quelli
+  attesi. Piu' nello specifico, chi squared e' uguale alla somma degli scarti al
+  quadrato tra **valore reale** e **valore atteso** normalizzati rispetto ai
+  valori attesi, per cui il risultato rispetto all'esempio e' pari a:
+  $$
+  \chi^2 = \frac{(1-0.4)^2}{0.4} + \frac{(1-0.6)^2}{0.6} + \frac{(3-2.4)^2}{2.4}
+  + \frac{(1-1.6)^2}{1.6} = 1.88
+  $$
+
+* Piu' e' alta la statistica, piu' e' alto lo scarto totale, per cui significa
+  che nel complessivo le frequenze osservate si discostano dalle frequenze
+  attese, che sono quelle che mi aspetto di ottenere in caso di indipendenza
+  statistica tra i due criteri (bins e classe)
+* L'algoritmo quindi effettuera' i merge tra i bins che hanno il valore di
+  `Chi-squared` piu' basso
+* La stopping conditon e' data dal valore critico della statistica dato dal
+  *p-value*. Se tale valore supera quel threshold, l'algoritmo termina.
+
+### Operazioni di Normalizzazione
+* La normalizzazione viene effettuata principalmente per neutralizzare l'impatto
+  diverso che possono avere le features quantitative che utilizzano diverse
+  scale, sopratutto in modelli che necessitano di calcolare la distanza.
+* Essenzialmente ci sono due tipologie di normalizzazione:
+* ***Normalizzazione statistica*** che consiste nella normalizzazione per mezzo
+  dello `z-score`:
+  $$
+  z = \frac{x - \mu}{\sigma}
+  $$
+  per cui la feature in questione diventera' a media nulla ($\mu=0$) e varianza
+  unitaria ($\sigma=1$).
+* ***Normalizzazione Min-Max***: che consiste nel ridurre i valori della
+  features all'interno del range $[0,1]$. L'idea e' quella di applicare uno
+  scaling lineare $f \rightarrow (f-l)/(h-l)$, in cui $[l,h]$ sono i valori
+  estremi della feature.
+  Tale scaling a volte richiede di fare delle ipotesi sul valore minimo e
+  massimo ($l,h$).
