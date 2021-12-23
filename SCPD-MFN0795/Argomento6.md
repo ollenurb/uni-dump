@@ -159,16 +159,42 @@ for (t = 0; t < tmax; t++) {                /* for each time period */
         v[i]_new = v[i] + F * dt / m;       /* compute ith v(t+1) */
         x[i]_new = x[i] + v[i]_new * dt;    /* compute ith x(t+1) */
     }
-    for (i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {               /* update velocities and positions */
         x[i] = x[i]_new;
         v[i] = v[i]_new;
     }
 }
 ```
-Sono due cicli annidati che "*spazzolano*" le due dimensioni del problema sul
-tempi e il numero di nodi.
+Essenzialmente consiste in due cicli annidati che "*spazzolano*" le due
+dimensioni del problema sul tempo e nel numero di nodi. La presenza dei due cicli
+ci suggerisce che la complessita' computazionale e' $O(n^2)$. Il problema e' che
+nel dominio di riferimento, $n$ e' spesso molto grande.
 
-Per la versione parallela, si utilizza l'***algoritmo di Barnes-Hut***
+Per la versione parallela, si utilizza l'***algoritmo di Barnes-Hut*** che si
+basa appunto su un approccio *divide et impera*.
+Essenzialmente l'idea e' quella di assumere che se un corpo e' relativamente
+distante da un agglomerato di altri corpi (che sono tutti vicini tra loro),
+allora la forza puo' essere calcolata in relazione al *centro di massa* del
+cluster e non in relazione ad ogni corpo di cui e' composto.
+I passi principali dell'algoritmo possono essere riassunti come:
 
+1. A partire da uno spazio in cui tutti i corpi sono contenuti in un cubo,
+   dividi tale cubo in 8 sotto-cubi
+2. Se un sottocubo non contiene nessun corpo, allora elimina il sottocubo
+3. Se un sottocubo contiene un corpo viene mantenuto
+4. Se un sottocubo contiene piu' di un corpo, allora viene diviso ricorsivamente
+   fin quando ogni sottocubo contiene esattamente un corpo
 
+> Per suddividere ad esempio un'area 2-dimensionale, si parte inizialmente a
+dividere verticalmente lo spazio in modo che i due sottospazi siano composti
+dallo stesso numero di corpi, per poi suddividerli successivamente
+orizzontalmente. Il procedimento viene reiterato poi ripartendo dalla
+suddivisione verticale e cosi' via.
 
+Questa suddivisione dello spazio e' codificata all'interno di una struttura dati
+chiamata *octree* (cioe' un albero in cui ogni nodo puo' avere fino ad 8 figli).
+Una volta costruito l'albero, il centro di massa totale di ogni sottocubo viene
+salvato nei nodi. In questo modo, se voglio sapere la forza rispetto ad un un
+determinato nodo e' sufficiente percorrere l'albero dalla radice al nodo stesso.
+Sia la costruzione di un *octreee* che la sua *visita* hanno complessita' $O(n
+\log{n})$.
