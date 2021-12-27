@@ -73,4 +73,3 @@
   cosi' via fino a considerare l'ultimo come test set.
 * In questo caso, quindi, si ripete per ogni iterazione la fase di learning e
   quella di testing, per cui si ottengono $n$ modelli differenti
-* :q

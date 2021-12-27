@@ -351,4 +351,157 @@ function $Q$}
        $$
        v_i^d = ln\left( \frac{v_i^C}{1 - v_i^c} \right ) = ln(v_i^C) - ln(1-v_i^C)
        $$
-       
+
+## Discretizzazione per la riduzione del rumore
+* Come gia' sappiamo, in alcuni dataset alcune misurazioni di features continue
+  potrebbero presentare forti rumori. Siccome la discretizzazione consiste nel
+  trasformare un range continuo di valori in diversi sottointervalli (*bins*),
+  potrebbe risultare utile per appiattire la quantita' di errori.
+  Questo perche' i valori discreti sono considerati piu' stabili rispetto ai
+  valori di tipo continuo, dal momento che sia i valori che gli errori vengono
+  "aggregati" all'interno dei bins
+
+### Imputazione
+* Un altro problema che si puo' presentare e' che in alcuni dataset i valori
+  delle feature potrebbero mancare per una determinata istanza. Tale fenomeno e'
+  detto ***imputazione*** e tipicamente per mitigarlo si possono due strategie:
+    1. Nei problemi di classificazione si puo' stabilire la media, la moda e la
+       mediana di ogni classe e usare uno di questi valori al posto del valore
+       mancante (ovviamente rispetto alla classe a cui appartiene l'istanza)
+    2. Un'altra possibilita' sarebbe quella di apprendere un modello predittivo
+       per l'attributo che presenta valori mancanti e usare tale modello per
+       predirre tali valori
+
+### Costruzione di features
+* Per costruire nuove features da diverse features di partenza, si puo' partire
+  costruendo il prodotto cartesiano dei domini delle features. Ad esempio,
+  questa tecnica puo' essere utilizzata per migliorare Naive Bayes, poiche'
+  supera l'assunzione che le features siano indipendenti, riducendo il bias del
+  modello verso le features indipendenti.
+* Un'altra tecnica puo' essere quella di prendere le combinazioni aritmetiche o
+  polinomiali delle features quantitative (metodi Kernel), in cui i valori di
+  tale feature sono i valori del polinomio per quell'istanza
+* Oppure si potrebbe imparare un concetto con il metodo di subgroup discovery e
+  rappresentare tale gruppo con una feature booleana
+
+## Selezione di features
+* Una volta costruite nuove features, e' spesso buona pratica selezionarle per
+  diverse ragioni quali:
+    * Velocizzare l'apprendimento poiche' riduce lo spazio di ricerca
+    * Ridurre l'overfitting (in quanto anche la quantita' di features puo'
+      favorire l'overfitting)
+    * Ridurre il problema della maledizione dell'altra dimensionalita' (gli
+      algoritmi si perdono nello spazio di ricerca)
+* Ci sono due approcci principali nelle selezioni di features: l'approccio
+  di tipo **filtro** e l'approccio di tipo **wrapper**
+
+### Approccio Filtro
+* Consiste nel selezionare le features in base ad uno *score*
+* Tale score viene calcolato applicando delle metriche (spesso di tipo
+  supervisionato) quali l'information Gain, il Chi-Square, il coefficiente di
+  correlazione ecc.. che vengono calcolate utilizzando tutte le istanze nel
+  training set
+* Vengono poi selezionate le features con lo score migliore
+* Un algoritmo che si basa sull'approccio filtro e' l'algoritmo `Relief`.
+    * L'idea principale e' quella di campionare ripetutamente istanze dal
+      training set
+    * Considerando l'istanza campionata $x$, ne cerca l'istanza piu' vicina $h$
+      chiamata *nearest hit* e quella piu' vicina della classe opposta $m$
+      chiamata *nearest miss*.
+    * Sulla base dei valori di $x, h, m$ si calcola uno *score* su ogni feature
+      $f_i$. L'idea e' quella che lo score aumenti se la differenza del valore
+      della feature $f_i$ tra $x$ e $h$ e' piu' piccolo della differenza della
+      feature $f_i$ tra $x$ e $m$. (In sostanza, ci si aspetta che i valori
+      siano in concordanza con la distanza tra le istanze)
+    * Dopo $m$ iterazioni, l'algoritmo divide lo *score* per $m$. Tale risultato
+      e' chiamato *relevance score* della feature.
+    * Infine, le features vengono selezionate se lo score di rilevanza supera un
+      certo threshold $\tau$
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{dataset $D$ of instances from instance space $\mathscr{X}$}
+\Output{vector $f$ in instance space $\mathscr{X}$ of feature relevance score}
+\BlankLine
+
+initialize vector $f$ to $(0, \dots, 0)$ \;
+
+\For{$m$ times} {
+    {extract random sample instance $x_i$ from $D$\;}
+    {find in $D$ the nearest instance $h_i$ of the ***same*** class of $x_i$ \;}
+    {find in $D$ the nearest instance $m_i$ of the ***opposite*** class of $x_i$ \;}
+    \For{all components $f_j$ of $f$} {
+        {$f_j \leftarrow f_j - (x_{ij} - h_{ij})^2 + (x_{ij} - m_{ij})^2$ \;}
+    }
+}
+
+{$f \leftarrow f/m$\;}
+\Return $f$ \;
+
+\caption{Relief Algorithm - compute *feature relevance score*}
+\end{algorithm}
+
+* Un lato negativo dell'approccio a filtro e' che non tiene conto ne della
+  *ridondanza* tra features ne della loro possibile *dipendenza*. Si immagini ad
+  esempio il caso in cui due features prese separatamente abbiano una
+  misura di valutazione scadente, mentre se considerate insieme potrebbero
+  essere un'ottimo predittore
+
+### Approccio Wrapper
+* L'approccio wrapper mira a risolvere i problemi descritti in precedenza.
+  L'idea e' quella di determinare insiemi di features in cui la feature viene
+  valutata solo se e' utile ai fini dell'apprendimento del modello nel contesto
+  di altre features
+* Il problema di questo tipo di approcci e' che il numero degli insiemi di
+  features aumenta esponenzialmente (*PowerSet*) con il numero totale di
+  features possibili
+* Ci sono diversi metodi per cercare nello spazio di combinazioni di features,
+  che solitamente impiegano metodi *greedy*:
+    * *Forward selection*: parti da una singola feature e continua ad aggiungere
+      altre feature finquando la misura di valutazione migliora
+    * *Backward elimination*: parte dal set di tutte le feature ed elimina le
+      features finquando la misura di valutazione smette di migliorare
+
+## Principal Component Analysis
+* E' un metodo sia per **costruire** che per **selezionare** features. Lo scopo
+  e' quello di favorire le features per il quale c'e' una maggiore varianza nei
+  dati. Questo perche' si ipotizza che una minore varianza nei dati rifletta una
+  minore quantita' di informazione utile.
+* Consiste in una trasformazione che riduce la dimensionalita' del dataset
+  al costo di introdurre una perdita di informazione controllata.
+* Le nuove features calcolate sono chiamate *componenti principali*
+* **PCA** e' riassumibile nei seguenti passi:
+    1. Prima si *traslano* i dati in modo che la media di ogni dimensione venga
+       annullata. Cioe' la media sia centrata sull'origine degli assi.
+    2. Trova gli autovettori della matrice di scatter $S$
+    3. Gli autovettori definiscono un nuovo spazio di rappresentazione delle
+       istanze
+
+* Matrice di scatter $S(d \times d)$: matrice in cui il $\sigma_{ij}$ elemento
+  e' $n$ volte la covarianza tra la feature $i$ e $j$ su tutti gli oggetti.
+  $$
+  \sigma_{ij} = \sum_{k=1}^n (x_{ki} - x_{*i})(x_{kj} - x_{*j})
+  $$
+  $\sigma_{ij}$ e' una misura di quanto fortemente le features $i$ e $j$ variano
+  insieme.
+* I valori $\lambda_i$ (con $i=0,\dots, d$) degli autovalori associati agli
+  autovettori calcolati, rappresentano la varianza della nuova feature $i$
+* Guardare su slides PCA. (C'e' veramente troppa roba da scrivere lol)
+
+
+## Singular Value Decomposition (SVD)
+* Una tecnica simile alla PCA e' la SVD. La differenza e' che SVD al posto di
+  calcolare le autocoppie per la matrice di scatter, li calcola direttamente
+  sulla matrice dei dati $X$
+* Siccome in generale non e' una matrice quadrata, viene decomposta in diverse
+  matrici
+  $$
+  X = U \Sigma V^T
+  $$
+  * $U$ e' una matrice $n \times n$, matrice degli autovettori
+  * $\Sigma$ e' una matrice $n \times d$, e' la matrice degli autovalori
+  * $V$ e' una matrice $d \times d$, che contiene i patterns tra le features
+
+***DA RIVEDERE LEZIONE***
