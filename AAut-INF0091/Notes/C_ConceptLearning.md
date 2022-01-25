@@ -6,15 +6,15 @@
 * Concept learning concerne l'apprendimento di espressioni logiche (anche
   chiamate *concetti*) dalle istanze di esempio $x \in Te$. Piu' nello
   specifico, si vuole apprendere una descrizione della classe dei positivi
-  espressa in termini di espressione logica 
+  espressa in termini di espressione logica
 
 ## Ripasso Logica
-* Se l'espressione $A$ e' vera per l'istanza $x$ si diche che $A$ ***copre*** $x$
+* Se l'espressione $A$ e' vera per l'istanza $x$ si dice che $A$ ***copre*** $x$
 * L'insieme delle espressioni che sono coperte da $A$ e' chiamato
   ***estensione*** di $A$ denotato come $\mathscr{X}_A = \{ x \in \mathscr{X} |
   A \text{covers} x\}$
 * Se $\mathscr{X}_A \supseteq \mathscr{X}_{A'}$ si dice che $A$ e' *almeno
-  generale quanto* $A'$ 
+  generale quanto* $A'$
 * Ogni espressione logica puo' essere riscrita come una
   congiunzione/disgiunzione di clausole (*Conjunctive/Disjunctive Normal Form*)
 * ***Regola***: Clausola $A \rightarrow B$ dove $B$ e' un singolo letterale.
@@ -29,13 +29,13 @@
 * Lo spazio di tutte le ipostesi possibili e' chiamato ***hypotesis space***,
   denotato con la lettera $H$
 * Il task del concept learning e' uguale a quello della classificazione. Dati:
-    * Delle istanze $\mathscr{X}$ descritte in termini di $i$ attributi $a_i$ 
+    * Delle istanze $\mathscr{X}$ descritte in termini di $i$ attributi $a_i$
     * Un funzione target (o *target concept*) $c: \mathscr{X} \rightarrow \{0, 1\}$
     * Un set di ipotesi $H$ in cui le singole ipotesi sono descritte in termini
       di congiunzione di vincoli sugli attributi $a_i$
     * Un set di istanze etichettate $(x, c(x)) \in D$
   Determinare un'ipotesi ***target*** $h \in H$ tale che $\forall x \in D, h(x)
-  = c(x)$ cioe' che $h$ *copra* ogni $x$ nel training set 
+  = c(x)$ cioe' che $h$ *copra* ogni $x$ nel training set
 * Il numero delle ipotesi e' esponenzialmente grande rispetto al numero di
   attributi e valori che possono assumere. Consideriamo l'esempio in cui le
   istanze siano rappresentate da un attributo che puo' assumere 3 valori e altri
@@ -78,7 +78,7 @@
        labels discordi)
 * Se prendiamo per vere queste due ipotesi, si puo' definire un algoritmo per
   cercare l'ipotesi che meglio approssima $c$, chiamato ***Find-S***:
-  
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -96,8 +96,8 @@ Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
 }
 }
 \caption{Find-S}
-\end{algorithm} 
- 
+\end{algorithm}
+
 * L'idea dietro all'algoritmo e' quella di partire inizialmente dall'ipotesi
   piu' specifica possibile in $H$ (cioe' quella composta da soli $\emptyset$), e
   generalizzarla ogni qual volta che si trovi un esempio che non viene coperto
@@ -110,9 +110,9 @@ Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
 * La proprieta' chiave dell'algoritmo find-S e' che tutte le ipotesi all'interno
   di $H$ siano rappresentate come insieme di *congiunzioni* di vincoli
 * $h$ e' l'ipotesi piu' specifica in $H$ in grado di coprire tutti gli esempi.
-  $h$ e' inoltre consistente anche con gli esempi negativi, posto che: 
+  $h$ e' inoltre consistente anche con gli esempi negativi, posto che:
     * I dati siano corretti
-    * Il target concept $c$ sia presente in $H$ 
+    * Il target concept $c$ sia presente in $H$
 * L'algoritmo find-S, pero', presenta alcune limitazioni evidenziate dai punti
   seguenti:
     * Non si ha modo di capire, ne di avere una misura su quanto il learner
@@ -143,7 +143,7 @@ Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
 * Un modo ovvio per rappresentare il version space e' semplicemente quello di
   enumerare ogni elemento in una lista. L'algoritmo chiamato
   *List-Then-Eliminate* segue questo principio:
-   
+
   \begin{algorithm}[H]
   \DontPrintSemicolon
   \SetAlgoLined
@@ -157,8 +157,8 @@ Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
   }
   Return $VS$
   \caption{List then Eliminate}
-  \end{algorithm} 
- 
+  \end{algorithm}
+
   Sfortunatamente, l'algoritmo richiede di enumerare ogni possibile elemento
   all'interno del version space, che e' computazionalmente insostenibile
 * Il *Version space* puo' essere anche definito in termini dei suoi limiti:
@@ -166,7 +166,7 @@ Initialize $h$ with the most specific hypotesis in $H$ $(\emptyset, \dots,
       massimi, consistenti con $D$
     * Uno **specific boundary** chiamato $S$ contenente i membri specificamente
       massimi, consistenti con $D$
-* $G$ ed $S$ definiscono l'intero version space 
+* $G$ ed $S$ definiscono l'intero version space
 * **Piu' esempi muovono $S$ verso il basso** (piu' generali), mentre **meno
   esempi muovono $G$ verso l'alto** (piu' specifici)
 * L'algoritmo Candidate-Elimination funziona con lo stesso principio
@@ -212,7 +212,7 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
     }
 }
 \caption{Candidate Elimination}
-\end{algorithm} 
+\end{algorithm}
 
 * Nell'algoritmo, le righe 8 e 15 servono a rendere $S$/$G$ un riassunto di
   tutte le ipotesi consistenti con gli esempi positivi/negativi
@@ -230,7 +230,7 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
   puo' essere rappresentato con il linguaggio attuale (congiunzioni di vincoli)
 * Nel caso in cui non si avessero abbastanza esempi per cui il VersionSpace
   contenga ancora molte ipotesi si potrebbero:
-    * Richiedere altri esempi etichettati ad un oracolo   
+    * Richiedere altri esempi etichettati ad un oracolo
     * Usare le ipotesi del version space per classificare esempi futuri
 * Nel primo caso, consideriamo lo scenario in cui il *learner* abbia accesso in
   qualche modo ad un *oracolo* esterno. Il learner puo' utilizzare delle *query*
@@ -254,10 +254,10 @@ Initialize $G$ to the set of maximally specific hypothesis in $H$
 * I larners possono essere classificati anche in base al loro bias induttivo:
     * **Rote learner**: Salva esempi, classifica $x$ se e solo se matcha un
       esempio precedente (nessun bias induttivo = nessuna abilita' di
-      generalizzare) 
+      generalizzare)
     * **Version Space candidate elimination**: Classifica gli esempi se tutti i
       membri del version space concordano. (bias induttivo = lo spazio delle
-      ipotesi $H$ contiene il concetto target $c$) 
+      ipotesi $H$ contiene il concetto target $c$)
     * **Find-S**: TODO
 
 > TODO: Inserire esercizi

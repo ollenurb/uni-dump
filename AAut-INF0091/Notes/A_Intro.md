@@ -1,42 +1,65 @@
-Tom Mitchell - Machine Learning Book ~ Rosa Meo Ensemble Learning e Modelli
-Lineari sono piu' chiari sulle slides, per cui meglio studiare li sopra.
-
 # Che cos'e' il Machine Learning
-I concetti fondamentali che ci servono per capire cos'e' il machine learning
-sono i seguenti:
 
-* Tasks: i problemi che siamo in grado di affrontare con il ML (classificazione,
-  regressione, stima della probabilita', clustering...)
-* Modelli: oggetti che vengono costuiti dall'algoritmo di apprendimento che
-  risolvono effettivamente il problema (lineari, alberi di decisione, Naive
-  Bayes, Knn...)
-* Features: cioe' che ci permette di descrivere il problema. Il problema e'
-  descritto mediante un insieme di features
+* Come prima approssimazione possiamo dare la seguente definizione di machine
+  learning
 
-Il Machine Learning e' un campo che si occupa di usare le giuse **features**,
-per costruire il giusto **modello** per svolgere il **task** giusto.
+> *Il machine Learning e' lo studio sistematico di **algoritmi** e sistemi
+   che **aumentano la loro conoscenza** o performance con l'**esperienza***
 
-* La descrizione del problema e' data mediante un set di features
-* I dati invece sono
-* Algoritmo di apprendimento:
-    * Input: dati descritti per mezzo delle features
-    * Output: un modello che in grado di risolvere il task anche con dati mai
-      visti
-    * Viene scelto in base alle ipotesi del bias induttivo che assume
+* L'esperienza da cui impara un algoritmo o sistema di machine learning sono i
+  dati etichettati, e le performance si riferisce all'abilita' di classificare
+  correttamente un esempio (nel caso dello spam filter)
 
-* Task $\neq$ Problema di apprendimento
-    * Problema di apprendimento: quando risolto ci dice **come** risolvere il
-      task, sono risolti dagli **algoritmi di apprendimento** che producono
-      modelli.
-    * Task: **descrive** il problema, vengono risolti dai **modelli**.
+* I concetti fondamentali che ci servono per capire cos'e' il machine learning
+  sono i seguenti:
+    * **Tasks**: i problemi che siamo in grado di affrontare con il ML (classificazione,
+      regressione, stima della probabilita', clustering...)
+    * **Modelli**: oggetti che vengono costuiti dall'algoritmo di apprendimento che
+      risolvono effettivamente il problema (lineari, alberi di decisione, Naive
+      Bayes, Knn...)
+    * **Features**: cioe' che ci permette di descrivere il problema. Il problema e'
+      descritto mediante un insieme di features
 
-* Tasks **Predittivi**: l'obiettivo e' quello di fare delle predizioni. Sono i
-  piu' comuni all'interno del machine learning. Alcuni esempi sono:
-    * Classificazione binaria e multiclasse
-    * Regressione
-    * Clustering
-* Tasks **Descrittivi**: l'obiettivo e' quello di trovare delle regolarita'
-  all'interno di datasets apparentemente insensati
+![Overview di come viene impiegato il machine learning per la soluzione di un
+dato task. Per essere risolto, un task (rettangolo rosso) richiede un mapping
+tra i dati (descritti mediante features) e l'output. Tale mapping e' dato dal
+modello. Ottenere il modello dai dati di train e' cio' che costituisce il
+problema di apprendimento (rettangolo blu)](img/ml_problem.png)
+
+> *Il Machine Learning e' un campo che si occupa di usare le giuste **features**,
+  per costruire il giusto **modello** per svolgere il giusto **task**.*
+
+* I task si suddividono i due categorie principali:
+    1. **Task Predittivi**: che concernono la predizione del valore di una
+       variabile target (es. classificazione binaria/multiclasse, regressione,
+       clustering)
+    2. **Task Descrittivi**: il cui obiettivo e quello di estrapolare la
+       struttura descrittiva dei dati in modo da generalizzare (es. GAN)
+
+* Per ogni tipologia di task avremmo anche due differenti settings per i modelli
+  corrispondenti. Inoltre, i modelli variano in base alla tipologia di
+  apprendimento che puo' essere impiegata che puo' essere **supervisionata**
+  (cioe' che impiega un dataset di train etichettato) oppure **non
+  supervisionata** (che non necessita di training set)
+* La seguente tabella riassume i vari task predittivi/descrittivi in base al
+  setting di apprendimento utilizzato
+
+| Apprendimento/Modello |          Predittivo          |                   Non Predittivo                   |
+|:---------------------:|:----------------------------:|:--------------------------------------------------:|
+|    Supervisionato     | classificazione, regressione |                 subgroup discovery                 |
+|  Non supervisionato   |    clustering predittivo     | clustering descrittivo, association rule discovery |
+
+* Un problema dei modelli predittivi e' l'**overfitting**. Esso accade quando
+  l'algoritmo tenta di adattarsi con troppa aggressivita' al dataset nella fase
+  di learning.
+* Per aiutarci a capire meglio, immaginiamo per esempio di preparare un esame
+  solamente usando esami passati. Al primo esame diverso dai facsimile su cui ci
+  si e' preparati non si saprebbe risolvere.  Questa e' una forma di
+  overfitting.
+* Dal punto di vista formale, l'overfitting avviene quando le performance sul
+  training set sono piu' alte delle performance sul test set. Se ad esempio ho
+  un accuratezza di un modello del 90% sul training set e un'accuratezza del 60%
+  sul test set, si dice che ho un overfitting del 30%.
 
 ## Esempio SpamAssassin
 * Si vuole costruire un **classificatore** di email che classifichi le emails
@@ -56,31 +79,12 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
 ## Modelli
 * I modelli di apprendimento automatico possono essere classificati secondo il
   loro approccio (in altri termini, nel modo in cui sono *descritti*):
-    * Geometrici: usano intuizioni dalla geometria (ad esempio separando
-      iperpiani, trasformazioni lineari ecc..)
-    * Probabilistici: in cui il processo di apprendimento e' equivalente a
+    * **Geometrici**: usano intuizioni dalla geometria (ad esempio separando
+      iperpiani, trasformazioni lineari ecc..).
+    * **Probabilistici**: in cui il processo di apprendimento e' equivalente a
       ridurre l'incertezza, ed e' modellato attraverso distribuzioni di
       probabilita'
-    * Logici: definiti in termini di expressioni logiche
-
-### Modelli Predittivi
-* I modelli predittivi si occupano di inferire della conoscenza su nuovi
-  problemi basandosi sull'esperienza passata.
-* Un problema dei modelli predittivi e' l'**overfitting**. Esso accade quando
-  l'algoritmo tenta di adattarsi con troppa aggressivita' al dataset nella fase
-  di learning.
-* Per aiutarci a capire meglio, immaginiamo per esempio di preparare un esame
-  solamente usando esami passati. Al primo esame diverso dai facsimile su cui ci
-  si e' preparati non si saprebbe risolvere.  Questa e' una forma di
-  overfitting.
-* Dal punto di vista formale, l'overfitting avviene quando le performance sul
-  training set sono piu' alte delle performance sul test set. Se ad esempio ho
-  un accuratezza di un modello del 90% sul training set e un'accuratezza del 60%
-  sul test set, si dice che ho un overfitting del 30%.
-
-### Modelli Descrittivi
-* I modelli descrittivi si occupano di trovare nuova conoscenza all'interno del
-  dataset
+    * **Logici**: definiti in termini di espressioni logiche
 
 # Machine Learning Tasks
 * Gli oggetti sono chiamate *istanze* nel machine learning
@@ -136,7 +140,7 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
   performance. Uno di questi e' la *precisione* (*accuracy*), calcolabile nel
   modo seguente: $$ acc = \frac{1}{|Te|} \sum_{x \in Te} I[\hat{c}(x) = c(x)] $$
   Dove la funzione $I[\cdot]$ e' l'*indicator function* che vale $1$ se
-  l'argomento e' *true*, $0$ atrimenti
+  l'argomento e' *true*, $0$ altrimenti
 * Possiamo anche definire un'altro indicatore chiamato *true positive rate* nel
   modo seguente: $$ tpr = \frac{\sum_{x \in Te} I[\hat{c}(x) = c(x) =
   \oplus]}{\sum_{x \in Te} I[c(x) = \oplus]} $$ A parole: E' il rapporto tra
@@ -153,14 +157,14 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
     * Numero di positivi totali
     * Numero di negativi totali
     * Numero di veri positivi
-    * Numero di falsi positivi Gli altri dati possono essere presi facendo il
-      complementare rispetto al totale.
+    * Numero di falsi positivi
+* Gli altri dati possono essere presi facendo il complementare rispetto al totale.
 * In un *coverage plot*, i classificatori con la stessa accuratezza stanno sulla
   stessa retta di coefficiente angolare pari a $1$.
 * *Normalized plot* (ROC plot) e' un coverage plot ma con gli assi normalizzati
   (sono divisi per il numero totale, in questo caso *Pos* e *Neg*), quindi tutti
   i punti sono divisi per la scala (pos e neg)
-* In un plot normalizzato una retta con equazione $trp=fpr+y_0$ non ha lo stesso
+* In un plot normalizzato una retta con equazione $tpr=fpr+y_0$ non ha lo stesso
   significato di una stessa linea in un coverage plot. In generale in un plot
   normalizzato, su una linea con coefficiente angolare pari a 1 (e quindi
   parallela alla diagonale dal momento che si tratta di una griglia con
@@ -250,7 +254,8 @@ per costruire il giusto **modello** per svolgere il **task** giusto.
 * Analogamente, si puo' definire la ***ranking accuracy*** come
   $1 - \text{rank-err}$. Puo' essere vista come la stima della probabilita' che
   una coppia arbitraria positiva-negativa sia classificata correttamente
-  (*ranked correctly*)
+  (*ranked correctly*)ini, tenendo conto solo
+del loro segno. Inoltre, e’ difficile utilizzarla come funzione obie
 * Uno scoring classifier induce implicitamente anche un ranking classifier,
   semplicemente andando a ordinare le istanze in base allo score assegnato
 * Data una funzione di ranking $h$, uno potrebbe creare diversi classificatori
