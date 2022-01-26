@@ -265,3 +265,129 @@ alla popolazione di origine
 * L'euristica che e' guidata dal peso e' *"nascosta"* all'interno dell'algoritmo
   `BestLiteral(D, L)`
 
+## Mining di regole di associazione
+* Prima di parlare di mining di regole di associazione dobbiamo parlare prima di
+  itemsets
+
+### Itemsets e proprieta'
+* Consideriamo il caso in cui abbiamo un certo numero di transazioni, ognuna
+  caratterizzata da un insieme di oggetti (che sono appunto l'oggetto della
+  transazione)
+* Possiamo rappresentare l'insieme di transazioni come una matrice binaria dove
+  l'entrata $(i,j)$ indica la presenza dell'item $j$ nella transazione $i$
+* Un `ItemSet` e' un insieme di oggetti che compaiono tutti **insieme** come
+  oggetto di una o piu' transazioni. L'insieme di transazioni che hanno questi
+  oggetti come oggetto della transazione e' detto copertura.
+* Il task del mining delle regole di associazione consiste essenzialmente nel
+  trovare gli `ItemSet` che sono comprati frequentemente insieme
+* L'insieme di tutti i possibili item sets etichettati con la loro copertura,
+  formano un **reticolo** (nel vertice c'e' l'itemset vuoto, al basso c'e'
+  l'itemset composto da tutti gli items - quello massimale). Cosi' come nel
+  concept learning, possiamo utilizzare questa struttura per andare a fare il
+  mining delle regole.
+* **Supporto**: numero di transazioni da cui e' coperto l'ItemSet
+* In base al supporto possiamo distinguere tre tipi di itemsets:
+    * **Item set frequente**: Itemset $I = \{i_1, i_2, \dots, i_n \}$ per cui
+      ogni item $i_x$ appartiene ad un insieme di transazioni con cardinalita'
+      $\geq f_0$, cioe' con supporto minimo.
+    * **Item set chiuso**: Item set per cui non esiste un itemset con lo stesso
+      supporto.
+    * **Item set massimale**: E' un item set frequente e chiuso tale per non
+      esiste un'altro itemset che sia piu' generale (superset) di esso e che
+      abbia un supporto sufficiente.
+* Si dice che il supporto ha la proprieta' di essere monotono: se ci si sposta
+  verso il basso nel reticolo il supporto puo' solo diminuire o rimanere
+  invariato
+* Possiamo andare a trovare tutti gli itemsets frequenti andando proprio a
+  sfruttare questa proprieta', mediante una ricerca per:
+    * **Ampiezza**: Essenzialmente si verifica che il supporto sia sufficiente
+      livello per livello. In caso sia insufficiente, si puo' evitare di andare
+      a considerare l'intero ramo sottostante (potatura)
+    * **Profondita'**: Si considerano gli itemsets andando in profondita' a
+      vedere se il supporto e' sufficiente o meno. Ci si ferma quando questa
+      condizione non viene soddisfatta
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Dataset $D$, minimum support $f_0$}
+\Output{Set of frequent itemsets $M$}
+\BlankLine
+{$M \leftarrow \emptyset$ \;}
+{Initialize priority queue $Q$ in order to contain an empty ItemSet \;}
+\While{$Q$ is not \textbf{empty}}{
+    {$I \leftarrow$ next itemset deleted from $Head(Q)$\;}
+    {$max \leftarrow \textbf{true}$ \;}
+    \For{each superset $I'$ of $I$}{
+        \If{$Supp(I') \geq f_0$}{
+            {$max \leftarrow \textbf{false}$ \;}
+            {add $I'$ to the back of $Q$ \;}
+        }
+    }
+    If{$max=true$\;}{$M \leftarrow M \cup \{I\}$ \;}
+}
+\Return $M$ \;
+\caption{FrequentItems($D, f_0$) - get the set of frequent itemsets}
+\end{algorithm}
+
+* In sostanza l'algoritmo utilizza una coda di priorita' per visitare il
+  reticolo in profondita'. Per ogni elemento si considerano tutti i sottoinsiemi
+  e ci si assicura siano massimali dal momento che se il supporto di un itemset
+  e' troppo grande, allora viene reinserito nella coda.
+* Quando l'itemset e' massimale, tutti i suoi superset non hanno di conseguenza
+  un supporto sufficiente, per cui viene inserito il nodo nell'insieme
+* Quando si imposta un valore di $f_0$, si crea un limite nel reticolo che
+  in cui gli itemsets al bordo di esso sono massimali
+
+### Regole di associazione
+* Itemsets frequenti possono essere utilizzati per creare le ***regole di
+  associazione**
+* Una regola di associazione e' una regola del tipo `if B then H` dove sia `B`
+  che `H` sono gli itemsets che compaiono frequentemente nelle transazioni
+  insieme.
+* La **confidenza** misura la forza di associazione tra `B` e `H`. In altri
+  termini misura la probabilita' che `H` sia presente in un insieme di
+  transazioni nel caso `B` sia presente.
+  $$
+  Confidence(\text{if }B\text{ then } H) = P(H \; | \; B) = \frac{P(B, H)}{P(B)}
+  $$
+* L'algoritmo per minare le regole di associazione si basa su questo concetto di
+  confidenza per andare ad ottenere le singole regole. In generale, l'idea e'
+  quella di scegliere dall'insieme degli itemsets frequenti (creato utilizzando
+  l'algoritmo precedente) i corpi e le teste delle regole, andando a rimuovere
+  le regole che sono sotto un certo threshold di confidenza
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Dataset $D$, support threshold $f_0$, confidence threshold $c_0$}
+\Output{set of association rules $R$}
+\BlankLine
+{$R \leftarrow \emptyset$ \;}
+{$M \leftarrow$ FrequentItems(D, $f_0$) \;}
+\For{each $m \in M$}{
+    \For{each $H \subseteq m$ and $B \subseteq m$ such that $H \cap B = \emptyset$}{
+        \If{$Supp(B \cup H)/Supp(B) \geq c_0$}{
+            {$R \leftarrow R \cup \{\text{if B then H}\}$\;}
+        }
+    }
+}
+\Return $R$ \;
+\caption{FrequentItems($D, f_0$) - get the set of frequent itemsets}
+\end{algorithm}
+
+* Molte volte il mining di regole di associazione richiede una fase di post
+  processing in cui le regole superflue vengono filtrate (casi speciali in cui
+  non si hanno delle confidenze piu' alte del caso generale)
+* Una quantita' che e' spesso usata nel post processing e' il *lift*
+  $$
+  Lift(\text{if } \emptyset \text{ then } H) = \frac{n \cdot Supp(\emptyset \cup
+  H)}{Supp(\emptyset) \cdot Supp(H)}
+  $$
+  Essenzialmente un valore di lift piu' grande di 1 ci indica che $Supp(B \cup
+  H)$ e' interamente determinato dalle frequenze marginali di $Supp(B)$ e
+  $Supp(H)$ e non e' il risultato di un'interazione significativa tra $B$ e $H$.
+  Solo regole di associazione con un lift piu' grande di 1 sono interessanti,
+  per cui il resto viene filtrato.
