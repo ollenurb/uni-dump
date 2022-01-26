@@ -129,6 +129,7 @@ colonne ci sono le tipologie di arrivo](img/feature_transformations.png)
 * I segmenti identificati dall'etichetta di classe sono chiamati ***run(s)***
 
 **Discretizzazione per partizionamento ricorsivo:**
+
 * Similarmente a quello che si fa nei feature trees, si utilizza il
   principio di *entropia*
 * L'idea e' quella di prendere il dataset, calcolarne l'entropia e considerare

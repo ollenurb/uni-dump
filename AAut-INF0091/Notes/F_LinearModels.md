@@ -320,15 +320,18 @@ quella originale. Corrispondono a degli errori nella misurazione.
   piccolo, anche se e' al di fuori dell'insieme originario
 
 * Ci sono due tipi di dualita':
-    * Debole: quando la soluzione del problema duale $d*$ e minore del problema
+    * **Debole**: quando la soluzione del problema duale $d*$ e minore del problema
       primale $p*$ ($d* \leq p*$)
-    * Forte: quando $d* = p*$
+    * **Forte**: quando $d* = p*$
 * Per avere soddisfatta la dualita' forte, devono essere soddisfatte le
   condizioni di ***Karush-Kuhn-Tucker (KKT)***:
-    * Stazionarita': il gradiente deve essere pari a 0 nel punto ottimale
-    * Fattiblita' primale: i vincoli del problema primale sono soddisfatti nel
+    * **Stazionarita'**: il gradiente deve essere pari a 0 nel punto ottimale
+      ($\nabla f_0(x^*), \nabla f_i(x^*), \nabla g_i(x^*) = 0$)
+    * **Fattiblita' primale**: i vincoli del problema primale sono soddisfatti nel
       punto ottimale
-    * Fattibilita' duale: i vincoli del problema duale sono soddisfatti
+      ($f_i(x^*) \leq 0, g_i(x^*) = 0$)
+    * **Fattibilita' duale**: i vincoli del problema duale sono soddisfatti
+      ($\alpha_i \geq 0, \beta_i \geq 0$)
     * ***Complementary Slackness***: il prodotto tra la variabile di Lagrange e
       il vincolo primale deve essere sempre uguale a 0 ($\alpha_i f_i(x*) = 0$
       dove $x*$ e' il punto ottimale)
@@ -376,7 +379,8 @@ quella originale. Corrispondono a degli errori nella misurazione.
     1. I moltiplicatori di Lagrange strettamente positivi sono sempre associati
        a vettori di supporto, per cui i moltiplicatori per gli altri esempi sono
        uguali a 0
-    2. $w$ e' ottenuto come combinazione lineare dei vettori di supporto
+    2. $w$ e' ottenuto come combinazione lineare dei vettori di supporto (per
+       questa ragione possiamo utilizzare il kernel trick!)
     3. Sia l'apprendimento che la classificazione puo' essere fatta utilizzando
        soltanto prodotti scalari dei vettori di supporto
 
@@ -474,7 +478,7 @@ $$
   problemi non lineari
 
 > Una *funzione kernel* e' una funzione $K: \mathbb{V \times V} \rightarrow
-\mathbb{R}$ che prende in input una coppia di vettori e restituisce in input un
+\mathbb{R}$ che prende in input una coppia di vettori e restituisce in output un
 valore reale e per cui vale la condizione che esiste una mappa $\phi(x):
 \mathbb{V} \rightarrow \mathbb{F}$ per cui vale
 $$
@@ -532,6 +536,16 @@ spazio di Hilbert e ne calcola il prodotto scalare
 > Una funzione $K$ e' un kernel valido se e solo se per ogni insieme finito di
 punti $\{ x_1, \dots, x_m \}$, la matrice $K$ (definita come $J_{i,j} = K(x_i,
 x_j)$) e' ***simmetrica*** e ***positiva semi-definita***.
+
+> Una matrice $M^{n \times n}$ e' detta semidefinita positiva se $\forall
+  \vec{u} \in \mathbb{R}^n$ vale la seguente relazione
+  $$
+  \vec{u}^T M \vec{u} \geq 0
+  $$
+  Mentre una matrice $M^{n \times n}$ e' detta **simmetrica** se
+  $$
+  M = M^T \rightarrow M^{-1} M^T = I
+  $$
 
 * Un proprieta' molto importante dei kernel e' che si possono combinare
   facilmente:

@@ -41,7 +41,7 @@
   che tiene conto solo delle istanze che sono entrambe presenti (entrambe 1)
 
 > Una ***metrica di distanza*** e' una funzione $Dis: \mathscr{X} \times
-> \mathscr{X} \rightarrow \mathbb{R}$ tale che per ogni $x, y, x \in \mathscr{X}$
+> \mathscr{X} \rightarrow \mathbb{R}$ tale che per ogni $x, y, z \in \mathscr{X}$
 > valgono le seguenti proprieta':
 >
 >    * La distanza tra un punto e se stesso e' 0: $Dis(x, x) = 0$
@@ -62,6 +62,7 @@
       $$
     * Utilizzare la matrice della covarianza ha l'effetto di *eliminare la
       correlazione e normalizzare* le features
+    * Nella formula, $\Sigma$ determina la forma dell'ellisse
     * La distanza Euclidea e' un caso specifico della distanza di Mahalanobis,
       in particolare $Dis_2(x, y) = Dis_M(x, y, \;|\; I)$
 
@@ -72,10 +73,12 @@
       cui la singola entrata $\sigma_{lj}$ e' la *covarianza* tra le feature $l$
       e $j$ su tutte le istanze nel dataset $X$
       $$
-      \sigma_{lj} = \frac{1}{n} \sigma^n_{k=1} (x_{kl} - \bar{x_{*l}})(x_{kj} - \bar{x_{*j}})
+      \sigma_{lj} = \frac{1}{n} \sum^n_{k=1} (x_{kl} - \bar{x_{*l}})(x_{kj} - \bar{x_{*j}})
       $$
     * $\sigma_{lj}$ e' una misura di quanto le features $l$ e $j$ variano
-      **insieme** (da qui il nome *co-varianza*)
+      **in relazione tra loro** (da qui il nome *co-varianza*). Ovviamente la
+      diagonale della matrice di covarianza corrisponde alla varianza delle
+      features stesse
 
 ![Effetto della distanza di Mahalanobis](img/mahalanobis_distance.png)
 
@@ -179,6 +182,12 @@ dato dataset
   test. In questo modo, piu' e' grande la distanza minore sara' il voto, il che
   coincide con l'intuizione dal momento che piu' distante e' l'istanza, meno
   affidabile sara' la sua classe
+* In generale, tale modifica si fa perche' diminuisce l'effetto dell'aumento
+  dell'errore dovuto all'aumento del bias quando il numero di $k$ si fa salire
+* Possiamo inoltre estendere `kNN` per andare a fare regressione semplicemente
+  andando a predirre il valore di target come la media dei valori dei $k$ vicini
+  pesata per l'inverso della distanza tra gli stessi e l'istanza. (proprio come
+  nei weighted voting kNN)
 
 ## Distance Based Clustering
 ### DBSCAN
