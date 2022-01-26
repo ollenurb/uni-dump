@@ -203,10 +203,10 @@ $w^1= \left[ \frac{1}{|D|}, \dots, \frac{1}{|D|} \right]$
     &= \sum_i w_i^T e^{-y_i \alpha_T m_T(x_i)} \\
     &= \sum_{\{i | y_i = m_T(x_i)\}} w_i^T e^{-\alpha_T} + \sum_{\{i | y_i \neq m_T(x_i)\}} w_i^T e^{\alpha_T}
   \end{aligned}
-  e otteniamo che e' la somma degli errori di cui la classificazione e' corretta
-  e quelli in cui la classifizaione non e' corretta
   $$
-  Dove nel passo 4 si impone che:
+  e otteniamo che e' la somma degli errori di cui la classificazione e' corretta
+  e quelli in cui la classifizaione non e' corretta.
+* Nel passo 4 si impone che:
   $$
   w_i^T =
   \begin{cases}
