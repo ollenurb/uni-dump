@@ -256,22 +256,132 @@ $w^1= \left[ \frac{1}{|D|}, \dots, \frac{1}{|D|} \right]$
   ottimale, cerchiamo un $\alpha_T$ che annulla la derivata di $E$.
   $$
   \frac{\partial E}{\partial \alpha_T} =
-  \sum_{\{ i | y_i \neq m_T(x_i) \}} w_i^T e^{\alpha_T} - \sum_{\{ i | y_i = m_T(x_i) \}} w_i^T e^{-\alpha_T}
+  \sum_{\{ i | y_i \neq m_t(x_i) \}} w_i^T e^{\alpha_T} - \sum_{\{ i | y_i = m_t(x_i) \}} w_i^T e^{-\alpha_T}
   $$
-  **TODO** Da finire roba matematica che non ho voglia di scrivere qua LOL
-* **TODO**: Inserire algoritmo resampling
+  Troviamo quindi che
+  $$
+  \begin{aligned}
+  e^{\alpha_T} \sum_{\{ i | y_i \neq m_t(x_i) \}} w_i^T - e^{-\alpha_T}
+  \sum_{\{ i | y_i = m_t(x_i) \}} w_i^T  &= 0 \\
+  e^{\alpha_T} \epsilon_T - e^{-\alpha_T} (1 - \epsilon_T) &= 0 \\
+  \alpha_T = \frac{1}{2} ln \; \left( \frac{1-\epsilon_T}{\epsilon_T} \right)
+  \end{aligned}
+  $$
+  dove nel secondo passaggio imponiamo che
+  $$
+  \epsilon_T = \sum_{\{ i | y_i \neq m_t(x_i) \}} w_i^T
+  $$
+
+### Apprendimento da dataset pesati
+* La richiesta che l'algoritmo di apprendimento $\mathscr{A}$ sia in grado di
+  apprendere tenendo conto dei pesi puo' essere soddisfatta in due modi
+  principali:
+  * Modificando le misure per l'apprendimento in modo che tengano conto dei pesi
+    associati agli esempi (es. information gain negli alberi di decisione,
+    pesare i voti per kNN, ecc..)
+  * Facendo un'inflazione artificiale del dataset in accordo ai pesi (chiamata
+    dataset resampling)
+* Nell'articolo queste due metodologie sono denominate come **boosting by
+  weighting** e **boosting by resampling**.
+* Vediamo ora un algoritmo di resampling
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{dataset $D$; weights $w$; number of instances of the new dataset $n$}
+\Output{weighted dataset $D'$}
+\BlankLine
+{$D' = \emptyset$ \;}
+
+\For{n times} {
+    {$v = $ random(0, 1)\;}
+    {$D' = D' \cup \{x_k\}$  with $k$ s.t. $\sum^{k-1}_{i=1} w_i < v \leq
+    \sum^{k}_{i=1} w_i$ \;}
+}
+\Return $D'$ \;
+
+\caption{Resample(D, w, n) - Resample the dataset according to the distribution
+induced by the weights}
+\end{algorithm}
+
+* L'idea e' essenzialmente che la probabilita' di includere $x_k$ sia
+  proporzionale al peso di $x_k$. In sostanza la somma iniziale somma tutti i
+  pesi degli $x$ precedenti e l'altra somma quelli successivi. In quel modo
+  permette di far stare $k$ "dentro" l'area denominata dal peso di $x_k$
+* In linea di massima e' meglio campionare dataset che abbiano la stessa
+  cardinalita' del dataset originale $|D'| = |D|$
+* Ovviamente, utilizzare il resampling puo' appesantire le risorse in fase di
+  apprendimento, per cui sarebbe meglio utilizzare quando possibile il metodo di
+  weighting.
 
 ## Perche' ensemble learning funziona
-* Ci sono diverse motivazioni del perche' l'ensemble learning funzini. In primo
-  luogo e' per una proprieta' del Bias/Variance dilemma.
+* Ci sono diverse motivazioni del perche' l'ensemble learning funzioni. In primo
+  luogo e' per una proprieta' della decomposizione del Bias/Variance.
 * Sappiamo che per il teorema del bias/varianza tradeoff possiamo scomporre
   l'errore in
   $$
   \mathbb{E}(\epsilon(x)) = Bias(x) + Var(x) + Noise(x)
   $$
+  dove $\epsilon(x)$ e' l'errore medio di un algoritmo su un esempio $x$.
+* La componente di Bias e' legata al fatto che il tipo di ipotesi che sto
+  considerando (del modello) non si adatta abbastanza bene all'ipotesi reale
+* La componente di Varianza invece una quantita' che ci dice quanta parte
+  dell'errore, se noi ripetiamo l'esperimento piu' e piu' volte non apprendiamo
+  lo stesso concetto, ma ne apprendiamo delle variazioni che sono indotte da dei
+  cambiamenti del dataset. Piu' queste variazioni sono grandi piu' l'algoritmo
+  non e' stabile perche' a fronte di piccole variazioni nel dataset cambia anche
+  l'ipotesi in modo significativo.
 * E' stato dimostrato che tutti i metodi di ensemble riducono sia la componente
   di bias che la componente di varianza dell'errore. E' stato dimostrato
-  empiricamente pero' che che il Bagging agisce principalmente come macchina di
+  empiricamente pero' che che il *Bagging* agisce principalmente come macchina di
   riduzione della varianza, per cui e' piu' efficace con classificatori quali
-  alberi di decisione che hanno basso bias e alta varianza
+  alberi di decisione che hanno basso bias e alta varianza.
+* Questa proprieta' e' spiegabile il termini probabilistici. L'idea e' quella di
+  considerare la variabile casuale che conta il numero di errori di
+  missclassificazione fatti dall'ensamble.
+* Sia quindi $X ~ Bin(p, T)$ la variabile binomiale che conta il numero di
+  errori su un numero $T$ di test, con probabilita' $p$ di fallimento per il
+  singolo test.
+* Assumiamo che in un caso di classificazione binaria abbiamo un errore se *piu'
+  della meta' dei membri dell'ensemble* sbagliano.
+  $$
+  P(X > \left\lfloor T/2 \right\rfloor) = \sum^T_{x = \left\lfloor T/2
+  \right\rfloor + 1} P(X = x)
+  $$
+* Se assumiamo che la probabilita' del singolo weak learner e' di fare un errore
+  sia leggermente piu' piccola di $0.5$, allora vediamo che nella distribuzione
+  binomiale, al crescere dei weak learners (e quindi del parametro $T$), la
+  distribuzione di schiaccia sempre di piu' verso il valor medio, fino a
+  diventare una funzione Delta di Dirac.
+* Di conseguenza, la probabilita' totale di fare errore descritta in precedenza
+  tende a $0$ (siccome e' un'area)
 
+  ![Effetto del Bagging sulla distribuzione binomiale
+  della variabile $X$ che descrive la probabilita' l'errore dell'ensemble
+  descritta in precedenza. Si noti come all'aumentare degli ensambles la curva
+  si schiacci sempre di piu' sul valor medio. In rosso e' denotata l'area di
+  $P(X > \left\lfloor T/2 \right\rfloor)$](img/bagging_binomial.png)
+
+* Evidenze empiriche ci dicono invece che *AdaBoost* e' molto efficente a
+  ridurre la componente di bias dell'errore, riducendo anche la componente di
+  varianza
+* In generale, AdaBoost e' piu' efficace su classificatori ad alto bias (eg.
+  modelli lineari)
+
+## Benefici dell'Ensemble Learning
+* Essenzialmente i benefici dell'ensemble learning sono 3:
+    * **Statistici**: Possiamo vedere un ensemble come un'approssimazione di un
+      classificatore di Bayes Ottimale. Questo perche' un classificatore di
+      questo tipo prende un voto di maggioranza di tutte le ipotesi pesate per
+      la loro probabilita' a posteriori. Ma l'esemble fa una cosa simile pesando
+      le ipotesi (modelli) appresi in base a dei pesi che sono piu' consistenti
+      coi dati
+    * **Rappresentazionali**: La funzione da apprendere potrebbe non essere
+      mediante dei classificatori individuali, ma potrebbe essere approssimata
+      molto bene da un ensemble averaging
+    * **Computazionali**: Tutti gli algoritmi di apprendimento fanno una
+      sorta di ricerca all'interno dello spazio delle ipotesi che puo' contenere
+      molti minimi locali. L'esemble inserisce una stocasticita' facendo
+      ripartire gli algoritmi da punti diversi nello spazio delle ipotesi in
+      modo da permettere di raggiungere potenzialmente il minimo globale.
