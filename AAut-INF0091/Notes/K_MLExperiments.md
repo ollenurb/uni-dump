@@ -42,8 +42,8 @@
   misurazioni sono *indipendenti* l'una dall'altra.
   *Dim*.
   $$
-  Var(\overline{X_k}) = Var(\frac{1/k} (X_1 + \dots + X_k)) = \frac{1/k} Var(X_1
-  + \dots + X_k) = \frac{k\sigma^2}{k^2} = \frac{\sigma^2}{k}
+  Var(\overline{X_k}) = Var(\frac{1}{k} (X_1 + \dots + X_k)) = \frac{1}{k} Var(X_1
+  + \dots + X_k) = \frac{k \sigma^2}{k^2} = \frac{\sigma^2}{k}
   $$
   Questo segue dalla proprieta' della varianza. supponendo l'indipendenza degli
   eventi ($Var(\alpha \cdot X) = \alpha^2 \cdot Var(X), \; Var(\sum_i X_i) =
