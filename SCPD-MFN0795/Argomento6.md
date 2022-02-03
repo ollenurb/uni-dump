@@ -1,13 +1,12 @@
 \newpage
 # Strategie *Divide et Impera*
-La strategia *divide et impera* e' particolarmente utile per la soluzione di
-diversi problemi, per tale motivo e' un modo per risolvere i problemi molto
-ricorrente in computer science.
-Essenzialmente consiste nell'applicare una divisione di un grosso problema in
-diversi sottoproblemi di minor dimensione, ma della stessa forma del problema
-originale (tipicamente ottenuta mediante *ricorsione*). Ogni soluzione di questi
-sottoproblemi di portata piu' piccola viene poi combinata con le altre in modo
-da ottenere la soluzione del problema originale.
+La strategia *divide et impera* e' una metodologia sistematica molto utile per
+la soluzione di diversi problemi molto ricorrente in computer science.
+Sostanzialmente l'idea e' quella di suddividere un grosso problema in diversi
+sottoproblemi di minor dimensione, ma della stessa forma del problema originale
+(tipicamente ottenuta mediante *ricorsione*). Ogni soluzione di questi
+sottoproblemi di portata piu' piccola viene poi combinata con le altre
+soluzioni, in modo da ottenere la soluzione del problema originale.
 Una strategia divide et impera e' in generale applicabile quando i problemi
 impongono una struttura di tipo gerarchico. Si pensi, ad esempio, agli algoritmi
 di ordinamento. Alcuni di essi, nonostante operino su una struttura dati di tipo
@@ -35,16 +34,15 @@ risoluzione.
 
 ## Operazioni su strutture dati lineari
 Consideriamo delle operazioni di folding su delle strutture dati lineari. In
-linea di massima, il problema consiste essenzialmente, data un'operazione di
-aggregazione che sia *associativa*, applicarla su un'intera sequenza di elementi
-per ottenere un'aggregazione finale. E' anche chiamata `foldr` o `reduce`.
-Formalmente, dato l'operatore associativo $\oplus$ e una sequenza di elementi
-$[e_1, e_2, \dots, e_n]$, si vuole ottenere $e_1 \oplus e_2 \oplus \dots \oplus
-e_n$.
+linea di massima, data un'operazione di aggregazione che sia *associativa*, si
+vuole applicarla su un'intera sequenza di elementi per ottenere un'aggregazione
+finale. E' anche chiamata `foldr` o `reduce`. Formalmente, dato l'operatore
+associativo $\oplus$ e una sequenza di elementi $[e_1, e_2, \dots, e_n]$, si
+vuole ottenere $e_1 \oplus e_2 \oplus \dots \oplus e_n$.
 
 In questo caso, l'idea e' quella di suddividere la sequenza progressivamente
 fino ad una grandezza stabilita (che rappresenta appunto la grana
-computazionale), per far eseguire l'operazione di associazione sulle
+computazionale), per poi far eseguire l'operazione di associazione sulle
 sottosequenze ottenute da diverse unita' computazionali. I risultati di queste
 operazioni, a loro volta, saranno un'altra sequenza di elementi, che sara'
 combinata nello stesso modo per ottenere il risultato finale.
@@ -57,35 +55,36 @@ finale.](img/6.1_reduce.png){ width=50% }
 
 ## Algoritmi di ordinamento
 Un algoritmo di ordinamento che sfrutta particolarmente bene questo tipo di
-parallelizzazione e' il *bucket sort*. Verrebbe da pensare subito perche' non
-siano stati scelti algoritmi noti per essere performanti come ad esempio il
-*quicksort*? La risposta e' che un algoritmo come il quicksort non e' di facile
-parallelizzazione per evidenti problemi di bilanciamento del carico .
+parallelizzazione e' il *bucket sort*. A questo punto, al lettore verrebbe da
+pensare perche' non siano stati scelti algoritmi noti per essere performanti
+come ad esempio il *quicksort*. La risposta e' che un algoritmo come il
+quicksort non e' di facile parallelizzazione, per evidenti problemi di
+bilanciamento del carico.
 
-L'idea alla base della parallelizzazione del *bucket sort* e' che ogni unita' di
-calcolo si scelga il proprio range operativo, cioe' il range di numeri da
+L'idea alla base della parallelizzazione del *bucket sort*, e' che ogni unita'
+di calcolo si scelga il proprio range operativo, cioe' il range di numeri da
 ordinare all'interno della lista. Una volta scelto il range, vengono presi tutti
-i numeri compresi in questo range ed organizzati in un "*bucket*", che non sono
+i numeri compresi in questo range ed organizzati in un "*bucket*" - che non sono
 altro che un insieme non ordinato di numeri. Successivamente, viene applicato un
 algoritmo di ordinamento sequenziale al bucket, ottenendo una lista che puo'
-essere unita alle altre liste risultato delle altre unita' di calcolo.
-E' bene notare che l'operazione di unione finale e' immediata dal momento che
-ogni unita' di calcolo conosce il punto in cui deve stare la propria sottolista
+essere fusa con le altre "liste-risultato" delle altre unita' di calcolo. E' bene
+notare che l'operazione di unione finale e' immediata, dal momento che ogni
+unita' di calcolo conosce il punto in cui deve stare la propria sottolista
 all'interno della lista risultato.
 
 ![Bucketsort parallelo](img/6.2_bucketsort_1.png)
 
-Un evidente problema di questo tipo di soluzione, e' che dal momento che ogni
-unita' computazionale deve scegliersi il suo range operativo, deve essere in
-grado di leggere l'intera lista di numeri. Ne consegue che una delle seguenti
-condizioni deve essere vera:
+Un evidente problema di questo tipo di soluzione, e' evidenziato dal fatto che
+ogni unita' computazionale necessita di scegliere il proprio range operativo.
+Per far cio', pero', deve essere in grado di leggere l'intera lista di numeri,
+per cui ne consegue che una delle seguenti condizioni deve essere vera:
 
 * Ogni unita' di calcolo ha accesso all'intera struttura
 * Ogni unita' di calcolo ha una copia dell'intera struttura
 
 Una versione piu' raffinata di questo algoritmo e' quella che consiste
 nell'assegnare ad ogni UC una sottolista, da cui a sua volta verranno generati
-diversi *sub-buckets*. In questo modo cio' che viene replicato in ogni UC non e'
+diversi *sub-buckets*. In questo modo, cio' che viene replicato in ogni UC non e'
 l'intera lista in input, ma i *buckets*. Nella fase successiva, ogni UC scambia
 i *sottobuckets* con gli altri processi, in modo che ogni UC collezioni tutti i
 sottobuckets corrispondenti al proprio range operativo.
@@ -97,7 +96,7 @@ sequenziale e infine un'operazione di merge con le altre liste.
 
 Questa versione necessita di mettere tutte le unita' computazionali in
 comunicazione tra loro. Per far cio' esistono primitive messe a disposizione ad
-esempio da `MPI` come la primitiva di tipo *all-to-all*. Tale primitiva
+esempio da `MPI`, come la primitiva di tipo *all-to-all*. Tale primitiva
 corrisponde essenzialmente ad un esecuzione di un'operazione di `gather` +
 `broadcast`, ma e' ottimizzata per lo scopo, di fatto essendo piu' efficiente.
 L'efficienza risiede nel fatto che non c'e' una centralizzazione intermedia del
@@ -185,16 +184,19 @@ I passi principali dell'algoritmo possono essere riassunti come:
 4. Se un sottocubo contiene piu' di un corpo, allora viene diviso ricorsivamente
    fin quando ogni sottocubo contiene esattamente un corpo
 
-> Per suddividere ad esempio un'area 2-dimensionale, si parte inizialmente a
-dividere verticalmente lo spazio in modo che i due sottospazi siano composti
-dallo stesso numero di corpi, per poi suddividerli successivamente
-orizzontalmente. Il procedimento viene reiterato poi ripartendo dalla
-suddivisione verticale e cosi' via.
+Una di queste strategie di suddivisione e' chiamata *Orthogonal Recursive
+Bisection*. Essenzialmente consiste nel dividere lo spazio lungo gli assi
+principali, cambiando asse dopo ogni divisione. La divisione deve essere
+eseguita in modo che ogni partizione abbia lo stesso numero di corpi (ovviamente
+per numeri pari di corpi). Ad esempio, per suddividere uno spazio in 2D si
+divide preliminarmento lo spazio lungo l'asse $y$ ottenendo due partizioni.
+Successivamente, ogni partizione ottenuta dalla divisione precedente viene
+divisa lungo l'asse $x$. Il procedimento viene poi ripetuto per ogni partizione.
 
-Questa suddivisione dello spazio e' codificata all'interno di una struttura dati
-chiamata *octree* (cioe' un albero in cui ogni nodo puo' avere fino ad 8 figli).
-Una volta costruito l'albero, il centro di massa totale di ogni sottocubo viene
-salvato nei nodi. In questo modo, se voglio sapere la forza rispetto ad un un
-determinato nodo e' sufficiente percorrere l'albero dalla radice al nodo stesso.
-Sia la costruzione di un *octreee* che la sua *visita* hanno complessita' $O(n
-\log{n})$.
+Questa suddivisione dello spazio puo' essere codificata all'interno di una
+struttura dati chiamata *octree* (cioe' un albero in cui ogni nodo puo' avere
+fino ad 8 figli). Una volta costruito l'albero, il centro di massa totale di
+ogni sottocubo viene salvato nei nodi. In questo modo, se voglio sapere la forza
+rispetto ad un un determinato nodo e' sufficiente percorrere l'albero dalla
+radice al nodo stesso. Sia la costruzione di un *octreee* che la sua *visita*
+hanno complessita' $O(n \log{n})$.
