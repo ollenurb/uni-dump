@@ -76,7 +76,20 @@ ordine molto alto.
 Anche in questo caso possiamo risolvere diversi problemi con una struttura a
 pipeline.
 
+## Somma di una lista di numeri
+Anche in questo caso possiamo sfruttare questa astrazione per sommare una lista
+di numeri in modo parallelo. In linea di massima e' possibile implementare una
+pipeline per lo scopo in due modi differenti. Il primo consiste nel mappare uno
+stage ad ogni posizione nella lista, per cui ogni stage avra' un numero della
+lista. Ogni stage riceve la somma accumulata dagli altri step, ne somma il
+proprio elemento, e inoltra il risultato al prossimo step della pipeline. Ogni
+step, "consumato" il proprio elemento utilizzera' poi l'elemento corrispondente
+della prossima lista. Siccome la pipeline funziona per diverse istanze (lista)
+dello stesso problema, stiamo parlando di una pipeline di tipo 1.
 
-
-**TODO: Aggiungere esempi di parallelizzazione di pipelines**
+![Esempio di pipeline per la somma di liste di 3 numeri della prima tipologia.
+Diverse liste vengono sommate dalla pipeline. Ogni processing element effettua
+la somma del numero assegnato alla propria posizione sulla lista con il
+risultato accumulato dallo stage precedente. La somma viene poi passata allo
+stage successivo.](img/7.1_sum_pipeline.png){ width=50% }
 
