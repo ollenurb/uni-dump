@@ -65,7 +65,7 @@ ridurre il parallelismo, raggruppando piu' stadi nella stessa UC.
 Il parallelismo della pipeline ha delle limitazioni legate inerentemente alla
 propria struttura: ll numero massimo di task che vengono eseguiti in parallelo
 e' pari al numero di stage della pipeline. Questo pone delle limitazioni non
-indifferenti, sopratutto se si vuole raggiungere un grado di parallelismo di
+indifferenti, soprattutto se si vuole raggiungere un grado di parallelismo di
 ordine molto alto.
 
 > In generale, e' possibile trasformare le pipelines di tipo 2 in pipelines di
@@ -73,8 +73,16 @@ ordine molto alto.
   trasformandola in una pipeline di tipo 1, e utilizzare un paradigma di tipo
   *task farm* per eseguire gli stage.
 
-Anche in questo caso possiamo risolvere diversi problemi con una struttura a
-pipeline.
+Se ipotizziamo che le pipelines siano composte da $p$ steps, che siano di tipo
+1 o 2, e che debbano eseguire $m$ istanze del problema, allora la pipeline
+eseguira' tutte le $m$ istanze in $(p-1)+m$ steps.
+Un'altra considerazione puo' essere fatta sull'implementazione di pipelines. In
+generale le pipelines richiedono che le UC siano connesse direttamente tra loro.
+Una struttura di interconnessione molto ideale e' ad esempio quella ad anello o
+a linea.
+
+Vediamo ora i diversi problemi che possiamo risolvere con le diverse strutture a
+pipeline viste.
 
 ## Somma di una lista di numeri
 Anche in questo caso possiamo sfruttare questa astrazione per sommare una lista
@@ -93,3 +101,20 @@ la somma del numero assegnato alla propria posizione sulla lista con il
 risultato accumulato dallo stage precedente. La somma viene poi passata allo
 stage successivo.](img/7.1_sum_pipeline.png){ width=50% }
 
+## Ordinamento di numeri
+Un'altro impiego della pipeline e' quello dell'ordinamento di liste di numeri,
+implementando di fatto una versione parallela dell'*insertion sort*. Per
+semplicita', consideriamo una pipeline che abbia tanti steps quanti elementi
+abbia la lista da ordinare. Inizialmente, ogni step avra' al proprio interno il
+numero piu' piccolo possibile ($-\infty$). Successivamente, ogni elemento $e_r$
+ricevuto dal singolo step viene confrontato con l'elemento interno dello step
+$e_i$:
+* Se $e_r > e_i$, allora passa $e_i$ al prossimo stage e imposta $e_i = e_r$
+* Altrimenti, passa $e_r$ al prossimo stage, senza alterare $e_i$
+
+Alla fine della pipeline, la lista ordinata sara' contenuta all'interno di ogni
+step della pipeline. Il metodo migliore per collezionare il risultato e' quello
+di far passare poi gli elementi all'indietro nella pipeline, in modo che il
+primo step contenga la lista ordinata. Questa struttura e' detta ad *anello*.
+La tipologia di pipeline utilizzata e' chiaramente la tipologia 1, siccome e'
+utilizzata per ordinare una sola lista (*singola istanza del problema*).
