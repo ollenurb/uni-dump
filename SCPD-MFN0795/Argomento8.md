@@ -25,6 +25,44 @@ particolarmente conveniente:
 * Molti problemi numerici/non numerici possono essere riformulati in una forma
   di computazione *data parallel*
 
+> Il paradigma *data parallel* puo' essere visto anche come la parallelizzazione
+  dei loops
+
+Se noi prendiamo in considerazione un programma SPMD che implementa il paradigma
+data parallel, notiamo che ogni UC dovra' avere accesso a tutti i dati
+dell'applicazione. In `MPI`, la primitiva `AllGather` serve proprio a
+sincronizzare i risultati derivanti dalle altre UC. Per spiegare questa
+primitiva, prendiamo per esempio un caso in cui $n$ processi effettuano delle
+computazioni su un array. Ogni processo effettua dei calcoli sulla propria
+porzione dell'array, e successivamente aspetta il risultato di tutte le altre
+UC. La primitiva `AllGather` fa proprio questo: inserisce il risultato della
+computazione dell'UC corrente nell'array, e colleziona il risultato di tutte le
+altre nelle loro rispettive porzioni di array.
+
+> Lo stochastic gradient descend distribuito utilizza questa primitiva per
+  condividere con tutti i processi i gradienti ottenuti, in modo che ogni
+  processo possa ripartire dall'average gradient ottenuto
+
+La grana computazionale di solito non e' particolarmente fine in questi
+problemi, sopratutto nel caso in cui i dati su cui bisogna operare sono tanti.
+In altri termini, il numero delle unita' computazionali e' tipicamente piu'
+basso del numero di dati su cui tali unita' devono andare ad operare. In genere
+ci sono due strategie di partizionamento dei dati:
+
+* **Block allocation**: consiste nell'allocamento di sezioni di dati consecutive
+  alle unita' computazionali in ordine crescente
+* **Cyclic allocation**: consiste nell'allocare ciclicamente diverse porzioni di
+  dati alle diverse UC
+
+![Strategie di partizionamento a confronto](img/8.1_allocation_strategies.png)
+
+E' stato visto empiricamente che piu' la grana computazionale diminuisce piu' il
+tempo di comunicazione aumenta e il tempo di comunicazione diminuisce. In questo
+caso non si puo' raggiungere oltre un certo upper bound, per cui le computazioni
+globally synchronous non hanno una scalabilita' molto grande.
+
+**TODO: Aggiungere esempi**
+
 ### Considerazioni sull'operazione di barrier
 Ci sono essenzialmente due modi per poter sospendere l'esecuzione di una singola
 UC nella barrier:
@@ -79,14 +117,14 @@ Un'alternativa a questa barrier consiste quindi nell'utilizzare una struttura
 ad albero al posto di una struttura lineare di blocco/rilascio. L'idea e' quella
 di mandare messaggi alle UC adiacenti come in figura.
 
-**TODO: Aggiungere Tree Barrier**
+**TODO (img): Aggiungere Tree Barrier**
 
 Un'altra implementazione invece e' quella chiamata *Butterfly Barrier*, che
 sfrutta gli stessi principi della rete di interconnessione Butterfly discussa in
 precedenza, ma al livello software. Tramite questo processo e' possibile far
 conoscere ad ogni UC che una determinata UC e' entrata nella barrier.
 
-**TODO: Aggiungere Butterfly Barrier**
+**TODO (img): Aggiungere Butterfly Barrier**
 
 In sostanza il ruolo che era assegnato ad una sola UC di accentrare tutte le
 sincronizzazioni e' invece distribuito su tutti le UC.
@@ -97,3 +135,7 @@ solamente con un set di processi logicamente "vicini" e non con tutte le UC che
 sono coinvolte nella computazione. Sostanzialmente lo *"schema di vicinato"*
 definisce uno *"stencil"*, per cui questo tipo di computazioni e' anche chiamato
 *stencil computations*.
+
+**TODO: Aggiungere alcuni esempi**
+
+
