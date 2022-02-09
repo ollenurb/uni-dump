@@ -59,9 +59,8 @@ ci sono due strategie di partizionamento dei dati:
 E' stato visto empiricamente che piu' la grana computazionale diminuisce piu' il
 tempo di comunicazione aumenta e il tempo di comunicazione diminuisce. In questo
 caso non si puo' raggiungere oltre un certo upper bound, per cui le computazioni
-globally synchronous non hanno una scalabilita' molto grande.
-
-**TODO: Aggiungere esempi**
+globally synchronous non hanno una scalabilita' molto grande. Le computazioni
+locally synchronous, sono invece in generale piu' scalabili.
 
 ### Considerazioni sull'operazione di barrier
 Ci sono essenzialmente due modi per poter sospendere l'esecuzione di una singola
@@ -136,6 +135,73 @@ sono coinvolte nella computazione. Sostanzialmente lo *"schema di vicinato"*
 definisce uno *"stencil"*, per cui questo tipo di computazioni e' anche chiamato
 *stencil computations*.
 
-**TODO: Aggiungere alcuni esempi**
+### Simulazione di diffusione del calore
+Consideriamo il caso in cui si voglia ottenere una simulazione del calore in due
+dimensioni. L'idea e' quella di considerare un quadrato di qualsiasi materiale
+la cui temperatura in ogni suo punto e' nota. Possiamo rappresentare il quadrato
+di metallo con una matrice `h[n][n]`. L'idea e' essenzialmente quella di
+ottenere i valori della temperature in ogni punto del quadrato mediante una
+media dei quattro punti adiacenti
+$$
+\frac{h_{i,j} = h_{i+1, j}+ h_{i-1, j} + h_{i, j+1} + h_{i, j-1}}{4}
+$$
 
+> E' possibile ottenere l'equazione anche discretizzando l'equazione del calore
+  di Laplace.
 
+#### Versione Sequenziale
+Possiamo quindi utilizzare l'equazione precedente per calcolare la temperatura
+in ogni punto del quadrato.
+
+```c
+void step(*h) {
+    for(i = 1; i < n; i++)
+        for (j = 1; j < n; j++)
+            h[i][j] = 0.25*(h[i-1][j] + h[i+1][j] + h[i][j-1] + h[i][j+1]
+}
+```
+Per cui la formulazione finale del programma consistera' nell'iterazione della
+procedura `step(h)` piu' volte, fino alla convergenza di ogni punto.
+
+#### Versione Parallela
+Nella versione parallela si introduce un secondo array bidimensionale `g[n][n]`.
+L'idea e' quella di utilizzare `g` per salvare i valori della prossima
+iterazione, e poi scambiare i puntatori di `g` ed `h` alla fine di ogni
+iterazione. In questo modo siamo sicuri che ogni UC stia cosiderando
+effettivamente i valori dell'iterazione precedente, evitando di fatto
+inconguenze.
+Possiamo idealmente "mappare" ogni UC ad ogni posizione, e indurre una
+sincronizzazione locale attraverso le ricezioni bloccanti.
+
+```c
+void step() {
+    g = 0.25 * (w + x + y + z);
+    send(&g, P_{i-1, j})
+    send(&g, P_{i+1, j})
+    send(&g, P_{i, j-1})
+    send(&g, P_{i, j+1})
+    recv(&w, P_{i-1, j})
+    recv(&w, P_{i+1, j})
+    recv(&w, P_{i, j-1})
+    recv(&w, P_{i, j+1})
+}
+```
+
+Ovviamente le send devono essere non bloccanti siccome potrebbero produrre un
+deadlock. Fino ad ora abbiamo supposto che il numero di UC sia uguale a $n
+\times n$, ma in generale sappiamo che non e' cosi'. Quando ci troviamo a dover
+partizionare i dati del problema ci sono essenzialmente due possibilita: La
+prima e' partizionare per **blocchi**, mentre l'altra e' partizionare per
+**strisce**. Il secondo metodo e' quello che minimizza il tempo di comunicazione
+totale, siccome richiede la meta' delle comunicazioni per *strip*.
+
+Un'altro problema e' quello di gestire le *boundary conditions*, cioe' le celle
+che non hanno 4 vicini (in generale quelle ai bordi). Una soluzione che si
+impiega spesso per questo tipo di problema e' l'impiego di *ghost cells*. Si
+trasforma la matrice ad essere $n+1 \times n+1$, in modo da "normalizzare" anche
+le celle che precedentemente erano ai bordi. Le nuove celle o possono contenere
+dei valori di default, oppure i valori delle celle al lato opposto. La seconda
+soluzione e' chiamata anche *halo swap*.
+
+![Illustrazione della tecnica di Halo swap sulla dimensione
+$y$](img/8.2_halo_swap.png){ width=30% }
