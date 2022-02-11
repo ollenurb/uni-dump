@@ -96,13 +96,58 @@ Questi due metodi vengono chiamati in letteratura come *work-stealing*.
 In questo caso la terminazione puo' avvenire solo se le seguenti condizioni di
 terminazione sono soddisfatte:
 
-* Ogni worker non deve avere uno o piu' task non eseguiti completamente
-* Non ci devono essere piu' messaggi in transito nel sistema
+* Ogni worker non deve avere uno o piu' task non eseguiti completamente.
+  (*condizione locale di terminazione*)
+* Non ci devono essere piu' messaggi in transito nel sistema (*condizione
+  globale di terminazione*)
 
+## Terminazione Distribuita
+### Algoritmi di terminazione ad Albero
 E' possibile ricavare anche un algoritmo di terminazione distribuito molto
 generale. L'idea e' quella di ricavare una struttura a grafo, indipendente dalla
 struttura di comunicazione dei workers che descrive la relazione di attivazione
 tra task diversi. Essenzialmente l'algoritmo funziona nel modo seguente:
+
+* Se un worker ha mandato un task ad un altro worker ne diventa il padre
 * Quando un worker riceve un task, manda immediatamente indietro un messaggio di
   *acknowledge*, ma solo se il worker da cui lo riceve sta nella gerarchia piu'
-  in alto di lui
+  in alto di lui (e quindi e' un padre, nonno ecc..)
+
+In questo modo possiamo determinare se un worker qualsiasi puo' terminare
+verificando che tutte le seguenti condizioni siano rispettate:
+
+* La condizione di terminazione locale del singolo worker e' soddisfatta
+* Il worker ha trasmesso tutti i suoi messaggi di acknowledgement per task che
+  ha ricevuto
+* Il worker ha ricevuto tutti i suoi messaggi di acknowledgement per i task che
+  ha mandato
+
+In questo modo il grafo di attivazione si espande in dimensioni quando i workers
+comunicano task tra di loro, mentre si riduce ad un solo punto quando devono
+terminare. Si noti come una conoscenza distribuita venga in questo modo
+accentrata su un solo punto (l'ultimo worker che terminera')
+Ovviamente ci sono versioni differenti di questo algoritmo che inducono delle
+strutture differenti di quelle a grafo come ad esempio degli anelli
+
+### Algoritmi di terminazione a Energia fissa
+L'idea e' essenzialmente quella di impostare una quantita' fissa all'interno del
+sistema detta *energia*. Il sistema inizializza il worker iniziale con tutta
+l'energia dell'intero sistema. Ogni volta che un worker manda delle richieste di
+tasks ad altri workers, ne passa una porzione della sua energia. In caso un
+worker ricevesse delle richieste per dei task (e cosi' anche una porzione di
+energia), l'energia verra' suddivisa e passata ad altri workers.
+Un worker in idle, (che non ha task da eseguire) prima di richiedere nuovi
+tasks, passa la propria energia al worker da cui l'ha ricevuta. In generale, un
+worker non mandera' indietro la sua energia fin quando tutta l'energia che ha
+inviato ad altri workers non sara' tornata indietro (non avranno terminato i
+loro tasks).
+Quando tutta l'energia ritorna al worker iniziale (*root*) e diventa idele,
+allora si e' sicuri che tutti i workers sono idle e la computazione puo'
+terminare.
+Il problema principale e' che la divisione dell'energia dovra' essere
+rappresentata su un numero a precisione finita, per cui quando si va a fare la
+somma delle energie parziali per poi mandarle indietro, la somma potrebbe non
+essere uguale alla quantita' originale.
+Un'altro problema, sempre legato alla rappresentazione dell'energia, e' dato dal
+fatto che non si possa dividere l'energia all'infinito, perche' raggiungerebbe
+lo zero molto velocemente.
