@@ -4,6 +4,7 @@ numbersections: true
 titlepage: true
 title:  'Appunti di Sistemi di Calcolo Paralleli e Distribuiti'
 subtitle: "A.A. 2020-2021"
+listings: true
 author: [Matteo Brunello]
 header-includes:
   - \usepackage{float}
