@@ -40,3 +40,13 @@ title: Introduzione
   di reti, che si suddividono in due sottocategorie principali:
     * **Reti ad un solo livello** (es. Percettrone)
     * **Reti a piu' livelli** (es. Recurrent NN)
+
+### Funzioni di attivazione
+
+* Possono essere di due tipi principali:
+    1. *Threshold*: mandano a 1 valori $\geq 0$ e 0 valori $\lt 0$
+    2. *Sigmoidi*: sono della forma
+       $$
+       \phi(v) = \frac{1}{1 + exp(-\alpha v)}
+       $$
+       dove $\alpha$ e' il parametro che regola la *pendenza* della curva
