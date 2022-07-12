@@ -1,3 +1,4 @@
+\newpage
 # Introduzione all'analisi numerica 
 
 L'analisi numerica e' la materia o branca della matematica che si occupa della definizione e
