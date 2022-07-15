@@ -94,11 +94,97 @@ header-includes: |
   3. Prendi un esempio $\mathbf{x}$ da quelli non classificati correttamente
   4. Applica l'update rule (*punto 2.*)
 
-### Teorema di convergenza
+### Convergenza
 
 * E' possibile provare la convergenza dell'algoritmo precedente, cioe' la sua
   terminazione in caso le classi siano linearmente separabili
+* Supponiamo di rappresentare nel piano il vettore peso dell'*n-esima*
+  iterazione $\mathbf{w}(n)$ e il vettore stimolo $\mathbf{x}(n)$
+* Se il prodotto tra questi due vettori e' maggiore di 0, allora il percettrone
+  resituera' 1 come output, contrariamente restituera' -1
+* Geometricamente, il prodotto $\mathbf{w}(n) \cdot \mathbf{x}(n) = \|
+  \mathbf{x}(n) \|\| \mathbf{x}(n) \| \cos(\Theta)$, per cui possiamo dire che
+  sara' $>0$ se $-90 < \Theta < 90$
+* Il decision boundary ($=0$) sara' pari all'angolo $\Theta = 90$ e $270$  
+* Ogni volta che c'e' un mismatch, il vettore $\mathbf{w}$ viene spostato verso
+  una direzione differente, spostando di conseguenza anche il decision boundary
 
-* Ipotizziamo che $\mathbf{w}(0) = 0$, $\eta=1$ e procediamo per casi
-    * 
+> **Teorema** (*Convergenza del Percettrone*): Date le due classi $C_1$ e $C_2$,
+> se esse sono *linearmente separabili* allora l'algoritmo di apprendimento
+> termina in un *numero finito* di iterazioni
 
+#### Dimostrazione
+
+* Supponiamo che $C_1$ sia la classe positiva e $C_2$ sia negativa  
+* Sia $C = C_1 \cup \overline{C_2}$, in cui $\overline{C_2} = \{-x \; | \; x
+  \in C_2\}$
+* Vogliamo quindi ottenere un percettrone che assegni sempre 1 a tutte le
+  istanze di $C$
+* Sia $\mathbf{x}(0), \dots, \mathbf{x}(k) \in C$ la sequenza di istanze che sono state
+  utilizzate per *correggere* il vettore di pesi fino alla *k-esima*
+  iterazione
+* Dall'algoritmo, la regola per la correzione e' una somma, per cui per la
+  generica iterazione vale $\mathbf{w}(k+1) = \mathbf{w}(k) + \mathbf{x}(k)$
+* Secondo questa ipotesi vale $\mathbf{w}(k+1) = \mathbf{x}(0) + \dots +
+  \mathbf{x}(k)$ (*unwinding della funzione ricorsiva*)
+* La dimostrazione a questo punto si basa sullo studio di come si evolve la
+  norma del vettore dei pesi.
+
+> Alla prof basta che la dimostrazione del teorema deriva da delle
+> considerazioni su come evolve il valore della norma del vettore pesi al
+> crescere delle iterazioni. 
+
+* (Da qui in poi e' opzionale)
+* Possiamo stabilire due limiti: Uno inferriore e uno superiore
+
+##### Limite Inferiore (*)
+
+* Per ipotesi (*separabilita' lineare*) deve esistere per forza un \mathbf{w^*}
+  tale per cui ogni esempio $\mathbb{x} \in C$ viene classificato correttamente
+  (cioe' valore $>0$)
+* Allora possiamo moltiplicare questo vettore per ambo i membri della relazione
+  trovata in precedenza
+  $$
+  \mathbb{w}^{*T}\mathbb{w}(k+1) =\mathbb{w}^{*T} \mathbb{x}(1) + \dots + \mathbb{w}^{*T}
+  \mathbb{x}(k)
+  $$
+* (Ho gia' moltiplicato ogni membro per la somma nella parte dx)
+* Sia $\alpha = \min \{ \mathbb{w}^{*T}\mathbb{x}(0), \dots, \mathbb{w}^{*T}
+  \mathbb{x}(k) \}$ 
+* Allora possiamo dire che vale la seguente relazione
+  $$
+  \mathbb{w}^{*T}\mathbb{w}(k+1) =\mathbb{w}^{*T} \mathbb{x}(1) + \dots + \mathbb{w}^{*T}
+  \mathbb{x}(k) \geq \alpha k
+  $$
+* Per la diseguaglianza di *Cauchy' Schwartz* e qualche ri-arrangiamento
+  algebrico elementare otteniamo:
+  $$
+  \| \mathbf{w}(k+1) \|^2 \geq \frac{k^2 \alpha^2}{\|\mathbb{w}^*\|}
+  $$
+* Abbiamo quindi dimostrato che $\alpha$ e' in qualche modo un *lower bound* di
+  $\mathbb{w}(k+1)$, cioe' che la magnitudine del vettore $\mathbb{w}(k+1)$
+  cresce almento tanto velocemente quanto $\alpha$. $_\blacksquare$
+
+##### Limite Superiore (*)
+
+* Inoltre, si dimostra che
+$$
+\| \mathbb{w}(k+1) \|^2 \leq k\beta
+$$
+* Dove $\beta = \max \|\mathbb{x}(i)\|^2$ 
+* Cioe' che $\mathbb{w}(k+1)$ non cresce mai piu' velocemente di $k\beta$
+  $_\blacksquare$
+    
+---
+
+* A questo punto ci troviamo con una coesistenza di questi due limiti, per cui
+  possono essere compatibili se e solo se
+  $$
+  \frac{k^2 \alpha^2}{\| \mathbb{w}^* \|^2} \leq k \beta
+  $$
+  cioe' quando
+  $$
+  k \leq \frac{\beta\| \mathbb{w}^* \|^2}{\alpha^2}
+  $$
+* Questo dice che $k$ deve essere un valore finito, per cui e' dimostrato.
+  $_\blacksquare$
