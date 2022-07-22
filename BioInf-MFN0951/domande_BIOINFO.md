@@ -28,7 +28,10 @@
 * Problema del coverage non perfetto nell’assembly: cosa è il coverage, come si
   calcola il coverage reale e come si può risolvere il problema del coverage
   perfetto variando i parametri di un esperimento di Deep sequencing
-* Overlap Graph e i suoi problemi
+* Overlap Graph e i suoi problemi:
+    * Ci sono piu' outputs: non ci sono modi per capire quale sia giusto
+    * Identificare un path Hamiltoniano all'interno di un overlap graph ha
+      complessita' NP-Completa
 * Complessità e distribuzione legata ai cicli Hamiltoniani
 * Tipi di rappresentazione dei TFBS
 * Gibbs Sampling
