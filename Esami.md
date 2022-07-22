@@ -3,7 +3,7 @@
 ### Todo (9)
 
 * [ ] Modellazione Concettuale per il Web Semantico
-* [ ] Logica per l'Informatica 
+* [ ] Economia e Gestione delle Imprese Net Based
 * [ ] Modelli e Architetture Avanzati di Basi di Dati
 * [ ] Tecniche e Architetture Avanzate per lo Sviluppo del Software
 * [ ] Tecnologie del Linguaggio Naturale
@@ -20,23 +20,23 @@
 * 13 - Modellazione Concettuale per il Web Semantico
 * 15 - Tecniche e Architetture Avanzate per lo Sviluppo del Software
 
-*Esami Rimanenti*: **6**
+*Esami Rimanenti*: **7**
 
 #### Dicembre - 2022
 
-* __ - Logica per l'Informatica
 * __ - Agenti Intelligenti
 * __ - Etica, Societa' e Privacy
 
-*Esami Rimanenti*: **3**
+*Esami Rimanenti*: **5**
 
-#### Gennaio - 2022
+#### Gennaio - 2023
 
+* __ - Economia e Gestione delle Imprese Net Based
 * __ - Modelli e Architetture Avanzati di Basi di Dati
 
-*Esami Rimanenti*: **2**
+*Esami Rimanenti*: **3**
 
-#### Febbraio - 2022
+#### Febbraio - 2023
 
 * __ - Programmazione per Dispositivi Mobili
 * __ - Tecnologie del Linguaggio Naturale
