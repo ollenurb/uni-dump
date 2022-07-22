@@ -19,9 +19,14 @@
 
 1. Controllare che la matrice di dati in input (il dataset) abbia tanti quanti
    esempi quante sono le righe della matrice target
-2. `A` e' una matrice `nhid`x`n_features` che contiene i pesi dei neuroni hidden 
+2. `A` e' una matrice `nhid`$\times$`n_features` che contiene i pesi dei neuroni
+   hidden, inizializzati a valori random compresi tra -0.5 e 0.5. `B` e' la
+   matrice `z` (numero di neuroni output, che corrisponde al numero di classi in
+   generale) $\times$ `nhid` (numero di neuroni hidden, quindi rappresenta il
+   layer precedente connesso) che contiene i pesi dei neuroni in output
 3. `q` contiene ad ogni iterazione lo scarto quadratico medio rispetto
-   all'intero dataset `Inp`
+   all'intero dataset `Inp` (moltiplicare per delle matrici di 1 serve a fare la
+   somma di tutti gli elementi in modo particolarmente efficiente)
 4. `ciclo` e' una variabile booleana che dice se continuare a iterare o meno 
 5. I segnali $\delta$ rispetto ai neuroni di *output* sono rappresentati dalla
    variabile `DOut`
