@@ -1,0 +1,47 @@
+Eseguire almeno una volta la dimostrazione per intero.
+In som_demo1 si partla di 'prototype vectors' anziché 'weight vectors'.
+In effetti, per ogni unità il weight vector corrisponde al vettore che,
+se presentato in input alla rete, provoca
+maggior risposta dell'unità stessa. Perché?
+Le prime istruzioni di som_demo1, fino alla riga 61, servono soltanto
+a produrre delle immagini con varie disposizioni possibili tra le unità
+di una SOM.
+Cosa è D, alla riga 62? Cosa rappresentano le dimensioni di D?
+Alla riga 75 som_randinit crea e inizializza una self-organizing map.
+A cosa serve la variabile msize?
+Verificare i campi contenuti in sMap. Cosa contiene codebook? A cosa corrispondono
+le sue dimensioni? Si può specificare se si
+vuole che la struttura della mappa sia rettangolare o esagonale
+inserendo come argomento di som_randinit 'lattice','hexa' oppure 'rect'.
+Verificare come cambia la distanza tra le unità nei due casi. A tal fine,
+si usi la funzione som_unit_dists che applicata a una SOM restituisce
+la matrice delle distanze tra le unità (nella figura, le unità son disposte dall'alto al basso, cominciando dall'alto a sinistra;
+per vedere le coordinate delle varie unità sul lattice di una SOM si può usare la
+funzione som_unit_coords applicata alla SOM).
+E' interessante seguire il comportamento nell'input space di unità limitrofe (nella mappa).
+Si provi ad esempio a seguire il comportamento delle unità 2 e 12. Si può far sì che
+le due unità sian colorate di viola e di verde anteponendo alla chiamata di som_grid
+le istruzioni Color = zeros(100,3);Color(2,:) = [1 0 1]; Color(12,:) = [0 1 0]; e poi aggiungendo come argomento
+di som_grid 'MarkerColor', Color. Considerando il codice fino alla linea 103, le due unità son vicine nella mappa e si comportano
+in modo simile nell'input space? Perché? E se si considera la porzione successiva di codice
+(fino alla riga 113)?.
+
+La mappa è allenata grazie alla funzione som_seqtrain.  In som_seqtrain Ud è la matrice
+delle distanze (al quadrato) tra le varie unità sulla mappa;
+M è la matrice dei pesi; x(mu_x_1,known) è una matrice contenente tante copie di x (vettore riga)
+quante sono le unità della mappa; mask(known) è un vettore colonna della stessa dimensione
+degli elementi di input.
+Come viene calcolata la BMU per un dato input x (righe 482-487)?
+
+Una volta individuata la BMU come vengono corretti i pesi? Cosa è h?
+
+Tornando a som_demo1: il learning rate e la neighborhood cambiano la qualità della mappa risultante?
+
+Si verifichi che unità vicine rispondono in modo simile allo stesso stimolo: l'istruzione
+[bmu,err]= som_bmus(sMap,D(8,:),'all') restituisce
+bmu: unità della rete ordinate con risposta decrescente all'input 8 di D
+err: errore, cioè discrepanza tra pesi delle unità e input 8 di D.
+
+
+
+
