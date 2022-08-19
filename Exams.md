@@ -4,10 +4,10 @@
 
 * [ ] Modellazione Concettuale per il Web Semantico
 * [ ] Economia e Gestione delle Imprese Net Based
-* [ ] Modelli e Architetture Avanzati di Basi di Dati
+* [ ] Intelligenza Artificiale Laboratorio 
 * [ ] Tecniche e Architetture Avanzate per lo Sviluppo del Software
 * [ ] Tecnologie del Linguaggio Naturale
-* [ ] Programmazione per Dispositivi Mobili
+* [ ] Elaborazione di Immagini e Visione Artificiale 
 * [ ] Reti Neurali e Deep Learning
 * [ ] Agenti Intelligenti
 * [ ] Etica, Societa' e Privacy
@@ -17,7 +17,6 @@
 #### Settembre - 2022
 
 * 01 - Reti Neurali e Deep Learning
-* 13 - Modellazione Concettuale per il Web Semantico
 * 15 - Tecniche e Architetture Avanzate per lo Sviluppo del Software
 
 *Esami Rimanenti*: **7**
@@ -31,14 +30,20 @@
 
 #### Gennaio - 2023
 
+* __ - Modellazione Concettuale per il Web Semantico
 * __ - Economia e Gestione delle Imprese Net Based
-* __ - Modelli e Architetture Avanzati di Basi di Dati
 
 *Esami Rimanenti*: **3**
 
 #### Febbraio - 2023
 
-* __ - Programmazione per Dispositivi Mobili
+* __ - Elaborazione di Immagini e Visione Artificiale
+
+*Esami Rimanenti*: **2**
+
+#### Giugno/Luglio - 2023
+
 * __ - Tecnologie del Linguaggio Naturale
+* __ - Intelligenza Artificiale e Laboratorio
 
 *Esami Rimanenti*: **1** (*Inglese*)
