@@ -1,4 +1,4 @@
-## Java Enterprise (JEE) e le architetture 3-Tier
+# Java Enterprise (JEE) e le architetture 3-Tier
 
 * E' il precursore di Spring
 * Framework per lo sviluppo di applicazioni server-side complesse
@@ -158,3 +158,311 @@
 * Se l'interfaccia e' definita remota, e permette di chiamare metodi di un
   oggetto che gira su un'altra macchina in modo totalmente nascosto al
   programmatore
+
+---
+
+# Service Oriented Architectures
+* Grandi aziende devono integrare diversi sistemi (web moderni e legacy)
+* La SOA e' una struttura di integrazione di questi diversi sistemi
+* Prima della SOA tutte le funzionalita'/servici erano all'interno di dei
+  "silos" monolitici, ed erano interne al monolite
+* La SOA introduce dei servizi di business piu' piccoli riutilizzabili. Le
+  applicazioni vengono poi costruite sulla base di questi servizi (Composite
+  Sofware Applications)
+* JEE e' ibrida: permette di realizzare entrambe le cose
+* Cio' che rende potenti i Web Services e' il fatto che utilizzano dei linguaggi
+  standard per comunicare tra loro (tipicamente XML/JSON)
+* Appplication-Centric Web: le applicazioni espongono anche i servizi che
+  possono essere utilizzati a loro volta da altre applicazioni (es. Google
+  Books)
+
+> I Web Services sono oggetti software incapsulati (implementazione nascosta,
+  indipendente dal SO o linguaggio), mediati da un contratto (che descrive i
+  servizi che espone) e che utilizza un linguaggio standard (tipo XML) per la
+  comunicazione
+
+* Ci sono diversi Standard di WS:
+    * SOAP: e' un protocollo per il richiamo di procedure remote
+    * WSDL: linguaggio per la definizione di WS, scritto in XML
+    * UDDI: e' un protocollo per scoprire i Web Services, funge da "discovery"
+      client
+* In generale, la dinamica e' la seguente:
+    * Un consumatore che vuole utillizzare servizio consulta l'UDDI registry
+    * Il registro punta all'indirizzo del servizio e alla sua descrizione
+      scritta il WSDL
+    * Sapendo l'indirizzo e la descrizione del servizio, esso puo' venir
+      richiamato mediante SOAP
+
+* Ci sono due tipi di invocazioni dei Web Services
+    * Invocazione Sincrona (RPC-Style): Mando la richiesta in SOAP e la risposta
+      mi arriva sempre in SOAP, ma la aspetto.
+    * Invocazione Asincrona (Document-Style): Mando la richiesta ma continuo a
+      fare altro, la risposta arrivera' eventualmente.
+
+## SOAP
+* Un messaggio SOAP e' scritto in XML ed e' composto da 
+    * **Header**: contiene molti dati opzionali, tra cui ad esempio anche
+      headers di autenticazione
+    * **Body**: contiene proprio la signature dei metodi quali valori di
+      ritorno, valori di input, etc..
+* Ci sono schema pre-fatti che descivono gli elementi principali
+* SOAP prevede anche la gestione delle eccezioni, provvedendo con dei componenti
+  appositi per le stesse
+
+## WSDL
+* Linguaggio per la descrizione di Web-Services
+* Definisce dei costrutti per definire:
+    * DataTypes: tipi di dati che sono permessi
+    * Messaggio: descrizione del messaggio che puo' essere invocato sul web
+      service
+    * Operazione: descrizione astratta delle operazioni disponibili del web
+      service
+    * PortType: descrizione del tipo di interazione
+    * Indirizzo: indirizzo dove risiede il servizio
+
+* PortType puo' avere 4 titpi di interazione:
+    * One-Way: il messaggio arriva al web service ma non c'e' nessuna risposta
+    * Request-Response: il messaggio arriva al WS che rispondera'. Un output per
+      ogni input
+    * Solicit-Response
+    * Notification: il server manda un messaggio al client che non riponde
+      (opposto di one-way)
+
+## UDDI
+* E' una sorta di "pagine gialle" per trovare i web services
+* Definisce delle operazioni per:
+    * Caricare un nuovo web service nel registro
+    * Fare l'update di un web service esistente
+    * Cercare servizi (per tipologia di business, etc..)
+
+* Ogni volta che si carica un web service nel registro devono essere specificate
+  diverse informazioni dal punto di vista tecnico e di business
+* L'UDDI contiene dei bindings che collegano gli UDDI registration files (che
+  sono letteralmente le entry del registro) al file WDSL vero a proprio del
+  servizio associato (che risiedono a loro volta sullo stesso server dove e'
+  caricato il web service che rappresentano)
+
+## REST
+* Representational State Transfer (REST)
+* E' uno stile di architettura software per sistemi distribuiti
+* Diventato uno standard famoso in tutto il mondo
+* Permette di utilizzare sia XML che JSON come linguaggi
+* In REST un servizio identifica delle risorse
+* Queste risorse possono essere operate mediante un'interfaccia uniforme che e'
+  data dai metodi HTTP: POST/PUT/DELETE/GET
+* Alternativa light alla controparte SOAP/WSDL
+* Le interazioni sono inoltre stateless
+* Gli URI hanno una struttura tipo directory
+    * `GET /api/customer`: ritorna tutti i customers
+    * `GET /api/customer/{id}`: ritorno il customer con specifico id
+* A differenza di SOAP che espone il documento che descrive le operazioni, REST
+  espone direttamente le risorse. Le operazioni sono specificate implicitamenre
+  dai metodi HTTP
+* Inoltre tutte le tipologie di risposte sono codificate dagli HTTP status codes
+* REST e' molto piu' facile da invocare di SOAP anche
+
+# Architettura a Microservizi
+* Nata pochi anni fa
+* "SOA Done Well": Architetura totalmente distribuita che si basa sui servizi
+  REST.
+* La componente fondamentale e' il microservizio. Esso individua un determinato
+  servizio, corredato da tutti i 3 layers: presentation, business logic e dati
+* Ognuno di essi e' autonomo, indipendente e deployabile e collabora con tutti
+  gli altri servizi per formare un'applicazione univoca
+* In JEE quando c'e' un problema di load balancing, l'application system fa
+  salire un intero container. In questo modo alloca anche dei beans che non sono
+  strettamente utili e che non servono. Nei microservizi non abbiamo questo
+  problema perche' abbiamo piu' granularita' per fare load balancing.
+* Ogni microservizioe e' totalmente autocontenuto e puo' venire sviluppato con
+  il linguaggio e la tecnologia adatta per il compito che deve svolgere
+* I benefici dei microservizi sono molti:
+    * I servizi sono piccoli, per questo sono facilmente capibili e riscrivibili
+      interamente in caso. Inoltre facilitano la collaborazione (1 team = 1
+      microservizio)
+    * La scelta della tecnologia e' indipendente dagli altri, per cui possono
+      essere adottate nuove tecnologie nel tempo
+    * Il deployment dei microservizi e' individuale, significa che se uno cade,
+      solamente il servizio non sara' disponibile, ma non l'intero server
+    * Sono molto scalabili (basta aggiungerli)
+    * Sono molto agili sia nello sviluppo che nell'utilizzo
+* Con la continous integration posso effettuare dei test indipendenti sui
+  singoli microservizi
+* Alcuni downsides dei microservizi sono pero':
+    * L'interazione tra i microservizi e' particolarmente complicata, per cui e'
+      difficile immaginarsi a priori il bare minimum di comunicazioni necessarie
+      tra i vari ms (ad esempio fare una join)
+    * Difficile fare monitoring, cioe' avere un posto centralizzato per fare
+      logging
+    * E' necessario automatizzare il processo di deployment
+* Quanto deve essere piccolo un microservizio?
+    * Se sono troppo piccoli diventano praticamente delle classi che parlano
+      l'una con l'altra (troppo traffico)
+    * Se sono troppo grossi si perdono comunque i benefit dell'autocontenimento
+      (diventano monoliti essenzialmente)
+* Il monolite funziona bene per delle applicazioni piccole che devono gestire un
+  numero limitato di utenti. Hanno una sola codebase ed e' molto semplice il
+  deployment (singola applicazione)
+* Il problema deriva dallo scaling: all'aumentare del numero di utenti e di
+  sviluppatori aumenta il numero di moduli entangled e la difficolta' di
+  manutenzione
+* Approccio Tradizionale: Uno o diversi servizi si servono di un singolo
+  database monolitico
+* Approccio a microservizi: Diversi servizi integrano al proprio interno dei
+  database contenenti i dati e le tabelle necessarie a provvedere il servizio
+  implementato. Il layer di presentazione si occupa di andare a chiamare i vari
+  microservizi. Ogni microservizio implementa un'interfaccia REST. I
+  microservizi sono stateless, cioe' non tengono conto delle interazioni con
+  l'utente
+* La comunicazione tra microservizi puo' essere
+    * Sincrona: request/response, implementata dalla orchestration architecture
+    * Asincrona: event based, implmenetata dalla choreography architecture
+* Un'altro vantaggio e' che posso mandare avanti le versioni di singoli
+  microservizi, quindi ho un'ulteriore granularita' da questo punto di vista
+
+* Tipi di architetture a microservizi:
+    * API Gateway: un microservizio gateway funge da hub principale che riceve tutte
+      le richieste e si occupa di smistarle ai vari microservizi
+    * Event/Driven architecture: I microservizi comunicano con messaggi asincroni su
+      un message bus condiviso (pub/sub)
+    * Hybrid Event-driven + RPC architecture: I microservizi comunicano sia in modo
+      sincrono che asicrono (con message bus)
+
+* Cosa fare quando le performance delle reti dei microservizi sono scadenti?
+    * Si deve cercare di minimizzare l'impatto della latenza
+    * Considerare delle dimensioni per i servizi piu' grandi, quindi meno
+      fine-grained 
+    * Evitare dei comportamenti "chatty", cioe' troppa comunicazione tra i
+      servizi evitando quella inutile
+* Il tutto si capisce ovviamente per trial-error
+
+* Registration Service: E' un servizio esterno in cui vengono registrati tutti
+  gli indirizzi dei microservizi. E' molto piu' flessibile di un approccio
+  hard-wired.
+
+* Differenze tra SOA e Microservizi
+    * SOA stateful, microservizi stateless
+    * SOA tendono a utilizzare un enterprise service bus (ESB) mentre i
+      microservizi si apoggiano ad un sistema meno elaborato di message
+      brokering
+    * SOA sono composti da piu' linee di codice dei microservizi (che posso
+      avere anche solo 100 LOC)
+    * I SOA mettono piu' enfasi nella riusabilita', mentre i microservizi si
+      concentrano nel fare decoupling il piu' possibile
+    * In cambiamento in un SOA richiede un cambiamento nell'intera applicazione
+      monolitica
+    * I SOA usano spesso DB relazionali, mentre i microservizi gravitano piu'
+      spesso con DB non relazionali (NoSQL)
+
+* Pincipi di design dei microservizi:
+    * High Coesion: una sola cosa ma ben fatta
+    * Autonomous: indipendentemente intercambiabili e deployabili
+    * Business Cetric Domain: costruiti intorno alle componenti di dominio
+    * Resilience: tener conto dei failures durante la fase di design 
+    * Observable: il loggging deve essere centralizzato
+    * Automation: impiego di tools per il testing e il deployment automatico
+
+* Problema di duplicazione dei dati: introduce un grande problema di
+  consistenza.
+
+* Approccio sviluppo Domain-Centric: 
+    * Si identificano prima i domini di business
+    * Successivamente si definiscono i domain boundaries (come comunicano e
+      quali sono i contratti tra i servizi)
+    * Infine ci si mette d'accordo su un linguaggio comune per comunciarsi ai
+      domain boundaries
+
+* Greenfield Software development: essenzialmente partire da 0, from scratch
+    * Non ci sono restrizioni
+    * Non c'e' legacy code
+    * Molto raro
+
+* Brownfield Software development: occorre creare nuovo software tenendo conto di
+  software gia' esistente
+    * Presenza di legacy code
+    * Il nuovo software deve essere integrato con l'infrastruttura precedente
+    * Maggioritario rispetto al greenfield
+* Per migrare un sistema Brownfield si individuano tutte le componenti delle
+  diverse business units che hanno il minimo numero di dipendenze e si
+  refattorizzano in microservizi singoli
+
+## Design Patterns microservizi
+
+* Broker Composition Pattern
+    * Le richieste vengono filtrate da un Gateway
+    * Il gateway pubblica sul bus dei messaggi le richieste
+    * Il bus (message broker) si occupa di smistarle ai vari servizi
+    * E' automaticamente bilanciato, poiche' ogni servizio andra' a servire la
+      prossima richiesta solo quando avra' finito di processare la precedente
+
+* Aggregate Composition Pattern
+    * Prevede un aggregatore a lato frontend che va ad aggregare i risultati dei
+      diversi microservizi (Frontend Service Aggregator)
+
+* Chain Composition Pattern 
+    * Viene chiamato un solo servizio e tutti gli altri vengono chiamati a
+      catena
+    * In questo caso sono richieste sincrone
+
+* Branch Composition Pattern
+    * Anche in questo caso c'e' un aggregatore frontend
+    * La differenza sta nel fatto che i microservizi possono essere chiamati in
+      due modi:
+        * Chain synch: a catena in mood sincrono
+        * Broker async: in modo asincrono (siccome i servizi utilizzano un
+          message broker)
+
+### Data Consistency
+* Siccome queste architetture sono distribuite, anche i dati che trattano sono
+  distribuiti, per cui e' necessario trovare un modo per garantire la
+  consistenza dei dati
+* I problemi di data consistency sono dati da:
+    * Architettura Distribuita
+    * Dati distribuiti
+    * Transazioni distribuite
+* Il SAGA pattern e' un pattern per ottenere la proprieta' ACID nei microservizi
+* Si basa sulla presenza del LOG: esso colleziona tutti i dati degli eventi di
+  scambio di messaggi tra i vari servizi
+* Attraverso i LOG posso fare il rollback
+* Il SAGA Execution Coordinator monitora i log e va a fare conseguentemente le
+  richieste di "compensazione" qualvolta ci sia un errore
+* Tutte le request/response che vengono inviate vengono salvate nel SAGA LOG
+* Quando c'e' un errore, il SEC va a fare undo di tutte le richieste che aveva
+  fatto (e che aveva opportunamente salvato nel proprio log)
+
+### Eventual Consistency
+* E' un approccio in cui essenzialmente si accetta la possibilita' che i dati
+  siano effettivamente inconsistenti
+
+## API Gateway
+* L'API Gateway permette un accesso centralizzato ai microservizi da parte delle
+  applicazioni esterne
+* Permette di ottenere:
+    * Funzionalita' distribuite
+    * Dati distribuiti
+    * Sicurezza distribuita
+* Puo' essere utilizzato per:
+    * Gestire le diverse versioni delle API
+    * Gestire la sicurezza/autenticazione
+    * Load Balancing
+    * Logging Centralizzato
+    * Controllo del traffico
+    * Caching
+    * Trasformazioni delle richieste
+
+* Il Gateway ci permette inoltre di nascondere il modo in cui interagiscono i
+  microservizi (es. alcuni potrebbero usare REST, altri SOAP, RPC-JSON, ecc..)
+
+> Al suo interno vengono solitamente inserite tutte le funzionalita' che
+> dovrebbero essere diversamente ripetute da tutti i microservizi
+
+## Microdatabase
+* Essenzialmente l'idea e' quella di inserire un singolo database per ogni
+  microservizio
+* Tipicamente per migrare da un monolite, si migrano tutte le tabelle dei dati
+  che sono necessarie alla *funzione* del microservizio (*function-first
+  design*) 
+* I dati sono un mezzo (per definire le funzioni) non un obiettivo finale
+
+
+
+
