@@ -463,6 +463,211 @@
   design*) 
 * I dati sono un mezzo (per definire le funzioni) non un obiettivo finale
 
+## Event Driven
+* L'approccio si basa sull'utilizzo di un message broker per fare
+  l'aggiornamento dei dati: ogni servizio viene notificato dall'event bus
+* In molti caso si possono evitare quindi dei database locali (alcuni servizi
+  possono utilizzare anche solo un meccanismo di caching)
+* Esempio: 
+    * Servizio A aggiorna i suoi dati, manda l'evento sull'event bus
+    * Servizi B, C, D che hanno dei dati che dipendono da esso aggiorneranno i
+      dati di conseguenza
 
+## Continous Integration
+* La CI ha l'obiettivo di gestire le release del software, facendo delivery del
+  software per componenti singole del software e non interamente
+* L'architettura a microservizi si presta bene a questa metodologia di sviluppo:
+  posso fare testing di un solo microservizio e farne il deploy automatico
+* Attraverso un Continous Deployment Tool, anziche' testare e deployare l'intera
+  applicazione, posso andare a fare il testing/deployement automatico a livello
+  dei microservizi
 
+## Rabbit MQ
+* E' un Message Broker Open Source
+    * E' reliable
+    * Fa routing (inoltra il messaggio ai destinatari sottoscritti)
+    * Ha una CLI
+* I client possono essere scritti in diversi linguaggi
+* I servizi offeri da Rabit MQ sono:
+    * Possibilita' di dichiarare diverse entita' indipendenti
+    * Monitorare le code di messaggi
+    * Inviare e ricevere messaggi
+    * Monitorare i processi Erlang, i file descriptors e l'utilizzo di memoria
+    * Forzare delle chiusure di connessioni e svuotamenti di code
+* Il paradigma e' sempre Publisher/Subscriber e si basa sullo standard di
+  messaging AMQP: ad ogni messaggio ricevuto succede un messaggio di ACK 
+* Permette diverse interazioni:
+    * Direct message: messaggio diretto ad una sola coda
+    * Fanout message (Broadcast): messaggio viene inviato a tutti i topic
+    * Topc Exchange (Pub/Sub): il messaggi veine inviato solamente a dei
+      topic specificati
 
+# Docker
+* Docker e' un software per la gestione di containers (container engine)
+* I containers sono come delle macchine virtuali lightweight, poiche' non
+  bisogna virtualizzare anche il livello operativo
+* In altri termini, i containers vengono virtualizzati a livello di sistema
+  operativo, riducendo notevolmente l'overhead. L'SO puo' quindi eseguire piu'
+  containers in modo concorrente
+* Un container contiene tutti i pacchetti e le applicazioni necessarie a far
+  girare l'applicazione desiderata
+* Questo permette anche di eliminare inconsistenze derivanti dallo specifico
+  ambiente utillizzato
+* Ogni container e' isolato dall'altro
+
+* I benefici sono suddivisibili in due lati:
+    * Lato Developers: eliminano le inconsistenze derivanti dallo specifico
+      ambiente utilizzato, inoltre gli ambienti di sviluppo risultano piu'
+      puliti riducendo il numero di conflitti/problemi
+    * Lato IT Operations: in ambito devops svolge un ruolo di assoluta
+      importanza per ridurre quello che viene definito come il "systems
+      development lifecycle"
+* Tools:
+    * `docker-machine`: tool per installare ed eseguire containers
+    * `docker-compose`: tool per definire ed eseguire applicazioni che
+      utilizzano piu' applicazioni containerizzate per mezzo di un file YAML
+
+* **Docker Registry**: servizio di storage per le immagini docker, possono essere
+  anche self hosted
+* **Docker Hub**: e' il docker registry pubblico
+* **Docker Repository**: diverse immagini docker uguali ma con tag di versione
+  differente
+
+* Quando si parla di docker bisogna differenziare due concetti:
+    * Docker Image: e' il template che esegue il docker container. E' un
+      pacchetto eseguibile standalone che definisce tutto il necessario per far
+      girare l'applicazione, incluso il codice, il runtime, le librerie,
+      variabili d'ambiente ecc...
+    * Docker Container: e' l'istanza di runtime di un'immagine, cioe' cio' che
+      l'immagine diventa in memoria quando viene eseguita (E' come una VM, per
+      cui e' completamente isolata di default dalla macchina host)
+
+* Le immagini e i containers vengono gestiti dal Docker Engine. Esso e' un
+  processo demone che e' possibile controllare tramite un'interfaccia REST
+  oppure tramite un programma CLI
+* Un'immagine docker viene definita da un Dockerfile: un file testuale che
+  indica tutti i comandi da eseguire necessari a creare un'immagine contenente
+  un'applicazione
+* Ricapitolando:
+    * Da un Dockerfile si ottiene un'immagine docker (`docker build`)
+    * Si fa girare l'immagine ottenuta ottenendo un container (`docker run`)
+* La cosa interessante e' che alla necessita di molte richieste e' possibile far
+  salire delle immagini (che condividono ad esempio lo stesso volume)
+  permettendo una scalabilita' orizzontale
+* Un'altra possibilita' e' utilizzare un container che definisce un ambiente per
+  il testing e un'altro per definire un ambiente per il deployment
+* Docker compose permette anche di creare delle reti locali in modo che i
+  containers possano comunicare tra di loro e non risultino quindi isolati
+* Inoltre, permette anche di definire dei volumi in modo da rendere persistenti
+  i dati di una determinata applicazione
+
+# Kubernetes
+* Sostanzialmente e' un orchestratore di container: organizza e gestisce delle
+  applicazioni che sono containerizzate
+* E' strettamente legato all'architettura a microservizi
+* Kubernetes puo' girare sia sul cloud pubblico, che sui data centers privati
+* In generale si occupa di implementare
+    * Scheduling
+    * Self-Healing (autostart di containers crashati)
+    * Scaling (spawn di copie per scalabilita' orizzontale)
+    * Updating (aggiornamento di singole componenti senza dover riavviare
+      l'intero sistema)
+* Un nodo **Master** funge da orchestratore e decide le politiche di
+  orchestrazione ed esecuzione definite in un file di **Deployment**
+* Ogni nodo gestito dal master e' un *insieme di containers Docker*
+* I componenti principali di kubernetes sono:
+    * API Server: espone le API all'esterno per controllare il cluster
+    * Cluster-Store: e' cio' che Kubernetes utilizza per salvare tutte le
+      configurazioni e gli stati del cluster
+    * Controller manager: un controller di controller, cioe' controlla il master
+      e puo' forzare alcuni comandi ad esso
+    * Scheduler: assegna il lavoro ai nodi in modo bilanciato 
+* `kubectl` e' un comando per gestire il cluster kubernetes
+
+* Un Pod e' l'unita' computazionale di Kubernetes che viene fatta girare su un
+  particolare Nodo
+    * Un nodo puo' essere sia una macchina virtuale che fisica
+    * Ovviamente un nodo puo' far girare piu' pods
+* Ogni nodo e' composto da 3 componenti:
+    * **Kubelet**: e' il master del nodo che controlla ed istanzia i pods, parla
+      con il master del cluster. e' un entrypoint per inviare comandi al nodo
+    * **Container Engine**: l'engine che deve far girare i vari pods
+    * **Kube Proxy**: siccome tutti i containers in un nodo condividono lo
+      stesso IP, kube proxy smista automaticamente le richieste ai vari
+      containers all'interno di un pod
+* Il Manifest e' il file **dichiarativo** per dire quello che deve fare il
+  master
+    * Specifica il numero di repliche di un nodo, le immagini dei containers, il
+      port forwarding, ecc...
+* Un Pod e' l'unita' atomica computazionale di scheduling
+    * Ospita uno o piu' containers
+    * Tutti i containers condividono lo stesso ambiente del Pod (ad esempio
+      l'indirizzo IP)
+    * Puo' vivere solo all'interno di un singolo nodo (non in piu' nodi
+      contemporaneamente)
+    * Il lifecycle puo' avere 4 stati differenti:
+        * Pending
+        * Running
+        * Failed
+        * Succeeded
+    * Vengono costruiti secondo il manifest file
+* Tipicamente inserire troppi servizi all'interno di un singolo pod ne aumenta
+  il coupling (tight coupling)
+
+> La migliore scalabilita' si ottiene aumentando Pods, non aumentando
+  Containers all'interno dei pods!
+
+* Kubernetes mette a disposizione anche tutto un sistema di labeling per aiutare
+  con la continous integration
+    * Ogni Pod puo' essere etichettato
+    * es. etichetto con beta, poi quando pusho una versione posso cambiare solo
+      quelli etichettati in un certo modo
+
+# Cloud Computing
+* La differenza tra Hosting e il Cloud Computing e' che nella prima non si paga
+  in base all'utilizzo (tipicamente in base al numero di accessi al servizio)
+* Con Cloud Architecture e' una serie di tecnologie infromatiche orientate a
+  fornire dei servizi sia software che hardware attraverso la rete
+* Possiamo individuare diverse categorie nel Cloud Computing:
+    * Infrastracture as a Service (IaaS)
+        * Offre un'infrastruttura in termini di risorse hardware (tempo CPU,
+          memoria)
+        * Soluzione adottata soprattutto per task che sono computazionalmente
+          intensivi
+        * Molte aziende lo utilizzano per evitare di avere l'hardware in azienda
+          (boh)
+    * Platform as a Service (PaaS)
+        * Fornisce l'ambiente software tramite il quale il programmatore puo'
+          fare il deploy dell'intera applicazione
+    * Software as a Service (SaaS)
+        * Sono delle vere e proprie applicazioni che girano su hwardware remoti
+        * Ne sono un esempio (Google Docs, Gmail, ecc..)
+        * Utilizzare software as a service ha diversi benefici, tra cui la
+          riduzione di risorse on premises, meno costi, non necessita di
+          installazioni locali e' piu' facile da aggiornare e non necessita di
+          troppa manutenzione
+        * Di contro, ci sono diversi rischi associati tra cui la scarsa
+          customizzazione, performance limitate e puo' essere quindi piu'
+          difficile da integrare con i software esistenti
+    * Containers as a Service (CaaS)
+        * Offre essenzialmente solo il container engine
+    * Functions as a Service (FaaS):
+        * L'utente non fa altro che eseguire direttamente una funzione. Il
+          deploy e' solo delle funzioni! 
+
+* On-Premises: funzionalita' del cloud computing che sono in realta' nella rete
+  locale
+* Service Level Agreement: e' un contratto che si stipula con il provider che
+  definisce tutti i termini e le condizioni dell'utilizzo del servizio (tra cui
+  il prezzo)
+
+## Heroku
+* E' un servizio PaaS, per cui fornisce l'ambiente software tramite il quale il
+  programmatore puo' effettuare il deploy dell'applicazione
+* In Heroku ci sono i cosiddetti Dynos, che indicano dei servizi che vengono
+  offerti dalla piattaforma. (es. dynos di mysql, dynos di postgres ecc..)
+* Tramite una CLI viene creata un'applicazione heroku
+    * L'applicazione viene prima sviluppata in locale
+    * Successivamente viene fatto il deploy con la CLI di Heroku
+* Si integra perfettamente con git, siccome il deploy viene fatto su una remote
+  Heroku apposita
