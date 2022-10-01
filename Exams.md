@@ -5,10 +5,10 @@
 * [ ] Modellazione Concettuale per il Web Semantico
 * [ ] Complementi di Analisi e Probabilita'
 * [ ] Intelligenza Artificiale Laboratorio 
-* [ ] Tecniche e Architetture Avanzate per lo Sviluppo del Software
+* [X] Tecniche e Architetture Avanzate per lo Sviluppo del Software
 * [ ] Tecnologie del Linguaggio Naturale
 * [ ] Elaborazione di Immagini e Visione Artificiale 
-* [ ] Reti Neurali e Deep Learning
+* [X] Reti Neurali e Deep Learning
 * [ ] Agenti Intelligenti
 * [ ] Etica, Societa' e Privacy
 

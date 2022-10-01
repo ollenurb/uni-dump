@@ -32,7 +32,7 @@
     * Client Tier: applicazioni client, web browsers, applets, JavaBeans
       components (che usufruiscono dei servizi ovviamente)
     * Web/Business Tier: i servizi che vengon esposti a livello di business
-      possono essere usufruiti anche dalle applicazioni logali (servlets che
+      possono essere usufruiti anche dalle applicazioni locali (servlets che
       stanno al Web-Tier)
     * EIS Tier: Database Systems/Sistemi Legacy
 * Come detto, JEE racchiude al proprio interno diverse librerie, per citarne
@@ -45,7 +45,7 @@
     * Injection
     * DB Access
 * JEE mette a disposizione anche altre cose quali:
-    * Java Namind and Directory Interface (JNDI), che permette di risolvere
+    * Java Naming and Directory Interface (JNDI), che permette di risolvere
       l'indirizzo di un oggetto remoto del quale si vuole eseguire metodo. La
       risoluzione non e' quindi fatta direttamente dal programmatore ma viene
       fatta dall'applicazion server.
@@ -56,8 +56,8 @@
 
 ## Session Beans
 * Servono da intermediario tra client la parte web dell'applicazione, quali
-  servlet. Di solito quando si chiama la servlet, essa chiama il sessio bean che
-  opera sui dati e ritorna il risultato.
+  servlet. Di solito quando si chiama la servlet, essa chiama il session bean
+  che opera sui dati e ritorna il risultato.
 * Le invocazioni dei metodi sono mediate da RMI assorbite dentro i beans, quindi
   sono totalmente trasparenti al programmatore, siccome sono gestite
   dall'application server.
@@ -164,7 +164,7 @@
 # Service Oriented Architectures
 * Grandi aziende devono integrare diversi sistemi (web moderni e legacy)
 * La SOA e' una struttura di integrazione di questi diversi sistemi
-* Prima della SOA tutte le funzionalita'/servici erano all'interno di dei
+* Prima della SOA tutte le funzionalita'/servizi erano all'interno di dei
   "silos" monolitici, ed erano interne al monolite
 * La SOA introduce dei servizi di business piu' piccoli riutilizzabili. Le
   applicazioni vengono poi costruite sulla base di questi servizi (Composite
@@ -273,7 +273,7 @@
   salire un intero container. In questo modo alloca anche dei beans che non sono
   strettamente utili e che non servono. Nei microservizi non abbiamo questo
   problema perche' abbiamo piu' granularita' per fare load balancing.
-* Ogni microservizioe e' totalmente autocontenuto e puo' venire sviluppato con
+* Ogni microservizio e' totalmente autocontenuto e puo' venire sviluppato con
   il linguaggio e la tecnologia adatta per il compito che deve svolgere
 * I benefici dei microservizi sono molti:
     * I servizi sono piccoli, per questo sono facilmente capibili e riscrivibili
@@ -358,7 +358,7 @@
     * Autonomous: indipendentemente intercambiabili e deployabili
     * Business Cetric Domain: costruiti intorno alle componenti di dominio
     * Resilience: tener conto dei failures durante la fase di design 
-    * Observable: il loggging deve essere centralizzato
+    * Observable: il logging deve essere centralizzato
     * Automation: impiego di tools per il testing e il deployment automatico
 
 * Problema di duplicazione dei dati: introduce un grande problema di
