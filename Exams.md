@@ -17,13 +17,14 @@
 #### Dicembre - 2022
 
 * 15 - Agenti Intelligenti (24 lezioni)
-* __ - Etica, Societa' e Privacy (24 lezioni)
+* 12 - Etica, Societa' e Privacy (24 lezioni)
 
 *Esami Rimanenti*: **5**
 
 #### Gennaio - 2023
 
 * 17 - Complementi di Analisi e Probabilita' (24 lezioni)
+* 30 - Elaborazione di Immagini e Visione Artificiale (24 lezioni)
 
 *Esami Rimanenti*: **3**
 
@@ -35,7 +36,6 @@
 
 #### Giugno/Luglio - 2023
 
-* __ - Elaborazione di Immagini e Visione Artificiale (24 lezioni)
 * __ - Tecnologie del Linguaggio Naturale (36 lezioni)
 * __ - Intelligenza Artificiale e Laboratorio (36 lezioni)
 
