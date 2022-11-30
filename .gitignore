@@ -1,6 +1,5 @@
 *.html
 *.epub
-*.pdf
 *.lua
 *.asv
 octave*
