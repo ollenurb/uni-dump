@@ -1,20 +1,86 @@
 # Privacy - Domande Orale
 
-## Pensa
+## Data Regulation Laws
 
-### Data Regulation Laws
-* Privacy by default e by design
-* Novità introdotte dal GDPR (pseudononimizzazione, e differenza con l'anonimizzazione),
-* Ruoli definiti dal GDPR (titolare del trattamento dei dati, responsabile, data subject)
-* Responsibility and Accountability 
-* Come bisogna agire in caso di Data Breach
-* Trasferimento dati oltre UE - regole tra UE e USA
+### Evoluzione del concetto di privacy nel tempo
+Una delle prime comparse della definizione di privacy fu data da Warren e
+Brandeis nel 1890, che la definirono come il "diritto ad essere lasciati da
+soli", cioe' il diritto ad essere immuni ad essere osservati ad esempio in casa
+propria.
+Successive definizioni da parte di Godkin e Bok demarcarono la stessa
+come un "diritto a limitare l'accesso" alle informazioni riguardanti un
+individuo, per cui un individuo poteva controllare quali informazioni personali
+comunicare e quali no.
+Le definizioni piu' moderne raffinano in concetto, per
+cui la privacy diventa il "diritto ad avere il controllo" sulle proprie
+informazion, cioe' poter determinare come, quando e con quale estensione le
+proprie informazioni possano essere comunicate ad altri. 
+Noi nel corso ci siamo attenuti alla definizione secondo la quale la privacy e'
+l'abilita' di una persona di controllare la *disponibilita'* e l'*esposizione*
+di informazioni personali, il che implica anche che qualsiasi persona puo' agire
+in totale anonimato nella societa'.
 
-### Privacy in PDP
+### Privacy by Design e by Default
+E' un principio sancito all'interno del GDPR secondo il quale fin dal
+concepimento di un processo di ingenierizzazione devono essere implementate una
+serie di misure tecniche e organizzative che tengano conto delle problematiche
+riguardanti alla privacy. Inoltre, le impostazioni riguardanti la privacy devono
+essere impostate al livello massimo di default. Il principio di privacy by
+design by default si fonda su 7 principi fondazionali:
+
+* Proattivita' e non Reattivita'
+* Privacy come impostazione di default
+* La privacy deve essere incorporata nel design
+* Full Functionality: deve essere comunque garantita la funzionalita' del sistema
+* La sicurezza deve essere garantita ad ogni fase di sviluppo
+* Visibilita' e trasparenza
+* Rispetto per la privacy dell'utente
+
+### Quali sono le novità introdotte dal GDPR?
+Il GDPR modifica alcune definizioni che erano state introdotte nella normativa
+che lo precedeva (la *Data Protection Directive*):
+
+* **Dato Personale**: vengono aggiunte altre tipologie di identificatori quali
+  dati di geolocalizzazione, identificatori online, dati genetici, economici e
+  culturali. 
+* **Processing**: viene aggiunta l'operazione di *ristrutturazione* del dato
+  come attivita' di processing.
+
+Oltre a cio', vengono introdotte altre definizioni quali:
+
+* **Data Breach**: violazione di sicurezza che puo' causare un accesso non
+  autorizzato ai dati personali con conseguente distruzione, alterazione,
+  disclosure.
+* **Privacy by Design/Default** (*e' piu' un principio che una definzione*)
+* **Data Protection Officier**
+* **Pseudoanonimizzazione**: tecnica di processamento dei dati personali con lo
+  scopo di ottenere dei dati che non siano riconducibili ad uno specifico data
+  subject senza l'ausilio di informazione aggiuntiva
+
+Inoltre, vengono poi rafforzati i diritti degli individui (data subjects), per
+cui:
+
+(pseudononimizzazione, e differenza con l'anonimizzazione),
+
+### Quali sono i Ruoli definiti dal GDPR?
+(titolare del trattamento dei dati, responsabile, data subject)
+
+### Responsibility e Accountability secondo il GDPR
+
+### Come bisogna agire in caso di Data Breach?
+
+### Trasferimento dati oltre UE (Regole tra UE e USA)
+
+---
+
+## Privacy in PDP
 * RBAC e ABAC
-* Metodi di controllo degli accessi (RBAC e ABAC, XACML, nel caso di due policy che vanno in conflitto, ABAC prevede dei sistemi per risolvere il conflitto?)
-* Perché un controllo degli accessi basato sugli attributi è migliore di quello basato sui ruoli
-* Esempi di attributi utili ad identificare il contesto per una richiesta di accesso
+* Metodi di controllo degli accessi (RBAC e ABAC, XACML, nel caso di due policy
+  che vanno in conflitto, ABAC prevede dei sistemi per risolvere il conflitto?)
+* Perché un controllo degli accessi basato sugli attributi è migliore di quello
+  basato sui ruoli
+* Esempi di attributi utili ad identificare il contesto per una richiesta di
+  accesso
 * Come vengono realizzate le politiche ABAC
 * Auditing (obiettivo, principio del GDPR garantito dall'auditing)
 
@@ -132,18 +198,27 @@
 
 #### Studente 3 - voto 30
 
-1. K-anonimity, come si superano i limiti dell'homogeny attack e della conoscenza di background? (discorso su l-diversity)
-2. Dati i criteri elencati dal collega precedente, come li andrebbe ad usare nell'applicare la k-anonimity? Che ragionamento/analisi applicherebbe? (**analisi del rischio!!** Non l'abbiamo trattato a lezione, ma ti fa ragionare per arrivarci!)
-3. DP - la DP gode alcune proprietà utili per progettare un sistema differenzialmente privato, quali sono? (teorema di combinazione delle tecniche di DP)
-4. C'è un caso di meccanismo che abbiamo dimostrato la cui dimostrazione è molto semplice, mi sa dire qual'è (meccanismo della monetina)
-5. Parlando di DP - il numero di monetine da lanciare a cosa lo associa? C'è un meccanismo più accurato? Le monetine che cosa sono nell'ambito della DP? (simplesso di probabilità)
+1. K-anonimity, come si superano i limiti dell'homogeny attack e della
+   conoscenza di background? (discorso su l-diversity)
+2. Dati i criteri elencati dal collega precedente, come li andrebbe ad usare
+   nell'applicare la k-anonimity? Che ragionamento/analisi applicherebbe?
+   (**analisi del rischio!!** Non l'abbiamo trattato a lezione, ma ti fa
+   ragionare per arrivarci!)
+3. DP - la DP gode alcune proprietà utili per progettare un sistema
+   differenzialmente privato, quali sono? (teorema di combinazione delle
+   tecniche di DP)
+4. C'è un caso di meccanismo che abbiamo dimostrato la cui dimostrazione è molto
+   semplice, mi sa dire qual'è (meccanismo della monetina)
+5. Parlando di DP - il numero di monetine da lanciare a cosa lo associa? C'è un
+   meccanismo più accurato? Le monetine che cosa sono nell'ambito della DP?
+   (simplesso di probabilità)
 6. Auditing nel DB, a cosa servono e quale aspetto del GDPR vanno a coprire?
 
 #### Studente 4 - voto 29
 
 1. Delta-presence
 2. La delta presence ha un affinità con la DP, in termini di presenza-assenza
-   individui nel datset. Mi dica in cosa sono dverse queste due fedinizioni di
+   individui nel datset. Mi dica in cosa sono dverse queste due definizioni di
    privacy, sia dal punto di vista applicativo che dal punto di vista teorico.
    (DP applicata alla query, Delta-presence a una tabella)
 3. DP - Global vs Local Sensitivity
@@ -156,7 +231,8 @@
 
 #### Studente 5 - voto 30 e lode
 
-1. Privacy Preserving Data Mining, cos'è e quali approcci abbiamo visto (definizione del problema, 3 approcci, metodo di bootstrap)
+1. Privacy Preserving Data Mining, cos'è e quali approcci abbiamo visto
+   (definizione del problema, 3 approcci, metodo di bootstrap)
 2. Mi parla di ID3-delta?
 3. Pseudonimizzazione nel GDPR
 4. Secondo lei come si potrebbe migliorare il GDPR? (domanda molto larga, senza una risposta precisa).
@@ -178,7 +254,7 @@
 2. Algoritmo di Mondrian (vuole che gli si parli della discerneability metric, non di NCP!)
 3. Limiti degli algoritmi di K-anonymity
 4. L-diversity
-5. Proprietà che viene sfruttata dagli algoritmi di k-anonymity per implementare la k-diversity
+5. Proprietà che viene sfruttata dagli algoritmi di k-anonymity per implementare la l-diversity
 
 #### Studente 3
 
@@ -205,5 +281,6 @@
 
 ## Note
 
-Per rispetto verso i miei colleghi ho omesso voti e considerazioni personali nell'ultimo appello, ma confermo la bravura del professor
-Pensa a mettere a suo agio gli studenti come già menzionato, buono studio a tutti!
+Per rispetto verso i miei colleghi ho omesso voti e considerazioni personali
+nell'ultimo appello, ma confermo la bravura del professor Pensa a mettere a suo
+agio gli studenti come già menzionato, buono studio a tutti!
