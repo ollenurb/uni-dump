@@ -13,12 +13,17 @@ individuo, per cui un individuo poteva controllare quali informazioni personali
 comunicare e quali no.
 Le definizioni piu' moderne raffinano in concetto, per
 cui la privacy diventa il "diritto ad avere il controllo" sulle proprie
-informazion, cioe' poter determinare come, quando e con quale estensione le
+informazioni, cioe' poter determinare come, quando e con quale estensione le
 proprie informazioni possano essere comunicate ad altri. 
 Noi nel corso ci siamo attenuti alla definizione secondo la quale la privacy e'
 l'abilita' di una persona di controllare la *disponibilita'* e l'*esposizione*
 di informazioni personali, il che implica anche che qualsiasi persona puo' agire
 in totale anonimato nella societa'.
+
+-> Diritto ad essere lasciati da soli
+-> Diritto a limitare l'accesso alle informazioni personali
+-> Diritto ad avere il controllo
+-> Disponibilita'/esposizione
 
 ### Privacy by Design e by Default
 E' un principio sancito all'interno del GDPR secondo il quale fin dal
