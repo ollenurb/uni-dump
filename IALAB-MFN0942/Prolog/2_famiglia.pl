@@ -20,6 +20,9 @@ nonno(X, Y) :- genitore(X, Z), genitore(Z, Y).
 % Il concetto di "antenato" e' definito ricorsivamente:
 % Dobbiamo "risalire" le relazioni di "genitore" fino ad arrivare alla prima
 % (cioe' il primo genitore)
+% NB. Bisogna fare attenzione a mettere prima i casi base e poi i casi
+% ricorsivi, poiche' potrebbe fare stack overflow senza mai terminare la
+% ricorsione dal momento che le clausole sono considerate per ordine di arrivo
 antenato(X, Y) :- genitore(X, Y).
 antenato(X, Y) :- genitore(Z, Y), antenato(X, Z).
 % ----------------------------------------------------------------------------------
