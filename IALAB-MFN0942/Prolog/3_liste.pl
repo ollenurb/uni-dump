@@ -35,5 +35,3 @@ lbo_element([_ | Tail], Current) :- lbo_element(Tail, Current).
 % 3. Trova il k-esimo elemento di una lista
 find_kth([Head | _], 0, Head).
 find_kth([_ | Tail], I, Current) :- find_kth(Tail, Index, Current), I is Index-1.
-
-
