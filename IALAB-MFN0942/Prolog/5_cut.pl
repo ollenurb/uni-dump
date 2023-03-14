@@ -16,9 +16,9 @@ contaPositivi([Head | Tail], Totale) :-
 % (nell'albero SLD) in cui potrebbe fare backtracking. 
 % Se noi abbiamo una regola del tipo q :- p_1, ..., p_i-1, !, p_i+1, ..., p_n,
 % il cut (!) blocca il backtracking per P_i+1, ..., p_n in caso p_1, ..., p_i-1
-% siano false. Essenzialmente, prova fino a p_i-1, in caso siano ogni volta
-% false (se stiamo provando a fare backtracking lo sono per forza), allora non
-% continua e ritorna false.
+% siano tutte false. Essenzialmente, prova fino a p_i-1, in caso siano ogni
+% volta false (se stiamo provando a fare backtracking lo sono per forza),
+% allora non continua e ritorna false.
 % > Si noti che ovviamente in questo modo rendiamo la procedura incompleta,
 % cioe' potrebbe essere vera esplorando le prossime alternative ma non vengono
 % valutate e vengono considerate false automaticamente.
