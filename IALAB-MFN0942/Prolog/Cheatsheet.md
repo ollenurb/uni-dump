@@ -17,6 +17,24 @@
         - Rimuove M da List e unifica la rista rimanente con Remainder
     * `ground(X).`
         - Restituisce `true` se `X` e' un termine istanziato (eg. `X=1`)
+    * `findall(X, pred(X), Risultato).`
+        - Trova tutti i valori assegnabili a X che rendendono vero il predicato
+          `pred` e li assegna alla variabile `Risultato`
+    * `statistics(cputime, TStart).`
+        - Istanzia TStart con il timestamp attuale
+    * `assert(pred(something)).`
+        - Asserisce che `pred(something)` e' vero e lo aggiunge alla base di
+          conoscenza
+    * `asserta(pred(something)).`
+        - Inserisce *in testa* predicato, cioe' prima di tutte le clausole dello
+          stesso tipo
+    * `assertz(pred(something)).`
+        - Inserisce *in coda* il predicato, cioe' dopo tutte le clausole dello
+          stesso tipo
+    * `retract(pred(something)).`
+        - Rimuove `pred(something)` dalla base di conoscenza
+    * `retractall(pred(_)).`
+        - Rimuove tutti i fatti `pred(_)` dalla base di conoscenza
 
 ### Syntax
 * `/==` not equals

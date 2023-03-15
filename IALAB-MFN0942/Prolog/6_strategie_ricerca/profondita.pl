@@ -24,4 +24,66 @@ risolvi_noloop(S, Visitati, [AzioneApplicabile | Azioni]) :-
     applicabile(AzioneApplicabile, S),
     trasforma(AzioneApplicabile, S, NuovoStato),
     \+member(NuovoStato, Visitati),
-    risolvi_noloop(NuovoStato, [S | Visitati],Azioni).
+    risolvi_noloop(NuovoStato, [S | Visitati], Azioni).
+
+% Una variante di questa strategia e' quella per la ricerca in profondita'
+% limitata. In questo modo, si evitano di esplorare i rami oltre una certa
+% profondita'.
+% Il problema di questo tipo di approccio e' che se non abbiamo messo un numero
+% sufficientemente grande di prodondita', potrebbe terminare la ricerca
+% prematuramente fallendo, anche se di fatto esiste una soluzione a profondita'
+% piu' grande.
+prof_limitata(S, _, _, []) :- finale(S), !.
+prof_limitata(S, Visitati, Soglia, [AzioneApplicabile | Azioni]) :-
+    applicabile(AzioneApplicabile, S),
+    trasforma(AzioneApplicabile, S, NuovoStato),
+    \+member(NuovoStato, Visitati),
+    Soglia > 0,
+    NuovaSoglia is Soglia - 1,
+    prof_limitata(NuovoStato, [S | Visitati], NuovaSoglia, Azioni).
+
+% Soluzione: Iterative Deepening (aumentiamo man mano la soglia ogni volta che
+% fallisce).
+% Inizializziamo per prima cosa la profondita' iniziale.
+inizializza :-
+    % Pulisci dalla KB tutti i predicati riguardanti la profondita' attuale
+    retractall(current_depth(_)), 
+    % Imposta la profondita' iniziale
+    assert(current_depth(1)).
+
+iterative_deepening(Cammino) :- 
+    iniziale(S0),
+    current_depth(D),
+    prof_limitata(S0, [], D, Cammino).
+% Se arriva qua significa che ha fallito, quindi aumentiamo la profondita'
+iterative_deepening(Cammino) :-
+    current_depth(D),
+    NuovaDepth is D + 1,
+    retractall(current_depth(_)),
+    assert(current_depth(NuovaDepth)),
+    iterative_deepening(Cammino).
+
+% IL drawback principale di Iterative Deepening nella versione attuale e' che
+% non termina se non c'e' la soluzione. Un modo furbo per risolvere e'
+% impostare un upper bound sulla lunghezza del cammino massima. Nel nostro
+% caso, e' insensato andare oltre una profondita' di NxM (la grandezza della
+% nostra griglia).
+
+
+% Fino ad ora abbiamo considerato solo ricerche in profondita', ma avremmo
+% potutto anche visitare in ampiezza. In questo modo, avremmo un tradeoff tra
+% spazio e ottimalita', sicocme sicuramente questo tipo di visita ritornerebbe
+% l'ottimo della soluzione.
+
+% ============ Helpers per chiamare le varianti delle ricerche ============
+cerca_soluzione :-
+    iniziale(S0),
+    risolvi_noloop(S0, [], ListaAzioni),
+    write(ListaAzioni).
+
+cerca_soluzione_soglia(Soglia) :-
+    iniziale(S0),
+    prof_limitata(S0, [], Soglia, ListaAzioni),
+    write(ListaAzioni).
+
+
