@@ -63,17 +63,25 @@ iterative_deepening(Cammino) :-
     assert(current_depth(NuovaDepth)),
     iterative_deepening(Cammino).
 
-% IL drawback principale di Iterative Deepening nella versione attuale e' che
+% Il drawback principale dell'Iterative Deepening nella versione attuale e' che
 % non termina se non c'e' la soluzione. Un modo furbo per risolvere e'
 % impostare un upper bound sulla lunghezza del cammino massima. Nel nostro
 % caso, e' insensato andare oltre una profondita' di NxM (la grandezza della
 % nostra griglia).
 
+% Le strategie presentate fin'ora ricadono nella classe delle strategie di
+% ricerca non informate, cioe' tali per cui non utilizzano nessun tipo di
+% informazione aggiuntiva per guidare l'esplorazione. 
+% Le strategia informate si basano sul concetto di *euristica*, cioe' una
+% funzione che ritorna il costo stimato di un determinato percorso.
+% Piu' formalmente, un'euristica e' una funzione h(n) che ritorna il costo
+% stimato per raggiungere uno stato finale a partire dal nodo n.
+% Un'euristica e' spesso una stima del costo reale. In caso questa stima sia
+% sempre minore del costo reale, parliamo di *euristica ammissimile*. 
+% Inoltre, in un euristica teniamo anche conto del costo del cammino trovato
+% dal nodo iniziale fino al nodo n, e lo denotiamo con g(n).
 
-% Fino ad ora abbiamo considerato solo ricerche in profondita', ma avremmo
-% potutto anche visitare in ampiezza. In questo modo, avremmo un tradeoff tra
-% spazio e ottimalita', sicocme sicuramente questo tipo di visita ritornerebbe
-% l'ottimo della soluzione.
+
 
 % ============ Helpers per chiamare le varianti delle ricerche ============
 cerca_soluzione :-
@@ -85,5 +93,3 @@ cerca_soluzione_soglia(Soglia) :-
     iniziale(S0),
     prof_limitata(S0, [], Soglia, ListaAzioni),
     write(ListaAzioni).
-
-
