@@ -17,6 +17,7 @@
           packages = with p; [
             swiProlog
             clingo
+            clips
           ];
           name = "IALAB";
         };
