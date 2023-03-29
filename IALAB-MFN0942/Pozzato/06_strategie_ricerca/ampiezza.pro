@@ -22,9 +22,9 @@ risolvi([[S, PathToS] | Coda], Visitati, Cammino) :-
 % - 4. Percorso dallo stato iniziale fino allo stato S
 % - 5. Return della funzione (lista di stati figli)
 generaStatiFigli(_, [], _, _, []) :- !.
-generaStatiFigli(S, [Az | AltreAzioni], Visitati, PathToS, [[] | ListaStati]) :-
+generaStatiFigli(S, [Az | AltreAzioni], Visitati, PathToS, [ [Snuovo, [Az | PathToS] ] | ListaStati]):-
     trasforma(Az, S, StatoNuovo),
-    \+member(StatoNuovo, Visitati),
+    \+member(StatoNuovo, Visitati), !,
     generaStatiFigli(S, AltreAzioni, Visitati, PathToS, ListaStati).
 generaStatiFigli(S, [_ | AltreAzioni], Visitati, PathToS, ListaStati) :-
     generaStatiFigli(S, AltreAzioni, Visitati, PathToS, ListaStati).
