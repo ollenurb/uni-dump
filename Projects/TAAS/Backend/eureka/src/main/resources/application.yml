@@ -1,0 +1,27 @@
+# See any common application properties in
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+# ----------------------------------------------------------------------------------------------
+#                                       Server Configurations
+# ----------------------------------------------------------------------------------------------
+server:
+  port: 8761
+  error:
+    whitelabel:
+      enabled: false
+
+# ----------------------------------------------------------------------------------------------
+#                                       Spring Configurations
+# ----------------------------------------------------------------------------------------------
+spring:
+  application:
+    name: "eureka"
+
+# ----------------------------------------------------------------------------------------------
+#                                       Eureka Configurations
+# ----------------------------------------------------------------------------------------------
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: "http://0.0.0.0:8761/eureka"

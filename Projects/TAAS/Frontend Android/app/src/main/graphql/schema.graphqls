@@ -1,0 +1,78 @@
+type User {
+    id: ID!
+    email: String!
+    firstName: String!
+    lastName: String
+    groups(owned: Boolean): [Group!]
+    meetings(hosted: Boolean): [Meeting!]
+}
+
+type Group {
+    id: ID!
+    owner: User
+    title: String!
+    areaOfInterest: String!
+    description: String
+    members: [User!]
+    meetings: [Meeting!]
+}
+
+type Meeting {
+    id: ID!
+    name: String!
+    host: User
+    group: Group
+    dateTime: Int!
+    attendees: [User!]
+    type: MeetingType!
+    location: String!
+}
+
+enum MeetingType {
+    PHYSICAL
+    ONLINE
+}
+
+type Mutation {
+    saveGroup(input: GroupInput!): Group
+    updateGroup(id: ID!, input: GroupInput!): Group
+    deleteGroup(id: ID!): Boolean
+
+    addGroupMember(groupId: ID!, userId: ID!): Boolean
+    removeGroupMember(groupId: ID!, userId: ID!): Boolean
+
+    saveMeeting(input: MeetingInput!): Meeting
+    updateMeeting(id: ID!, input: MeetingInput!): Meeting
+    deleteMeeting(id: ID!): Boolean
+
+    addMeetingAttendee(meetingId: ID!, userId: ID!): Boolean
+    removeMeetingAttendee(meetingId: ID!, userId: ID!): Boolean
+}
+
+type Query {
+    users(ids: [ID!]): [User!]!
+    userById(id: ID!): User
+    userByEmail(email: String!): User
+
+    groups(ids: [ID!]): [Group!]!
+    groupById(id: ID!): Group
+    groupByTitle(title: String!): Group
+
+    meetingById(id: ID!): Meeting
+}
+
+input GroupInput {
+    title: String
+    ownerId: ID
+    areaOfInterest: String
+    description: String
+}
+
+input MeetingInput {
+    name: String
+    groupId: ID
+    hostId: ID
+    dateTime: Int
+    type: MeetingType
+    location: String
+}

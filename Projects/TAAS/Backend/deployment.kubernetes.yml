@@ -1,0 +1,256 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-web
+  labels:
+    app: eureka-web
+spec:
+  selector:
+    matchLabels:
+      app: eureka-web
+  template:
+    metadata:
+      labels:
+        app: eureka-web
+    spec:
+      containers:
+        - name: eureka-pod
+          image: docker.io/brc/eureka
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8761
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-web
+  labels:
+    app: eureka-web
+spec:
+  ports:
+  - port: 8761
+    protocol: TCP
+    targetPort: 8761
+  selector:
+    app: eureka-web
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-web
+  labels:
+    app: gateway-web
+spec:
+  selector:
+    matchLabels:
+      app: gateway-web
+  template:
+    metadata:
+      labels:
+        app: gateway-web
+    spec:
+      containers:
+        - name: gateway-pod
+          image: docker.io/brc/gateway
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: '{"eureka": {"instance": {"prefer-ip-address": false, "hostname": "gateway-web"}, "client": {"service-url": {"defaultZone": "http://eureka-web:8761/eureka"}}}, "spring": {"config": {"import": "optional:configserver:http://eureka-web:8761"}}}'
+      initContainers:
+        - name: wait-eureka-web
+          image: docker.io/library/busybox
+          command: ["sh", "-c", "until wget -q -O /dev/null 'http://eureka-web:8761' &> /dev/null; do sleep 5; done"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-web
+  labels:
+    app: gateway-web
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: gateway-web
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-web
+  labels:
+    app: auth-web
+spec:
+  selector:
+    matchLabels:
+      app: auth-web
+  template:
+    metadata:
+      labels:
+        app: auth-web
+    spec:
+      containers:
+        - name: auth-pod
+          image: docker.io/brc/auth
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: '{"eureka": {"instance": {"prefer-ip-address": false, "hostname": "auth-web"}, "client": {"service-url": {"defaultZone": "http://eureka-web:8761/eureka"}}}, "spring": {"config": {"import": "optional:configserver:http://eureka-web:8761"}}}'
+      initContainers:
+        - name: wait-eureka-web
+          image: docker.io/library/busybox
+          command: ["sh", "-c", "until wget -q -O /dev/null 'http://eureka-web:8761' &> /dev/null; do sleep 5; done"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-web
+  labels:
+    app: auth-web
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: auth-web
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-web
+  labels:
+    app: users-web
+spec:
+  selector:
+    matchLabels:
+      app: users-web
+  template:
+    metadata:
+      labels:
+        app: users-web
+    spec:
+      containers:
+        - name: users-pod
+          image: docker.io/brc/users
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: '{"eureka": {"instance": {"prefer-ip-address": false, "hostname": "users-web"}, "client": {"service-url": {"defaultZone": "http://eureka-web:8761/eureka"}}}}'
+      initContainers:
+        - name: wait-eureka-web
+          image: docker.io/library/busybox
+          command: ["sh", "-c", "until wget -q -O /dev/null 'http://eureka-web:8761' &> /dev/null; do sleep 5; done"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-web
+  labels:
+    app: users-web
+spec:
+  ports:
+  - port: 8082
+    protocol: TCP
+    targetPort: 8082
+  selector:
+    app: users-web
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: groups-web
+  labels:
+    app: groups-web
+spec:
+  selector:
+    matchLabels:
+      app: groups-web
+  template:
+    metadata:
+      labels:
+        app: groups-web
+    spec:
+      containers:
+        - name: groups-pod
+          image: docker.io/brc/groups
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: '{"eureka": {"instance": {"prefer-ip-address": false, "hostname": "groups-web"}, "client": {"service-url": {"defaultZone": "http://eureka-web:8761/eureka"}}}}'
+      initContainers:
+        - name: wait-eureka-web
+          image: docker.io/library/busybox
+          command: ["sh", "-c", "until wget -q -O /dev/null 'http://eureka-web:8761' &> /dev/null; do sleep 5; done"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: groups-web
+  labels:
+    app: groups-web
+spec:
+  ports:
+  - port: 8083
+    protocol: TCP
+    targetPort: 8083
+  selector:
+    app: groups-web
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meetings-web
+  labels:
+    app: meetings-web
+spec:
+  selector:
+    matchLabels:
+      app: meetings-web
+  template:
+    metadata:
+      labels:
+        app: meetings-web
+    spec:
+      containers:
+        - name: meetings-pod
+          image: docker.io/brc/meetings
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: '{"eureka": {"instance": {"prefer-ip-address": false, "hostname": "meetings-web"}, "client": {"service-url": {"defaultZone": "http://eureka-web:8761/eureka"}}}}'
+      initContainers:
+        - name: wait-eureka-web
+          image: docker.io/library/busybox
+          command: ["sh", "-c", "until wget -q -O /dev/null 'http://eureka-web:8761' &> /dev/null; do sleep 5; done"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meetings-web
+  labels:
+    app: meetings-web
+spec:
+  ports:
+  - port: 8084
+    protocol: TCP
+    targetPort: 8084
+  selector:
+    app: meetings-web
+  type: ClusterIP

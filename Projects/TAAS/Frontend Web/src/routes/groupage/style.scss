@@ -1,0 +1,52 @@
+.textCenter {
+    font-size: 2em;
+    margin-top: 1em;
+}
+
+.rating {
+    font-size: 1.5em;
+    margin: 0 0.125em;
+    color: #f4a460;
+    margin-top: 0.2em;
+}
+
+.groupImage {
+    margin-top: 0.5em;
+    height: 10.75em;
+    width: 11.75em;
+    border-radius: 50%;
+    padding: 0.1875em;
+    background: #f4a460;
+}
+.groupImage img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.1875em solid #fff;
+}
+
+.desc {
+    margin-top: 1em;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+.textOwner {
+    font-size: 1.5em;
+    margin-left: 4.5em;
+    margin-top: 1em;
+}
+
+.meetingText {
+    font-size: 1.25em;
+    margin-bottom: 1em;
+}
+
+.statusMeeting.avaible {
+    color: green;
+}
+
+.statusMeeting.expired {
+    color: red;
+}

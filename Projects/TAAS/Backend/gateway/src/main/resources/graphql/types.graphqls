@@ -1,0 +1,34 @@
+type User {
+    id: ID!
+    email: String!
+    firstName: String!
+    lastName: String
+    groups(owned: Boolean): [Group!]
+    meetings(hosted: Boolean): [Meeting!]
+}
+
+type Group {
+    id: ID!
+    owner: User
+    title: String!
+    areaOfInterest: String!
+    description: String
+    members: [User!]
+    meetings: [Meeting!]
+}
+
+type Meeting {
+    id: ID!
+    name: String!
+    host: User
+    group: Group
+    dateTime: Int!
+    attendees: [User!]
+    type: MeetingType!
+    location: String!
+}
+
+enum MeetingType {
+    PHYSICAL
+    ONLINE
+}

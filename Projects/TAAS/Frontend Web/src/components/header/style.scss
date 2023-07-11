@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Loop&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Zen+Loop&display=swap');
+
+.header {
+    width: 100%;
+    height: 56px;
+    padding: 0;
+    background: #f4a460;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 50;
+
+    h1 {
+        float: left;
+        margin: 0;
+        padding: 0 15px;
+        font-size: 24px;
+        line-height: 56px;
+        font-weight: 400;
+        color: #fff;
+    }
+
+    nav {
+        float: right;
+        font-size: 100%;
+
+        button {
+            all: unset;
+            cursor: pointer;
+        }
+
+        a,
+        button {
+            display: inline-block;
+            height: 56px;
+            line-height: 56px;
+            padding: 0 15px;
+            min-width: 50px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0);
+            text-decoration: none;
+            color: #fff;
+            will-change: background-color;
+
+            &:hover,
+            &:active {
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            &.active {
+                background: rgba(0, 0, 0, 0.4);
+            }
+        }
+    }
+}
+
+.text {
+    &Title {
+        padding-left: 0.35em;
+        font-family: 'Zen Loop', cursive;
+        font-size: 2em;
+        font-weight: 800;
+    }
+    &Motto {
+        font-family: 'Oleo Script Swash Caps', cursive;
+        font-size: 1.2em;
+    }
+}

@@ -1,0 +1,46 @@
+# See any common application properties in
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+# ----------------------------------------------------------------------------------------------
+#                                       Server Configurations
+# ----------------------------------------------------------------------------------------------
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+# ----------------------------------------------------------------------------------------------
+#                                       Spring Configurations
+# ----------------------------------------------------------------------------------------------
+spring:
+  application:
+    name: "gateway"
+  # Config-Server configurations
+  config:
+    import: "optional:configserver:http://localhost:8761" # Same as "eureka.client.service-url.defaultZone"
+  # GraphQl configurations
+  graphql:
+    path: "/graphql"
+    cors:
+      allowed-methods: GET,POST
+      allowed-origins: "*"
+      allowed-headers: "*"
+      max-age: "1800s"
+  # Gateway configurations
+  cloud:
+    gateway:
+      routes:
+        - id: "auth"
+          uri: "lb://auth"
+          predicates:
+            - "Path=/auth/**"
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+
+# ----------------------------------------------------------------------------------------------
+#                                       Eureka Configurations
+# ----------------------------------------------------------------------------------------------
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8761/eureka"

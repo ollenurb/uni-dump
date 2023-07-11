@@ -1,6 +1,6 @@
-# Email
-(As the name suggests) Email is a multithreaded Email client-server application
-written in Java. It is the final project of a university exam. 
+# Network Programming (Programming III)
+
+This project consists of an implementation of both an email client and server.
 
 ## Instructions
 

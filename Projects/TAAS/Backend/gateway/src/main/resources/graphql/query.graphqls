@@ -1,0 +1,13 @@
+type Query {
+    me: User!
+    users(ids: [ID!]): [User!]!
+    userById(id: ID!): User
+    userByEmail(email: String!): User
+    userByFbId(id: String!): User
+
+    groups(ids: [ID!]): [Group!]!
+    groupById(id: ID!): Group
+    groupByTitle(title: String!): Group
+
+    meetingById(id: ID!): Meeting
+}

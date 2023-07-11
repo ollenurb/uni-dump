@@ -1,0 +1,126 @@
+$mynewcolor: #f4a460;
+
+.cardGroup .imageGroup {
+    height: 10.75em;
+    width: 11.75em;
+    border-radius: 50%;
+    padding: 0.1875em;
+    background: #f4a460;
+}
+
+.cardGroup .imageGroup img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.1875em solid #fff;
+}
+
+.cardGroup {
+    position: relative;
+    background: rgb(227, 227, 227);
+    border-radius: 1.25em;
+    margin: 1.25em 0.5em;
+    height: auto;
+    width: 20em;
+}
+
+.cardGroup::before {
+    content: '';
+    position: absolute;
+    height: 45%;
+    width: 100%;
+    background: #f4a460;
+    border-radius: 1.25em 1.25em 0 0;
+}
+
+.cardGroup .cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.875em;
+    position: relative;
+    z-index: 100;
+}
+
+.cardGroup .information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.625em;
+    color: #333;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 1em;
+}
+
+.owner {
+    font-size: 1.25em;
+    font-weight: 600;
+}
+
+.partecipants {
+    font-size: 0.9375em;
+    font-weight: 500;
+}
+
+.cardGroup .rating {
+    display: flex;
+    align-items: center;
+    margin-top: 1.125em;
+}
+
+.cardGroup .rating i {
+    font-size: 1.125em;
+    margin: 0 0.125em;
+    color: #f4a460;
+}
+
+.cardGroup .buttonGroup {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    margin-top: 1.25em !important;
+}
+
+.buttonGroup .btnGroup {
+    background-color: #f4a460 !important;
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #f4a460;
+    --bs-btn-border-color: #f4a460;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #f4a460;
+    --bs-btn-hover-border-color: #f4a460;
+    --bs-btn-focus-shadow-rgb: 244, 164, 96;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #f4a460;
+    --bs-btn-active-border-color: #f4a460;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #f4a460;
+    --bs-btn-disabled-border-color: #f4a460;
+}
+
+.buttonGroup .btnJoin {
+    padding-right: 1.8em;
+    padding-left: 1.8em;
+    margin-right: 1em;
+}
+
+.vclamp {
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+.image-text-overlay {
+    position: absolute;
+    width: 100%;
+    top: 18%;
+    z-index: 2;
+}

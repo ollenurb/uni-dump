@@ -1,4 +1,4 @@
-# Compilers Project
+# Formal Languages and Compilers 
 
 The project of the Compiler Course consists on the development of a compiler for
 the JVM of a simple programming language. Each directory contains specific

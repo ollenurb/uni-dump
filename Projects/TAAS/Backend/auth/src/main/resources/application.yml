@@ -1,0 +1,28 @@
+# See any common application properties in
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+# ----------------------------------------------------------------------------------------------
+#                                       Server Configurations
+# ----------------------------------------------------------------------------------------------
+server:
+  port: 8081
+  error:
+    whitelabel:
+      enabled: false
+
+# ----------------------------------------------------------------------------------------------
+#                                       Spring Configurations
+# ----------------------------------------------------------------------------------------------
+spring:
+  application:
+    name: "auth"
+  # Config-Server configurations
+  config:
+    import: "optional:configserver:http://localhost:8761" # Same as "eureka.client.service-url.defaultZone"
+
+# ----------------------------------------------------------------------------------------------
+#                                       Eureka Configurations
+# ----------------------------------------------------------------------------------------------
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

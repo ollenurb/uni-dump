@@ -1,4 +1,4 @@
-# Operating System Project
+# Operating System
 
 This is the final project of the Operating System course. The basic idea is to
 simulate a social interaction scenario between students using operating system

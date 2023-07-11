@@ -1,0 +1,5 @@
+mutation InsertGroup($groupInput: GroupInput!) {
+    saveGroup(input: $groupInput) {
+        id
+    }
+}

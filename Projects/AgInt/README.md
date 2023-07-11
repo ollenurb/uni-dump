@@ -1,8 +1,8 @@
 # Intelligent Agents
 
-This projects implements a Japanese Auction simulation to showcase both the
-[Jade](https://jade.tilab.com/) and [Jason](https://jason.sourceforge.net/)
-multi-agent platforms.
+This projects consists in an implementation of a Japanese Auction simulation to
+showcase both the [Jade](https://jade.tilab.com/) and
+[Jason](https://jason.sourceforge.net/) multi-agent platforms.
 
 ## Running
 

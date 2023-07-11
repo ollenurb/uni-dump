@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Study Buddy</string>
+    <string name="facebook_app_id">813720279661452</string>
+    <string name="fb_login_protocol_scheme">fb813720279661452</string>
+    <string name="facebook_client_token">afbcc59898fa9776fe3a307f177ad093</string>
+    <string name="server_base_url">192.168.1.230</string>
+</resources>

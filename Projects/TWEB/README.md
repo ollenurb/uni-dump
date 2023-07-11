@@ -1,4 +1,5 @@
-# PriLESS (TWEB course project)
+# Web Technologies
+
 **Pri**(*vate*)**LESS**(*ons*) is the implementation of the final project of a
 university course. The goal of the project is to use both the Java servlet API
 and the JDBC API to develop a basic

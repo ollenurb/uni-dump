@@ -1,4 +1,4 @@
-# Algorithm and Data Structures
+# Algorithms and Data Structures
 
 This projects consists of 4 different exercises that requires the implementation
 and usage of custom Data Structures and their corresponding Algorithms that use

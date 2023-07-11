@@ -1,0 +1,37 @@
+{
+    "private": true,
+    "name": "study-buddy-web",
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "scripts": {
+        "build": "preact build",
+        "serve": "sirv build --port 8080 --cors --single",
+        "dev": "preact watch --https"
+    },
+    "dependencies": {
+        "@babel/plugin-transform-react-jsx": "^7.17.3",
+        "@greatsumini/react-facebook-login": "^3.2.1",
+        "axios": "^0.26.1",
+        "preact": "^10.7.1",
+        "preact-router": "^4.0.1",
+        "react-redux": "^7.2.8",
+        "redux": "^4.1.2",
+        "redux-devtools-extension": "^2.13.9"
+    },
+    "devDependencies": {
+        "bootstrap": "^5.2.1",
+        "eslint": "^6.0.1",
+        "eslint-config-preact": "^1.1.0",
+        "preact-cli": "^3.0.0",
+        "react-script": "^2.0.5",
+        "sass": "^1.51.0",
+        "sass-loader": "10",
+        "sirv-cli": "1.0.3"
+    },
+    "alias": {
+        "react": "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",
+        "react/jsx-runtime": "preact/jsx-runtime"
+    }
+}

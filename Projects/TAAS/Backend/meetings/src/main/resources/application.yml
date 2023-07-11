@@ -1,0 +1,32 @@
+# See any common application properties in
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+# ----------------------------------------------------------------------------------------------
+#                                       Server Configurations
+# ----------------------------------------------------------------------------------------------
+server:
+  port: 8084
+  error:
+    whitelabel:
+      enabled: false
+
+# ----------------------------------------------------------------------------------------------
+#                                       Spring Configurations
+# ----------------------------------------------------------------------------------------------
+spring:
+  application:
+    name: "meetings"
+  # R2DBC configurations
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  r2dbc:
+    url: "r2dbc:postgres://postgres:pwd123@localhost/postgres"
+
+# ----------------------------------------------------------------------------------------------
+#                                       Eureka Configurations
+# ----------------------------------------------------------------------------------------------
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

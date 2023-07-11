@@ -1,0 +1,13 @@
+query GroupsList {
+    groups {
+        id,
+        title,
+        description,
+        areaOfInterest,
+        owner {
+            firstName,
+            lastName
+        },
+        members { id },
+    }
+}

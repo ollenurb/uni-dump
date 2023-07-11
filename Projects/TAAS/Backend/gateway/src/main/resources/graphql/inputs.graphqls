@@ -1,0 +1,15 @@
+input GroupInput {
+    title: String
+    ownerId: ID
+    areaOfInterest: String
+    description: String
+}
+
+input MeetingInput {
+    name: String
+    groupId: ID
+    hostId: ID
+    dateTime: Int
+    type: MeetingType
+    location: String
+}
