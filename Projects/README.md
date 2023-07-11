@@ -24,3 +24,11 @@ during my university career.
       Servlets.
     * [2](TWEB/Frontend%20Web) - Web frontend for the application written using `Vue.js`.
     * [3](TWEB/Frontend%20Android) - Android frontend for the application.
+* [Artificial Intelligence (with experimentations)](IALAB)
+    * [1](IALAB/Prolog) - Informed search strategies concerning the railway
+      domain, implemented in Prolog.
+    * [2](IALAB/CLIPS) - An expert system developed in CLIPS that plays a
+      simplified version of the battleship game.
+    * [3](IALAB/SOAR) - Simulation of an agent that learns to escape an
+      environment using reinforcement learning on the SOAR cognitive
+      architecture. 

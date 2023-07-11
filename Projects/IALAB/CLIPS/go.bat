@@ -1,0 +1,12 @@
+(load 0_Main.clp)
+(load 1_Env.clp)
+(load ./Maps/2_map2_3_known.clp)
+(load 3_Uncertainty.clp)
+(load 4_Agent_2.clp)
+(reset)
+(set-break game-over)
+(run)
+(run 2)
+(focus ENV)
+(exit)
+

@@ -19,3 +19,8 @@ test).
 
 Just `cd` into the Exercise directory that you want to run, then `./build.sh`.
 After the build process finished, you can run the generated executable.
+
+---
+
+Credits: this project has been developed together with Lorenzo Caresio.
+

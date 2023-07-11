@@ -1,0 +1,168 @@
+\documentclass{beamer}
+
+\usepackage[italian]{babel}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.9]{DejaVuSansMono}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+}
+
+\usetheme{metropolis}
+\metroset{block=fill}
+
+\title{Intelligenza Artificiale e Laboratorio}
+\subtitle{Discussione laboratorio SOAR}
+\date{29 giugno 2023}
+\author{Matteo Brunello (mat. 858867)\newline Lorenzo Caresio (mat. 836021)}
+\institute{Università degli Studi di Torino - Dipartimento di Informatica}
+
+\begin{document}
+
+    \maketitle
+
+    \begin{frame}{Outline}
+        \begin{itemize}
+            \LARGE
+            \item[•] Knowledge Level Analysis
+            \item[•] Reinforcement Learning
+            \item[•] Evoluzione del progetto
+        \end{itemize}
+    \end{frame}
+
+
+    \section{Knowledge Level Analysis}
+
+    \begin{frame}{Operatori}
+        \begin{itemize}
+            \LARGE
+            \item[•] initialize-escape
+            \item[•] move-to-object
+            \item[•] pick-object
+            \item[•] combine-objects (RL)
+            \item[•] shoot-to-target-element (RL)
+            \item[•] shred-window
+            \item[•] move-stairs-to-env-element (RL)
+            \item[•] escape
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Conoscenza}
+        \begin{itemize}
+            \LARGE
+            \item[•] outside
+            \item[•] nearby
+            \item[•] objects
+            \item[•] env
+            \item[•] target
+            \item[•] loot
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[fragile]{Conoscenza (II)}
+        \begin{lstlisting}[frame=single]
+(<s> ^name escape ...
+     ^objects <sti> <rub> <peb> <sto> <log1> <log2>
+     ^env <win> <wall1> <wall2> <wall3> <wall4>
+     ^target <outwin> <inwin> <wall1> <wall2> ...)
+
+(<sti> ^name stick ^throwable no)
+(<rub> ^name rubber-band ^throwable no)
+(<peb> ^name pebbles ^throwable yes)
+(<sto> ^name stones ^throwable no)
+(<log1> ^name log1 ^throwable no)
+(<log2> ^name log2 ^throwable no)
+(<win> ^name window ^soundness 100)
+(<wall1> ^name wall1)
+(<wall2> ^name wall2)
+(<wall3> ^name wall3)
+(<wall4> ^name wall4)
+(<outwin> ^name outer-window ^part-of <win>)
+(<inwin> ^name inner-window ^part-of <win>)
+        \end{lstlisting}
+    \end{frame}
+
+    \section{Reinforcement Learning}
+
+    \begin{frame}{Reinforcement Learning}
+        \begin{itemize}
+            \item[•] combine-objects
+                \begin{itemize}
+                    \item[•] combine-objects-into-sling (+)
+                    \item[•] combine-objects-into-stairs (+)
+                    \item[•] combine-objects (-)
+                \end{itemize}
+            \item[•] shoot-to-target-element
+                \begin{itemize}
+                    \item[•] shoot-to-outer-window (+)
+                    \item[•] shoot-to-target-element (-)
+                \end{itemize}
+            \item[•] move-stairs-to-env-element
+                \begin{itemize}
+                    \item[•] move-stairs-to-window (+)
+                    \item[•] move-stairs-to-env-element (-)
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Risultati del Reinforcement Learning}
+        \large
+        \begin{itemize}
+            \item[•] Con 10\% di danno strutturale a colpo \textit{corretto} ($\varepsilon = 0.1$):
+                \begin{itemize}
+                    \item[•] \textit{Prima iterazione}: 70-73 decisioni
+                    \item[•] \textit{Post-apprendimento}: \textbf{46-49 decisioni}
+                    \item[•] \textit{Miglioramento}: -33/34\% decisioni
+                \end{itemize}
+            \item[•] Con 100\% di danno strutturale a colpo \textit{corretto} ($\varepsilon = 0.1$):
+                \begin{itemize}
+                    \item[•] \textit{Prima iterazione}: 25-28 decisioni
+                    \item[•] \textit{Post-apprendimento}: \textbf{17-19 decisioni}
+                    \item[•] \textit{Miglioramento}: -32\% decisioni
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Risultati del Reinforcement Learning (II)}
+        \begin{itemize}
+            \Large
+            \item[•] Con 100\% di danno strutturale a colpo \textit{corretto}:
+                \begin{itemize}
+                    \item[•] $\varepsilon = 0.1$: 17-19 decisioni
+                    \item[•] $\varepsilon = 0.3$: 19-22 decisioni
+                    \item[•] $\varepsilon = 0.5$: 27-29 decisioni
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+
+    \section{Evoluzione del progetto}
+
+    \begin{frame}{Evoluzione del progetto}
+        \begin{itemize}
+            \item[•] Agente con due braccia
+                \begin{itemize}
+                    \item[•] \textit{Problematica}: il RL era vincolato dalla ricerca nello spazio degli stati
+                    \item[•] \textit{Soluzione}: agente senza vincoli sulle braccia ma con un \textit{loot}
+                \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Evoluzione del progetto (II)}
+        \begin{itemize}
+            \item[•] Fasi della soluzione
+                \begin{itemize}
+                    \item[•] \textit{Problematica}: come permettere all'agente di svolgere le operazioni della soluzioni in un ordine sensato
+                    \item[•] \textit{Prima soluzione}: introduzione di fasi in sequenza con nomi per discriminarle + RL (poco generale)
+                    \item[•] \textit{Soluzione adottata}: struttura eterarchica con preferenze con discriminazione su operatori applicabili e \textit{attributi-valore} + RL
+                \end{itemize}
+            \item[•] Riduzione del numero di operatori e di preferenze per rendere l'agente più \textit{generale}
+        \end{itemize}
+    \end{frame}
+
+\end{document}

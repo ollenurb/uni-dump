@@ -1,0 +1,481 @@
+# Progetto SOAR - IALAB 22-23
+# Autori: Brunello Matteo (mat. 858867), Caresio Lorenzo (mat. 836021)
+
+rl -s learning on # Enable Reinforcement Learning
+indifferent-selection -g # Epsilon-greedy strategy
+indifferent-selection --epsilon 0.1
+
+# Initialization operator
+sp { propose*initialize-escape
+  (state <s> ^superstate nil -^name)
+-->
+  (<s> ^operator <op> +)
+  (<op> ^name initialize-escape)
+}
+
+sp { apply*initialize-escape
+  (state <s> ^operator <op>)
+  (<op> ^name initialize-escape)
+-->
+  (<s> ^name escape ^nearby none ^outside no ^desired <d>
+       ^objects <sti> <rub> <peb> <sto> <log1> <log2>
+       ^env <win> <wall1> <wall2> <wall3> <wall4>
+       ^target <outwin> <inwin> <wall1> <wall2> <wall3> <wall4>)
+
+  (<d> ^outside yes) # Desired state
+
+  (<sti> ^name stick ^throwable no)
+  (<rub> ^name rubber-band ^throwable no)
+  (<peb> ^name pebbles ^throwable yes)
+  (<sto> ^name stones ^throwable no)
+  (<log1> ^name log1 ^throwable no)
+  (<log2> ^name log2 ^throwable no)
+  (<win> ^name window ^broken no ^soundness 100)
+  (<wall1> ^name wall1)
+  (<wall2> ^name wall2)
+  (<wall3> ^name wall3)
+  (<wall4> ^name wall4)
+  (<outwin> ^name outer-window ^part-of <win>)
+  (<inwin> ^name inner-window ^part-of <win>)
+}
+
+# The agent can move to an object that isn't not close nor already picked (present in the loot)
+sp { propose*move-to-object
+  (state <s>
+    ^objects <obj>
+    -^nearby <obj>)
+-->
+  (<s> ^operator <op> + =) # appliable or indifferent (needed to avoid operator tie)
+  (<op> ^name move-to-object
+        ^object <obj>)
+}
+
+sp { apply*move-to-object
+  (state <s> ^operator.name move-to-object ^nearby <nbo> ^operator.object <obj>)
+  (<obj> ^name <n>)
+-->
+  (write (crlf) |  Move to [| <n> |]|)
+  (<s> ^nearby <obj> + <nbo> -)
+}
+
+# The agent can pick a nearby object and put it in its loot
+sp { propose*pick-object
+  (state <s>
+    ^objects <obj>
+    ^nearby { <obj> <> none })
+-->
+  (<s> ^operator <op> +)
+  (<op> ^name pick-object
+        ^object <obj>)
+}
+
+sp { apply*pick-object
+  (state <s> ^operator.name pick-object ^operator.object <obj>)
+  (<obj> ^name <n>)
+-->
+  (write (crlf) |  [| <n> |] picked and inserted in the loot |)
+  (<s> ^loot <obj> # Insert the object in the loot
+       ^objects <obj> - # Remove the picked object from the available ones
+       ^nearby none + <obj> -)
+}
+
+#################################################################
+# --- Productions related to building a sling or the stairs --- #
+#################################################################
+
+# If the agent has picked two object, it can combine them
+sp { propose*combine-objects
+  (state <s>
+  ^loot <obj1>
+  ^loot { <obj2> <> <obj1> })
+  - { (<obj1> ^type composite) }
+  - { (<obj2> ^type composite) }
+  - { (<s> ^loot.name sling ^loot.name stairs) }
+-->
+  (<s> ^operator <op> +) # TODO: check performance with + =
+  (<op> ^name combine-objects
+        ^obj <obj1>
+        ^obj <obj2>)
+}
+
+# Reinforcement learning production related to combining a rubber band and a stick into a sling
+sp { building-sling*rl*combine-objects-into-sling
+  (state <s> ^operator <op> +)
+  (<op> ^name combine-objects ^obj.name stick ^obj.name rubber-band)
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Reinforcement learning production related to combining two logs into stairs
+sp { building-sling*rl*combine-objects-into-stairs
+  (state <s> ^operator <op> +)
+  (<op> ^name combine-objects ^obj.name log1 ^obj.name log2)
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Reinforcement learning production related to combining two object into something that is not a sling nor stairs
+sp { building-sling*rl*combine-objects
+  (state <s> ^operator <op> +)
+  (<op> ^name combine-objects)
+  - { (<op> ^name combine-objects ^obj.name stick ^obj.name rubber-band) }
+  - { (<op> ^name combine-objects ^obj.name log1 ^obj.name log2) }
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Combine two object (a rubber band and a stick) into a sling
+sp { building-sling*apply*combine-objects-into-sling
+  (state <s>
+     ^operator <op>
+     ^reward-link <rl>)
+  (<op> ^name combine-objects ^obj <obj1> ^obj <obj2>)
+  (<obj1> ^name stick)
+  (<obj2> ^name rubber-band)
+-->
+  (<s> ^operator <op> ~)
+  (<rl> ^reward <r>)
+  (<r> ^value 1)
+  (<sling> ^name sling ^type composite)
+  (<s>
+    ^loot <obj1> - # Remove the rubber band and the stick from the loot
+    ^loot <obj2> -
+    ^loot <sling>) # Add then add the new sling to it
+  (write (crlf) |--- [Sling] created! --- |)
+}
+
+# Combine two object (two logs) into a stairs
+sp { building-stairs*apply*combine-objects-into-stairs
+  (state <s> ^operator <op> ^reward-link <rl>)
+  (<op> ^name combine-objects ^obj <obj1> ^obj <obj2>)
+  (<obj1> ^name log1)
+  (<obj2> ^name log2)
+-->
+  (<s> ^operator <op> ~)
+  (<rl> ^reward <r>)
+  (<r> ^value 1)
+  (<stairs> ^name stairs ^type composite)
+  (<s>
+    ^loot <obj1> - # Remove the logs from the loot
+    ^loot <obj2> -
+    ^loot <stairs>) # Add then add the new stairs to it
+  (write (crlf) |--- [Stairs] created! --- |)
+}
+
+# Combination failure case
+sp { building-sling*apply*combine-objects
+  (state <s> ^operator <op>
+             ^reward-link <rl>)
+  (<op> ^name combine-objects ^obj <obj1> ^obj <obj2>)
+  - { (<op> ^name combine-objects ^obj.name stick ^obj.name rubber-band) }
+  - { (<op> ^name combine-objects ^obj.name log1 ^obj.name log2) }
+-->
+  (<s> ^operator <op> ~)
+  (<rl> ^reward <r>)
+  (<r> ^value -1)
+}
+
+######################################################################
+# --- Productions related to using the sling to break the window --- #
+######################################################################
+
+# Shoot at a element of the environment
+sp { propose*shoot-to-target-element
+  (state <s>
+  ^loot <sling>
+  ^loot <obj>
+  ^target <target>
+  ^env <win>)
+  (<sling> ^name sling)
+  (<obj> ^throwable yes)
+  (<win> ^name window ^broken no)
+-->
+  (<s> ^operator <op> +)
+  (<op> ^name shoot-to-target-element
+    ^ammo <obj>
+    ^target <target>)
+}
+
+# Reinforcement learning production related to shooting to the outer part of the window
+sp { rl*shoot-to-outer-window
+  (state <s> ^operator <op> +)
+  (<op> ^name shoot-to-target-element ^target.name outer-window)
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Reinforcement learning production related to shooting to a target that is not the outer part of the window
+sp { rl*shoot-to-target-element
+  (state <s> ^operator <op> +)
+  (<op> ^name shoot-to-target-element)
+  - { (<op> ^name shoot-to-target-element ^target.name outer-window) }
+-->
+  (<s> ^operator <op> = 0)
+}
+
+sp { apply*shoot-to-outer-window
+  (state <s>
+    ^operator <op>
+    ^reward-link <rl>)
+  (<op>
+    ^name shoot-to-target-element
+    ^ammo <ammo>
+    ^target <target>)
+  (<target> ^name outer-window ^part-of <win>)
+  (<win> ^soundness <soundness>)
+-->
+  (<s>
+    ^operator <op> ~
+    ^loot <ammo> -
+    ^objects <ammo>)
+  (<rl> ^reward <r>)
+  (<r> ^value 1)
+  (<win> ^soundness (- <soundness> 100) + <soundness> -) # Each successful shot decrease the window's soundness of N%
+  (write (crlf) |  [Outer window] shot! (| <soundness> |) |)
+}
+
+sp { apply*shoot-to-target-element
+  (state <s>
+    ^operator <op>
+    ^reward-link <rl>)
+  (<op>
+    ^name shoot-to-target-element
+    ^ammo <ammo>
+    ^target <target>)
+  (<target> ^name <tn>)
+  - { (<op> ^name shoot-to-target-element
+        ^target.name outer-window) }
+-->
+  (<s>
+    ^operator <op> ~
+    ^loot <ammo> -
+    ^objects <ammo>)
+  (<rl> ^reward <r>)
+  (<r> ^value -1)
+  (write (crlf) |  Shot at [| <tn> |] | )
+}
+
+# With soundness = 0, the agent shred the window
+sp { shooting*propose*shred-window
+  (state <s> ^env <win>)
+  (<win> ^name window ^soundness 0)
+-->
+  (<s> ^operator <op> +)
+  (<op>
+    ^name shred-window
+    ^window <win>)
+}
+
+sp { shooting*apply*shred-window
+  (state <s>
+    ^operator <op> +)
+  (<op>
+    ^name shred-window
+    ^window <win>)
+-->
+  (<s> ^operator <op> -)
+  (<win> ^broken yes + no -)
+  (write (crlf) |--- [Window] broken ---|)
+}
+
+###################################################
+# --- Productions related to using the stairs --- #
+###################################################
+
+# After the stairs has been created, it can be moved around the environment
+sp { propose*move-stairs-to-env-element
+  (state <s>
+    ^loot <stairs>
+    ^env <env-element>)
+  (<stairs> ^name stairs)
+-->
+  (<s> ^operator <op> +)
+  (<op> ^name move-stairs-to-env-element
+        ^stairs <stairs>
+        ^element <env-element>)
+}
+
+# Reinforcement learning production related to moving the stairs to the window
+sp { rl*move-stairs-to-window
+  (state <s> ^operator <op> +)
+  (<op> ^name move-stairs-to-env-element ^element.name window)
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Reinforcement learning production related to moving the stairs to an environment element (that is not the window)
+sp { rl*move-stairs-to-env-element
+  (state <s> ^operator <op> +)
+  (<op> ^name move-stairs-to-env-element -^element.name window)
+-->
+  (<s> ^operator <op> = 0)
+}
+
+# Move the stairs to the window
+sp { apply*move-stairs-to-window
+  (state <s>
+    ^name <n>
+     ^operator <op>
+     ^nearby <nbo>
+     ^reward-link <rl>)
+  (<op>
+    ^name move-stairs-to-env-element
+    ^stairs <stairs>
+    ^element <env>)
+  (<env> ^name window)
+-->
+  (<s>
+    ^operator <op> ~
+    ^nearby <stairs> + <nbo> -)
+  (<rl> ^reward <r>)
+  (<r> ^value 1)
+  (<stairs> ^nearby <env>)
+  (write (crlf) |--- [Stairs] moved to [Window]! --- |)
+}
+
+sp { apply*move-stairs-to-env-element
+  (state <s>
+    ^operator <op>
+     ^nearby <nbo>
+    ^reward-link <rl>)
+  (<op>
+    ^name move-stairs-to-env-element
+    ^element <element>)
+  - { (<op> ^name move-stairs-to-env-element ^element.name window) }
+-->
+  (<s>
+    ^operator <op> ~
+    ^nearby <stairs> + <nbo> -)
+  (<rl> ^reward <r>)
+  (<r> ^value -1)
+}
+
+# If the stairs is nearby the (broken) window and the agent is nearby the stairs, the agent can finally escape (!)
+sp { propose*escape
+  (state <s>
+    ^loot <stairs>
+    ^nearby <stairs>
+    ^env <window>)
+  (<window> ^name window ^broken yes)
+  (<stairs> ^name stairs ^nearby <window> ^type composite)
+-->
+  (<s> ^operator <op> +)
+  (<op> ^name escape)
+}
+
+sp { using-stairs*apply*escape
+  (state <s> ^operator <op> +)
+  (<op> ^name escape)
+-->
+  (<s> ^outside yes + no -) # (!) Escape
+  (write (crlf) |------ ESCAPE ------ |)
+}
+
+##########################################
+# --- Preference-related productions --- #
+##########################################
+
+sp { preferences*set-move-priority
+  (state <s>
+    ^operator <op-move> +
+    ^env <win>)
+  (<op-move> ^name move-to-object)
+  (<win> ^name window ^broken no)
+  -->
+  (<s> ^operator <op-move> >) # best preference
+}
+
+sp { preferences*set-pick-priority
+  (state <s> ^operator <op-pick> +)
+  (<op-pick> ^name pick-object)
+  -->
+  (<s> ^operator <op-pick> >) # best preference
+}
+
+sp { preferences*set-combine-priority
+  (state <s> ^operator <op-combine> +)
+  (<op-combine> ^name combine-objects)
+  -->
+  (<s> ^operator <op-combine> <) # worst preference
+}
+
+sp { preferences*set-shooting-priority
+  (state <s> ^operator <op-shoot> +)
+  (<op-shoot> ^name shoot-to-target-element)
+  -->
+  (<s> ^operator <op-shoot> >) # best preference
+}
+
+# If the window is not broken yet, there is no need to move the stairs
+sp { preferences*set-move-stairs-priority-when-window-not-broken
+  (state <s>
+    ^operator <op-move-stairs> +
+    ^env <win>)
+  (<op-move-stairs> ^name move-stairs-to-env-element)
+  (<win> ^name windows ^broken no)
+  -->
+  (<s> ^operator <op-move-stairs> <) # worst preference
+}
+
+# If the window is broken, moving the stairs has priority
+sp { preferences*set-move-stairs-priority-when-window-broken
+  (state <s>
+    ^operator <op-move-stairs> +
+    ^env <win>)
+  (<op-move-stairs> ^name move-stairs-to-env-element)
+  (<win> ^name windows ^broken yes)
+  -->
+  (<s> ^operator <op-move-stairs> >)
+}
+
+# Prefer to pick an object instead of moving to another one
+sp { preferences*compare*pick-over-move-to-object
+  (state <s>
+    ^operator <op-pick> +
+    ^operator <op-move> +)
+  (<op-pick> ^name pick-object)
+  (<op-move> ^name move-to-object)
+  -->
+  (<s> ^operator <op-pick> > <op-move>)
+}
+
+sp { preferences*compare*combine-over-move-stairs
+  (state <s>
+    ^operator <op-combine> +
+    ^operator <op-move> +)
+  (<op-combine> ^name combine-objects)
+  (<op-move> ^name move-stairs-to-env-element)
+  -->
+  (<s> ^operator <op-combine> > <op-move>)
+}
+
+sp { preferences*compare*escape-over-move-stairs
+  (state <s>
+    ^operator <op-escape> +
+    ^operator <op-move> +)
+  (<op-escape> ^name escape)
+  (<op-move> ^name move-stairs-to-env-element)
+  -->
+  (<s> ^operator <op-escape> > <op-move>)
+}
+
+##########################################
+# --- Completion-related productions --- #
+##########################################
+
+sp { default*evaluate-state-success
+  :default
+  (state <s> ^desired <d> ^outside yes)
+-->
+  (<s> ^success <d>)
+}
+
+sp { default*top-goal*halt*state*success
+  :default
+  (state <s>
+    ^desired <eb>
+    ^success <eb>)
+-->
+  (write (crlf) |Goal for | <s> | achieved | )
+  (halt)
+}
