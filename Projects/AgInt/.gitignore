@@ -1,0 +1,9 @@
+# Ignore auto-generated files
+MTPs-Main-Container.txt
+APDescription.txt
+
+# Ignore the rest
+.idea
+.gradle
+.stop___MAS
+build/

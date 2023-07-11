@@ -1,0 +1,5 @@
+ciaociao___33_ := ciao + ciao;
+ciao := -99;
+
+when (x ==y) then
+    cases:= 189;

@@ -1,9 +1,0 @@
----
-papersize: A4
-titlepage: true
-title: 'Reverse Mode Automatic Differentiation'
-listings: true
-author: [Matteo Brunello]
-header-includes:
-  - \usepackage{graphicx}
----

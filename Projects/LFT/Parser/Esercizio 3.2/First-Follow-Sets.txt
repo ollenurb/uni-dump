@@ -1,0 +1,80 @@
+FIRST(<prog>) =         { ID, print, read, case, {, while }
+FIRST(<statlist>) =     { ID, print, read, case, {, while }
+FIRST(<statlistp>) =    { ;, ε }
+FIRST(<stat>) =         { ID, print, read, case, {, while }
+FIRST(<whenlist>) =     { when }
+FIRST(<whenlistp>) =    { when, ε }
+FIRST(<whenitem>) =     { when }
+FIRST(<bexpr>) =        { (, NUM, ID }
+FIRST(<expr>) =         { (, NUM, ID }
+FIRST(<exprp>) =        { +, -, ε }
+FIRST(<term>) =         { (, NUM, ID }
+FIRST(<termp>) =        { *, /, ε }
+FIRST(<fact>) =         { (, NUM, ID }
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+Grammatica:
+
+<prog> -> <statlist> $
+<statlist> -> <stat> <statlistp>
+<statlistp> -> ; <stat> <statlistp> | EPSILON
+<stat> -> ID = <expr> | print ( <expr> ) | read ( ID ) | case <whenlist> else <stat> | while ( <bexpr> ) <stat> | { <statlist> }
+<whenlist> -> <whenitem> <whenlistp>
+<whenlistp> -> <whenitem> <whenlistp> | EPSILON
+<whenitem> -> when ( <bexpr> ) <stat>
+<bexpr> -> <expr> RELOP <expr>
+<expr> -> <term> <exprp>
+<exprp> -> + <term> <exprp> | - <term> <exprp> | EPSILON
+<term> -> <fact> <termp>
+<termp> -> * <fact> <termp> | / <fact> <termp> | EPSILON
+<fact> -> ( <expr> ) | NUM | ID
+----------------------------------------------------------------------------------------------------------------------------------
+Grammatica:
+
+P -> SL $
+SL -> S SLp
+SLp -> ; S SLp | EPSILON
+S -> ID = E | print ( E ) | read ( ID ) | case WL else S | while ( BE ) S | { SL }
+WL -> WI WLp
+WLp -> WI WLp | EPSILON
+WI -> when ( BE ) <stat>
+BE -> E RELOP E
+E -> T Ep
+Ep -> + T Ep | - T Ep | EPSILON
+T -> F Tp
+Tp -> * F Tp | / F Tp | EPSILON
+F -> ( E ) | NUM | ID
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Predict Set
+# Expression Predict
+
+
+1 <prog> → <statlist> $                         ID, print, read, case, while, {
+2 <statlist> → <stat> <statlistp>               ID, print, read, case, while, {
+3 <statlistp> → ; <stat> <statlistp>            ;
+4 <statlistp> → ε                               }, $
+5 <stat> → ID = <expr>                          ID
+6 <stat> → print ( <expr> )                     print
+7 <stat> → read ( ID )                          read
+8 <stat> → case <whenlist> else <stat>          case
+9 <stat> → while ( <bexpr> ) <stat>             while
+10 <stat> → { <statlist> }                      {
+11 <whenlist> → <whenitem> <whenlistp>          when
+12 <whenlistp> → <whenitem> <whenlistp>         when
+13 <whenlistp> → ε                              else
+14 <whenitem> → when ( <bexpr> ) <stat>         when
+15 <bexpr> → <expr> RELOP <expr>                (, NUM, ID
+16 <expr> → <term> <exprp>                      (, NUM, ID
+17 <exprp> → + <term> <exprp>                   +
+18 <exprp> → - <term> <exprp>                   -
+19 <exprp> → ε                                  ), RELOP, ;, when, }, $, else
+20 <term> → <fact> <termp>                      (, NUM, ID
+21 <termp> → * <fact> <termp>                   *
+22 <termp> → / <fact> <termp>                    /
+23 <termp> → ε                                  +, -, ), RELOP, ;, when, }, $, else
+24 <fact> → ( <expr> )                          (
+25 <fact> → NUM                                 NUM
+26 <fact> → ID                                  ID

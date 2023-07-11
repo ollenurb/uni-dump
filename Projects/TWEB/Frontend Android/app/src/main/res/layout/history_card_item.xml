@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginHorizontal="8dp"
+    >
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="12dp"
+        >
+
+        <ImageView
+            android:src="@drawable/ic_baseline_school_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/history_card_course_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:id="@+id/history_card_course_title"
+            android:layout_toEndOf="@id/history_card_course_icon"
+            android:text="Tecnologie del terzo mondo"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <ImageView
+            android:src="@drawable/ic_baseline_person_24_black"
+            android:layout_below="@id/history_card_course_title"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/history_card_teacher_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:id="@+id/history_card_teacher"
+            android:layout_below="@id/history_card_course_title"
+            android:layout_toEndOf="@id/history_card_teacher_icon"
+            android:text="Gualtiero Cannarsi"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <ImageView
+            android:layout_below="@id/history_card_teacher"
+
+            android:src="@drawable/ic_baseline_calendar_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/history_card_date_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:layout_below="@id/history_card_teacher"
+            android:layout_toEndOf="@id/history_card_hour_icon"
+            android:id="@+id/history_card_date"
+            android:text="18/04/2019"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <ImageView
+            android:layout_below="@id/history_card_date"
+            android:src="@drawable/ic_baseline_hour_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/history_card_hour_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:layout_below="@id/history_card_date"
+            android:layout_toEndOf="@id/history_card_hour_icon"
+            android:id="@+id/history_card_hour_label"
+            android:text="15:00 - 18:00"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+
+        <ImageView
+            android:src="@drawable/ic_baseline_cancel_24_red"
+            android:layout_below="@id/history_card_date"
+            android:id="@+id/history_card_state_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_alignParentEnd="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

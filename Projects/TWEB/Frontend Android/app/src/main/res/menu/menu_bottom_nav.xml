@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/bottom_nav_courses"
+        android:icon="@drawable/ic_school_white_24dp"
+        android:iconTint="@android:color/white"
+        android:title="@string/courses" />
+
+    <item android:id="@+id/bottom_nav_history"
+        android:icon="@drawable/ic_event_note_white_24dp"
+        android:iconTint="@android:color/white"
+        android:title="@string/history" />
+
+    <item android:id="@+id/bottom_nav_account"
+        android:icon="@drawable/ic_person_white_24dp"
+        android:backgroundTint="@android:color/white"
+        android:title="@string/account" />
+</menu>

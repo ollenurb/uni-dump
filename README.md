@@ -1,7 +1,9 @@
 # University Notes
-This repo contains notes and exercises that I've done during my master's degree in Artificial Intelligence at the University of Turin. 
-Notes has been written in italian since it's my mother tongue and basically 90% of the courses were
-taught in italian.
+Central hub/archive that contains everything regarding my university life. It
+mostly contains courses that I've done during my master's degree in Artificial
+Intelligence at the University of Turin. Most of the content is written in
+italian since 99% of the courses were taught in italian.
 
-Each course has its own *notes pack* that can be compiled from markdown notes using pandoc. 
-Since pandoc supports different format I also added makefile rules to generate the output in different formats like `epub`, `pdf` and `html`.
+## Index
+
+* [] 

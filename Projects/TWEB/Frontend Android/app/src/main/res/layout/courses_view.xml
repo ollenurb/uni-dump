@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/courses_view_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/courses_view_recycler"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layoutAnimation="@anim/layout_animation_from_right"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

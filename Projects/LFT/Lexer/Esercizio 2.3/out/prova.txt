@@ -1,0 +1,15 @@
+/* test comment */
+lol := lezzo2
+
+when /* division */ x */ y then
+
+/* this
+** is
+** a 
+** multiline
+** comment
+*/
+
+when x <> y then // This is an inline comment
+
+var := 256 // Other inline comment

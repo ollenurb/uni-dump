@@ -1,0 +1,10 @@
+MAS auction {
+
+    agents:
+        auction agentArchClass AuctioneerGUI #2;
+        buyer #10;
+
+    aslSourcePath:
+        "src/main/asl";
+
+}

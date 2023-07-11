@@ -1,0 +1,32 @@
+plugins {
+    id 'application'
+    id 'io.freefair.lombok' version '6.5.1'
+}
+
+version '1.0-SNAPSHOT'
+
+repositories {
+    // Search into lib dir for dependencies
+    flatDir { dirs 'lib' }
+    maven { url 'https://raw.githubusercontent.com/jacamo-lang/mvn-repo/master' }
+    mavenCentral()
+}
+
+// Libraries dependencies
+dependencies {
+    implementation name: 'jade-4.5.0'
+    implementation 'org.jason:jason:3.1'
+}
+
+task runJade (type: JavaExec, dependsOn: 'classes') {
+    description 'Run the Jade-based version'
+    main = 'Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJason (type: JavaExec, dependsOn: 'classes') {
+    description 'Run the Jason-Based version'
+    main = 'jason.infra.local.RunLocalMAS'
+    args 'src/main/asl/auction.mas2j'
+    classpath = sourceSets.main.runtimeClasspath
+}

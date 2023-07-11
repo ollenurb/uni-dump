@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginHorizontal="8dp"
+    >
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="12dp"
+        >
+
+        <ImageView
+            android:src="@drawable/ic_baseline_person_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/bookings_card_teacher_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:id="@+id/bookings_card_teacher"
+            android:layout_toEndOf="@id/bookings_card_teacher_icon"
+            android:text="Gualtiero Cannarsi"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <ImageView
+            android:layout_below="@id/bookings_card_teacher"
+            android:src="@drawable/ic_baseline_calendar_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/bookings_card_date_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:layout_below="@id/bookings_card_teacher"
+            android:layout_toEndOf="@id/bookings_card_hour_icon"
+            android:id="@+id/bookings_card_date"
+            android:text="18/04/2019"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <ImageButton
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/bookings_card_book_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_baseline_bookmark_24"
+            android:contentDescription="@string/icon_booking_description_book" />
+
+        <ImageView
+            android:layout_below="@id/bookings_card_date"
+            android:src="@drawable/ic_baseline_hour_24_black"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/bookings_card_hour_icon"
+            android:contentDescription="@string/app_name"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            android:layout_below="@id/bookings_card_date"
+            android:layout_toEndOf="@id/bookings_card_hour_icon"
+            android:id="@+id/bookings_card_hour_label"
+            android:text="15:00 - 18:00"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

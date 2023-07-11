@@ -1,0 +1,402 @@
+\documentclass{homework}
+\usepackage[toc]{appendix}
+\usepackage{biblatex}
+
+\addbibresource{biblio.bib}
+
+
+\title{Complementi di Analisi e Probabilità}
+\subtitle{Soluzioni proposte agli Esercizi - Foglio 1}
+% \author{Matteo Brunello | 85867 | \href{mailto:matteo.brunello@edu.unito.it}{\nolinkurl{matteo.brunello@edu.unito.it}}\\
+%     Stefano De Rosa | 914966 | \href{mailto:stefano.derosa@edu.unito.it}{\nolinkurl{stefano.derosa@edu.unito.it}}}
+\author{Matteo Brunello\\ \href{mailto:matteo.brunello@edu.unito.it}{matteo.brunello@edu.unito.it} 
+   \and Stefano De Rosa \\ \href{mailto:stefano.derosa@edu.unito.it}{stefano.derosa@edu.unito.it} }
+
+\begin{document}
+
+\maketitle
+
+\exercise*[1.a] \label{1a}
+Per il teorema delle probabilità totali si ha che $E[X] = \sum_x E[X \mid X = x]P(X=x)$. Dal problema sappiamo inoltre 
+che $P(X = 1) = p$ e $P(X = -N) = 1-p$, per cui:
+
+\begin{equation} \label{eq:1}
+    \begin{split}
+        E[X] &= E[X \mid X = 1]P(X = 1) + E[X \mid X = -N]P(X = -N)\\
+        &= E[1] \cdot p + E[-N] \cdot (1-p)\\
+        &= p - \lambda (1-p)\\
+    \end{split}
+\end{equation}
+
+Per cui basta porre $E[X]=0$ e trovare $\lambda = \frac{p}{1-p} \; \qed$
+
+\exercise*[1.b]
+Per la definizione di varianza abbiamo che: $Var[X] = E[X^2] - E[X]^2$. Per ottenere il primo termine, seguiamo il
+ragionamento fatto in precedenza, per cui
+
+\begin{align} \label{eq:2}
+    \begin{split}
+        E[X^2] &= 1^2 \cdot p + E[(-N)^2] \cdot (1 - p)\\
+        &= p + E[N^2] \cdot (1 - p)\\
+    \end{split}
+\end{align}
+
+Tenendo conto che il secondo momento centrale di una variabile aleatoria $N \sim Poisson(\lambda)$ e' ottenibile 
+mediante il seguente ragionamento
+
+\begin{equation}
+    \begin{split}
+        Var[N] &= E[N^2] - E[N]^2\\
+        \lambda &= E[N^2] - \lambda^2\\
+        E[N^2] &= \lambda + \lambda^2
+    \end{split}
+\end{equation}
+
+la \ref{eq:2} diventa infine
+
+\begin{equation} \label{eq:3}
+    E[X^2] = p + (\lambda + \lambda^2) (1 - p)
+\end{equation}
+
+Per cui, per l'equazione \ref{eq:1} e la \ref{eq:3} si ottiene
+\[
+Var[X] = [p + (\lambda + \lambda^2) (1 - p)] - [p- \lambda (1 - p)]^2 \; \qed
+\]
+
+\exercise*[1.c]
+In questo caso, $Y$ = $\sum_{i=1}^{M} X_i$ e' una \emph{variabile aleatoria composta}, per cui conviene calcolare 
+l'attesa condizionando sul valore di $M$. Di conseguenza, applicando il teorema della doppia attesa (o 
+\emph{regola della torre}) otteniamo che:
+
+\[
+\begin{align}
+E[Y] &= E \left[ \sum_{i=1}^M X_i \right] && \\
+     &= E \left[ E[\sum_{i=1}^M X_i | M]\right] && \emph{(teo. doppia attesa)}\\ 
+     &= \sum_{m}E\left[\sum_{i=1}^m(X_i|M=m)\right]P(M=m) &&  \emph{(teo. attesa totale)}\\ 
+     &= \sum_{m}\sum_{i=1}^mE[X_i|M=m]P(M=m) && \emph{(indipendenza)} \\ 
+     &= \sum_{m}\sum_{i=1}^{m}E[X_i]P(M=m)\\
+     &= \sum_{m} mE[X_i]P(M=m)\\
+     &= \sum_{m} mE[X]P(M=m) \\
+     &= E[X]\sum_{m}mP(M=m) \\
+     &= E[X]E[M] \\
+     &= (p-\lambda(1-p))\beta 
+     \qed
+\end{align}
+\]
+
+\exercise*[2.a]
+Sia $X = \emph{numero di passeggeri rimasti sul treno}$, per cui si vuole calcolare $P(X \geq 90)$. Notiamo innanzitutto che siccome ogni passeggero ha probabilita' di scendere pari a $p$, di conseguenza avra' probabilita' $1-p$ di rimanere 
+sul treno, per cui $X \sim Binom(K, 1-p)$. \\
+Partiamo con il fare 3 osservazioni:
+\begin{enumerate} 
+    \item $P(X \geq 90) = 1 - P(X < 90)$
+    \item $P(X < 90) = \sum^{89}_{i=0} P(X = i)$
+    \item $P(X = i) = \sum_{k \ge i} P(X = i \mid K =k)P(K=k)$
+\end{enumerate}
+Partiamo con il calcolare la 3
+%% k = i
+%% n = k
+\begin{equation} \label{eq:4}
+    \begin{align}
+        P(X = i) &= \sum_{k = i}^{\infty} P(X = i \mid K = k)P(K = k)\\
+                 &= \sum_{k = i}^{\infty} \binom{k}{i} (1-p)^i(p)^{k-i}P(K=k)\\
+                 &= \sum_{k = i}^{\infty} \binom{k}{i} (1-p)^i(p)^{k-i}\frac{\lambda^k}{k!} e^{-\lambda}\\
+                 &= \sum_{k = i}^{\infty} \binom{k}{i} (1-p)^i(p)^{k-i}\frac{\lambda^i\lambda^{k-i}}{k!}e^{-\lambda}\\
+                 &= e^{-\lambda}[\lambda (1-p)]^i \sum_{k = i}^{\infty} \frac{k!}{(k-i)!}\frac{\lambda^{k-i}}{k!}(p)^{k-i}\\
+                 &= \frac{e^{-\lambda}}{i!}[\lambda (1-p)]^i \sum_{k = i}^{\infty} \frac{[\lambda p]^{k-i}}{(k-i)!} & \emph{(posto m = k-i)} \\
+                 &= \frac{e^{-\lambda}}{i!}[\lambda (1-p)]^i \sum_{k = i}^{\infty} \frac{[\lambda p]^{m}}{m!} \\
+                 &= \frac{e^{-\lambda}}{i!}[\lambda (1-p)]^ie^{\lambda p} \\
+                 &= \frac{[\lambda (1-p)]^i}{i!} e^{-\lambda + \lambda p} \\
+                 &= \frac{[\lambda(1 - p)]^i}{i!} \; e^{-\lambda(1-p)} \; \qed
+    \end{align}
+\end{equation}
+
+Nota: si può notare che $X \sim Poisson(\lambda = (1-p))$. \\
+Ne segue quindi che il valore del punto 2 e' pari a
+ 
+\[
+\begin{split}
+    P(X < 90) &= \sum^{89}_{i=0} P(X = i)\\
+              &= \sum^{89}_{i=0} \frac{[\lambda(1 - p)]^i}{i!} \; e^{-\lambda(1-p)}\\
+              &=  e^{-\lambda(1-p)} \; \sum^{89}_{i=0} \frac{[\lambda(1 - p)]^i}{i!} \\
+\end{split}
+\]
+
+Infine, possiamo ottenere il risultato del problema
+\[
+\begin{split}
+    P(X \geq 90) &= 1 - P(X < 90)\\
+                 &= 1 - \left [ e^{-\lambda(1-p)} \; \sum^{89}_{i=0} \frac{[\lambda(1 - p)]^i}{i!} \right ] \; \qed
+\end{split}
+\]
+
+\exercise*[2.b]
+\begin{equation} \label{eq:5}
+\begin{align}
+            E[X] &= E \left [ \sum_{i=1}^K X_i \right ]\\
+                 &= E \left [ E [ \sum_{i=1}^k X_i \mid K = k ] \right ]\\
+                 &= \sum_{k} E \left[ \sum_{i=1}^{k}(X_i|K=k)\right] P(K=k)  \\
+                 &= \sum_{k} E \left[ \sum_{i=1}^{k}X_i\right] P(K=k) & \emph{($X_i$ e K sono indipendenti \footnotemark)}\\
+                 &= \sum_{k} kE[X_i] P(K=k) \\
+                 &= \sum_{k} kE[X] P(K=k) \\
+                 &= E[X]\sum_{k} k P(K=k) \\
+                 &= E[X]E[K] \\
+                 &= (1 -p)\lambda \qed
+\end{align}
+\end{equation}
+
+\footnotetext{l'indipendenza è dovuta dal fatto che una persona scende o sale indipendentemente da quante persone sono salite inizialmente}
+
+
+Questo giustifica i risultati ottenuti dall'equazione \ref{eq:4}.
+
+\exercise*[2.c]
+Ricordando che $X$ conta il numero di persone che sono salite alla fermata 
+iniziale e che scendono alla fermata finale, abbiamo che il numero medio di persone che scendono alla stazione finale è dato da:
+\[
+\begin{align}
+    E[X + M] &= E[X] + E[M] &&\emph{(linearita' attesa)}\\ 
+    &= (1 -p)\lambda + \beta &&\emph{(Eq. \ref{eq:5})} \; \qed
+\end{align}
+\]
+
+\exercise*[3.a] \label{es:3a}
+\emph{Premessa}: Noi tratteremo il caso di variabili aleatorie discrete, ricordiamo che il caso di variabili aleatorie continue è analogo.
+
+Per quanto visto a lezione, $E[X \mid X] = \varphi(X)$ e' una variabile aleatoria con distribuzione
+\[
+\varphi(X) = \begin{cases}
+    E[X \mid X=x_1] &\;P(X=x_1) \\
+    E[X \mid X=x_2] &\;P(X=x_2)\\
+    \hfil \vdots & \hfil \vdots\\
+    E[X \mid X=x_n] &\;P(X=x_n) \\
+\end{cases}
+\]
+Siccome $E[X \mid X=x_i] = E[x_i] = x_i$ (con $i = 0, \dots, n$), allora possiamo riscrivere la distribuzione di $\varphi(X)$ come segue:
+\[
+\varphi(X) = \begin{cases}
+    x_1 & P(X=x_1) \\
+    x_2 & P(X=x_2)\\
+    \hfil \vdots & \hfil \vdots\\
+    x_n & P(X=x_n) \\
+\end{cases} = X
+\]
+In altri termini, $\varphi(X)$ assume valore $x_i$ con probabilita' $P(X = x_i)$. Ma questa e' proprio la definizione di variabile aleatoria $X$,
+per cui si conclude che
+\begin{equation} \label{eq:6}
+E[X \mid X] = X
+\end{equation}
+
+Sfruttando infine l'uguaglianza \ref{eq:6} si ottiene la soluzione   
+\[
+    E[X\mid X] + E[Y\mid Y] = X + Y \qed
+\]
+
+\exercise*[3.b] \label{es:3b}
+Si vuole dimostrare che
+\begin{equation} \label{eq:8}
+    E[X + Y \mid |X| = x] = x + Y    
+\end{equation}
+
+Siccome si e' a conoscenza solamente del valore assoluto di $X$, procediamo a fare una dimostrazione per casi. 
+Il primo caso e' in cui $X > 0$, per cui si ottiene facilmente per la linearita' dell'attesa
+\[
+\begin{align}
+    E[x + Y \mid X = x] &= E[x] + E[Y \mid X = x] \\
+                 &= x + E[Y \mid X = x]
+\end{align}
+\]
+
+mentre nel secondo caso, $X < 0$, per cui si ha
+\[
+\begin{align}
+E[Y - x \mid X = -x] &= E[-x] + E[Y \mid X = x] \\
+                 &= E[Y \mid X = x] - x
+\end{align}
+\]
+Si può dunque notare che l'uguaglianza \ref{eq:8} e' falsa in generale.
+Ma, se assumiamo che:
+\begin{itemize}
+\item $X$ e $Y$ siano indipendenti 
+\item $X = |X|$, ovvero che $X$ può assumere valori solo nel semiasse positivo
+\item $F_Y(y) = \begin{cases}  1 \text{ se } y = y_0 \\ 0 \text{ altrimenti }\end{cases}$ per un qualche $y_0$, così si ha che $Y = E[Y]$
+\end{itemize}
+Si ottiene che la seguente uguaglianza è soddisfatta \[
+\begin{align}
+E[X + Y \mid |X| = x] &= E[x] + E[Y \mid X = x] \\
+                 &= E[x] + E[Y] & \emph{(per indipendenza)}\\
+                 &= x + Y \qed & \emph{(per Y v.a. costante)}\\
+\end{align}
+\]
+\exercise*[3.c]
+Si vuole dimostrare che:
+\[
+\begin{align}
+E[X\mid |X|] &= E[X \mid X] \\
+             &= X & \emph{(Eq. \ref{eq:6})}
+\end{align}
+\]
+
+E' possibile applicare il teorema dell'attesa totale su tutti i possibili valori che puo' assumere $X$. Siccome siamo a conoscenza solamente di $|X| = x$, dobbiamo
+considerare tutti i casi (cioe' $-x$ e $x$), per cui si ottiene
+\[
+\begin{align}
+    E[X \mid |X| = x] &= x \cdot P(X = x \mid |X| = x) + (-x) \cdot P(X = -x \mid |X| = x) &\\[3ex]
+                  &= x \frac{P(X = x)}{P(X = x) + P(X = -x)} - x \frac{P(X = -x)}{P(X = x) + P(X = -x)}  &\emph{(Bayes)}\\[3ex]
+                  & = x \frac{P(X = x) - P(X = -x)}{P(X = x) + P(X = -x)} &\\[3ex]
+                  &= x \frac{P(X = x) - P(X = -x)}{P(|X| = x)}&
+\end{align}
+\]
+
+Dall'\nameref{es:3a}, sappiamo inoltre che $\varphi(|X|) = E[X \mid |X|]$ è una variabile aleatoria, la cui distribuzione è definita come segue:
+\[
+\begin{align}
+    \varphi(|X|) &= E[X \mid |X| = x_i]  && \emph{con } P(|X| = x_i)&&\\
+               &= x_i \frac{P(X = x_i) - P(X = -x_i)}{P(|X| = x_i)} && \emph{con } P(|X| = x_i)&&\\[3ex]
+               & &&(i = 0, \dots, n)\\[3ex]
+\end{align}
+\]
+Quindi in generale si ha che $E[X \mid |X|] = |X| \neq X$.
+Esiste però un caso particolare in cui questa uguaglianza è invece verificata, ovvero quando l'immagine di $X \subseteq \mathbb{R^+}$ (o equivalentemente quando $X = |X|$). Questo è facilmente dimostrabile perchè è conseguenza diretta dell'equazione \ref{eq:6}. \\
+Per completezza ne daremo di seguito una dimostrazione. Supponiamo che $X = |X|$, per cui abbiamo che $P(X=-x) = 0$ e quindi il rapporto $\frac {P(X=x)-P(X=-x)}{P(|X| = x)}$ si riduce ad essere $\frac {P(X=x)}{P(X=x)} = 1$.
+Quindi possiamo riscrivere la distribuzione di $\varphi(|X|)$ come:
+\[
+\varphi(|X|) = \begin{cases}
+    x_1 & P(X=x_1) \\
+    x_2 & P(X=x_2)\\
+    \hfil \vdots & \hfil \vdots\\
+    x_n & P(X=x_n) \\
+    \end{cases} = X \qed
+\]
+Nel caso invece in cui $X$ sia simmetrica, $E[X \mid |X|] = 0$ sempre. 
+
+\exercise*[3.d]
+Supponendo che $X$ e $Y$ siano indipendenti:
+\[
+\begin{align}
+    E[g(X)h(Y)\mid X] &= E[g(X)\mid X] \cdot E[h(Y)\mid X] & \emp{(indipendenza)}\\
+                      &= g(X) E[h(Y) \mid X] & \emph{(stabilità attesa condizionata)}   
+\end{align}
+\]
+E' possibile concludere che la relazione risulta vera solo se assumiamo che $X$ e $Y$ siano indipendenti $\qed$.
+
+\exercise*[3.e]
+Anche in questo caso e' necessario supporre che $X$ e $Y$ siano indipendenti per poi applicare la linearita' 
+dell'attesa per rendere vera l'uguaglianza. 
+\[
+\begin{align}
+E[g(X)h(Y)\mid X=x, Y=y] &= E[g(x)h(y) \mid X=x, Y=y]& \\
+                         &= E[g(x) \mid X = x, Y = y] \cdot E[h(y) \mid X = x, Y = y] & \emph{(linearità)}\\
+                         &= E[g(x) \mid X = x] \cdot E[h(y) \mid Y = y]&\emph{(indipendenza)}\\
+                         &= g(x)h(y) \qed & \emph{(attesa di una costante)}\\
+\end{align}
+\]
+
+\exercise*[3.f]
+\[
+\begin{align}
+E[XY \mid X] &= E[X \mid X] E[Y \mid X]&\emph{(linearità attesa)} \\
+             &= X E[Y \mid X] &\emph{(Eq. \ref{eq:6})}\\
+             &= X E[Y] &\emph{(indipendenza)}
+\end{align}
+\]
+In conclusione, possiamo affermare che nel caso generale l'uguaglianza proposta non e' vera. E' possibile pero' renderla vera nel caso in cui $Y$ abbia distribuzione $F_Y(y) = \begin{cases}1 \text{ se } y=y_0\\ 0\text{ altrimenti}\end{cases}$ per qualche $y_0 \qed$.
+\exercise*[4.a]
+Sapendo che la distribuzione condizionale \emph{(la cui dimostrazione e' consultabile all'Appendice \ref{appendix:a})}
+\begin{equation} \label{eq:13}
+    X \mid Y=y \sim \ {\mathcal {N}}\left(\mu_{X}+{\frac {\sigma_{X}}{\sigma_{Y}}}\rho (y -\mu_{Y}),\,(1-\rho^{2})\sigma_{X}^{2}\right)
+\end{equation}
+
+Se poniamo che $Z = X + Y$, vorremmo calcolare $P(Z \leq z \mid Y = y)$.
+
+\[
+\begin{align}
+P(Z \leq z \mid Y = y) &=  \int_{-\infty}^{z-y} f_{X|Y}(u,y) du\\[2ex]
+                       &=  \int_{-\infty}^{z-y} \frac{1}{\sqrt{2 \pi (1 - \rho^2)} \sigma_X} exp \left( \frac{ \left(u - \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y) \right)^2}{2(1-\rho^2)\sigma_X^2}\right) du \qed
+\end{align}
+\]
+
+\exercise*[4.b]
+\[
+\begin{align}
+E[X^2 + Y^2 \mid X = x, Y = y] &= E[X^2 \mid X = x, Y = y] + E[Y^2 \mid X = x, Y = y] &\emph{(linearita' attesa)}\\
+&= E[x^2] + E[y^2] & \\
+&= x^2 + y^2 \qed &
+\end{align}
+\]
+
+\exercise*[4.c]
+I due punti richiesti da questo esercizio si risolvono applicando la definizione \ref{eq:13} come segue:
+\[
+    \begin{align}
+        E[X \mid Y = y] &= \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y)\\
+                        &= \mu_X + \frac{C_{XY}}{\sigma_X \sigma_Y} \frac{\sigma_X}{\sigma_Y}(y - \mu_Y) \\
+                        &= \mu_X + \frac{C_{XY}}{\sigma_Y^2}(y - \mu_Y) \qed
+    \end{align}
+\]
+\[
+    \begin{align}
+        Var[X \mid Y = y] &= (1-\rho^{2})\; \sigma_{X}^{2} \\[2ex]
+                          &= \left( 1 - \left( \frac{C_{XY}}{\sigma_X \sigma_Y} \right )^2 \right) \; \sigma_{X}^2 \qed
+    \end{align}
+\]
+
+\newpage
+
+\begin{appendices}
+\section{Gaussiana Bivariata Condizionale \cite{course:math2715}} \label{appendix:a}
+Dalla definizione di Gaussiana Bivariata \cite{wiki:bivariate}, si ha che
+\[
+f_{X, Y} = c \cdot e^{-\frac{1}{2} Q(x, y)}
+\]
+dove (per semplicita' notazionale):
+\[
+\begin{split}
+    c &=  \frac{1}{2 \pi \sigma_X \sigma_Y \sqrt{(1 - \rho)^2}} \\[2ex]
+Q(x, y) &= \frac{1}{(1-\rho^2)} \left[  \left( \frac{x - \mu_X}{\sigma_X} \right)^2 - 2 \rho \left( \frac{(x - \mu_X)(y - \mu_Y)}{\sigma_X \sigma_Y} \right) + \left( \frac{y - \mu_Y}{\sigma_Y} \right)^2 \right]\\
+ &=  \frac{1}{(1-\rho^2)} \left[  \left( \frac{x - \mu_X}{\sigma_X} \rho  \frac{y - \mu_Y}{\sigma_Y} \right)^2 + (1 - \rho^2) \left( \frac{y - \mu_Y}{\sigma_Y} \right)^2 \right]\\[2ex]
+&=  \frac{ \left(x - \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y) \right)^2}{(1-\rho^2)\sigma_X^2} + \frac{(y - \mu_Y)^2}{\sigma_Y^2}
+\end{split}
+\]
+
+
+Per la definizione di distribuzione condizionale
+\[
+f_{X \mid Y}(x \mid y) = \frac{f_{X, Y}(x, y)}{f_Y(y)}
+\]
+Sapendo che $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$, sappiamo che 
+\[
+\begin{split}
+f_Y(y) &=  \int_{\mathbb{R}} f_{X, Y}(x, y) dx\\
+       &= \frac{1}{\sqrt{2 \pi} \sigma_Y} exp \left(  -\frac{(y - \mu_Y)^2}{2 \sigma_Y^2} \right)
+\end{split}
+\]
+Avendo tutti gli elementi necessari, non resta che applicare la formula per ottenere la distribuzione condizionale
+\[
+\begin{split}
+    f_{X \mid Y}(x \mid y) &= \frac{f_{X, Y}(x, y)}{f_Y(y)}\\[2ex]
+             &= \frac{\left(2\pi \sigma_X \sigma_Y \sqrt{(1 - \rho^2)} \right)^{-1}}{(\sqrt{2 \pi} \sigma_Y)^{-1}} 
+             \frac{exp \left( -\frac{1}{2} Q(x, y) \right)}{exp \left(-\frac{(y - \mu_Y)^2}{2\sigma_Y^2} \right)}\\
+             &= \frac{1}{\sqrt{2 \pi(1 - \rho^2)} \sigma_X} exp \left( -\frac{1}{2} Q(x, y) + \frac{(y - \mu_Y)^2}{2\sigma_Y^2} \right)\\
+             &= \frac{1}{\sqrt{2 \pi (1 - \rho^2)} \sigma_X} exp \left( \frac{ \left(x - \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y) \right)^2}{2(1-\rho^2)\sigma_X^2} - \frac{(y - \mu_Y)^2}{2\sigma_Y^2} + \frac{(y - \mu_Y)^2}{2\sigma_Y^2}\right)\\
+             &= \frac{1}{\sqrt{2 \pi (1 - \rho^2)} \sigma_X} exp \left( \frac{ \left(x - \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y) \right)^2}{2(1-\rho^2)\sigma_X^2}\right)\\
+\end{split}
+\]
+Ponendo $\mu_{X \mid Y} = \mu_X + \rho \frac{\sigma_X}{\sigma_Y}(y - \mu_Y)$ e $\sigma^2_{X \mid Y} = (1 - \rho^2) \sigma_X^2$, troviamo che
+\[
+f_{X \mid Y}(x, y) = \frac{1}{2\pi \sigma_{X \mid Y}} exp \left( \frac{ \left(x - \mu_{X \mid Y} \right)^2}{\sigma_{X | Y}^2}\right)\\
+\]
+
+in altri termini, abbiamo che 
+$$
+X \mid Y = y \sim {\mathcal {N}}\left(\mu_{X}+{\frac {\sigma_{X}}{\sigma_{Y}}}\rho (y -\mu_{Y}),\,(1-\rho^{2})\sigma_{X}^{2}\right)\; \qed
+$$
+
+\end{appendices}
+
+\medskip
+
+\printbibliography
+
+
+\end{document} 

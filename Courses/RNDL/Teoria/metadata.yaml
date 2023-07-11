@@ -1,0 +1,14 @@
+---
+papersize: A4
+numbersections: true
+titlepage: true
+title: 'Appunti di Reti Neurali e Deep Learning'
+subtitle: "A.A. 2021-2022"
+listings: true
+author: [Matteo Brunello]
+header-includes:
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \usepackage{mathrsfs}
+  - \usepackage{graphicx}
+---

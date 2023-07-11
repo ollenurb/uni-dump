@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'application'
+    id "org.gretty" version "3.0.3"
+}
+
+group 'matteo'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    implementation 'com.google.code.gson:gson:2.8.6'
+}
+
+gretty {
+    httpPort = 8090
+    servletContainer = 'jetty9.4'
+}

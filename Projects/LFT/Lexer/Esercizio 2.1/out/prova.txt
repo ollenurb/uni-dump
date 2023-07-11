@@ -1,0 +1,4 @@
+ciao :=178;
+
+when (x <> y)then
+    cases:= 189;

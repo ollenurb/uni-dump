@@ -1,0 +1,396 @@
+\documentclass{homework}
+\allowdisplaybreaks
+\usepackage[toc]{appendix}
+\usepackage{biblatex}
+\usepackage{tikz}
+\usepackage{svg}
+% ----- [other dependencies] ----- %
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usetikzlibrary{arrows.meta, automata, positioning, quotes}
+
+\addbibresource{biblio.bib}
+
+\title{Complementi di Analisi e Probabilità}
+\subtitle{Soluzioni proposte agli Esercizi - Foglio 2}
+\author{Matteo Brunello\\ \href{mailto:matteo.brunello@edu.unito.it}{matteo.brunello@edu.unito.it} \and Stefano De Rosa \\ \href{mailto:stefano.derosa@edu.unito.it}{stefano.derosa@edu.unito.it} }
+
+\begin{document}
+
+\maketitle
+
+\exercise*[1.a] \label{1a}
+Per capire se si tratta di una catena irreducibile o meno dobbiamo vedere se la catena ha una sola classe di stati.
+
+% \begin{tikzpicture}[node distance = 29mm and 17mm,
+% every edge/.style = {draw, -{Stealth[scale=1.2]}, bend left=15},
+% every edge quotes/.append style = {auto, inner sep=2pt, font=\footnotesize}]
+                        
+% \node (n1)  [state] {$1$};
+% \node (n3)  [state,below right=of n1]   {$3$};
+% \node (n2)  [state,above right=of n3]   {$2$};
+% %
+% \path   (n1)    edge ["$1/2$"] (n2)
+%                 edge ["$1/2$"] (n3)
+%         (n1)    edge [loop above]  node {a}()
+
+%         (n2)    edge ["$1/3$"] (n1)
+%                 edge ["$2/3$"] (n3)
+%         (n2)    edge [loop above]  node {a}()
+%         (n3)    edge ["$1/3$"] (n1)
+%                 edge ["$2/3$"] (n2)
+%         (n3)    edge [loop above]  node {a}();
+% \end{tikzpicture}ff
+\begin{figure}[h]
+\centering
+\begin{tikzpicture} [
+    node distance = 39mm and 27mm, 
+    every edge/.style = {draw, -{Stealth[scale=1.2]}},
+    on grid, 
+    auto,
+    every loop/.style={stealth-},
+    every edge quotes/.append style = {auto, inner sep=2pt, font=\footnotesize}
+    ]
+ 
+% State s1
+\node (s1) [state] {$1$};
+% State s3    
+\node (s3) [state, below right = of s1] {$3$};
+% State s2   
+\node (s2) [state, above right = of s3] {$2$};
+ 
+% Transitions
+\path [-stealth, thick]
+    % State s1
+    (s1) edge [loop above]  node {$1/2$}()
+    (s1) edge[bend left=15] node {$1/3$}      (s2)
+    (s1) edge[bend right=15] node {$1/6$}     (s3)
+    % State s2
+    (s2) edge[bend left=15] node {$3/4$}      (s1)
+    (s2) edge[bend left=15] node {$1/4$}      (s3)
+    % State s3
+    (s3) edge[bend left=15] node {$1$}        (s2)
+\end{tikzpicture}
+\label{fig:markov_graph}
+\end{figure}
+
+Dalla rappresentazione grafica della catena data in Fig. \ref{fig:markov_graph} è possibile notare immediatamente che $1 \leftrightarrow 2$ e $2 \leftrightarrow 3$. Inoltre, per la proprieta' transitiva sappiamo che $1 \leftrightarrow 3$.
+Ne segue che esiste una sola classe di stati $\{1, 2, 3\}$, per cui possiamo concludere che la catena è irreducibile. 
+
+\exercise*[1.b] \label{1b}
+Sapendo che $P_{i, i}^{(n)} = P_{i,i}^n$, è sufficiente calcolare $P^{2}$ per ottenere il risultato
+\begin{equation}
+    \begin{pmatrix}
+    \frac{1}{2} & \frac{1}{3} & \frac{1}{6}\\[1ex] 
+    \frac{3}{4} &     0       & \frac{1}{4}\\[1ex] 
+     0          &     1       &     0
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+    \frac{1}{2} & \frac{1}{3} & \frac{1}{6}\\[1ex] 
+    \frac{3}{4} &     0       & \frac{1}{4}\\[1ex] 
+     0          &     1       &     0
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    \frac{1}{2} & \frac{1}{3} & \frac{1}{6}\\[1ex] 
+    \frac{3}{8} & \frac{1}{2} & \frac{1}{8}\\[1ex] 
+    \frac{3}{4} &     0       & \frac{1}{4}
+    \end{pmatrix}
+\end{equation}
+
+per cui $P^{(2)}_{1, 3} = \frac{1}{6}$. 
+
+
+
+\exercise*[1.c] \label{1c}
+Sapendo che la catena è irreducibile, per il teorema della distribuzione limite $\pi$ esiste ed è la soluzione del sistema lineare
+\[
+\pi = \pi P
+\]
+con $\sum_i \pi_i = 1$. Risolvendo quindi il sistema seguente
+\[
+\begin{cases}
+\pi_1=&\frac{1}{2}\pi_1 + \frac{3}{4}\pi_2\\ 
+\pi_2=&\frac{1}{3}\pi_1 + \pi_3\\ 
+\pi_3=&\frac{1}{6}\pi_1 + \frac{1}{4}\pi_2\\ 
+1=& \pi_1 + \pi_2 + \pi_3 
+\end{cases}
+= \begin{cases}
+\pi_1=&\frac{3}{2}\pi_2\\ 
+\pi_2=&2\pi_3\\
+\pi_3=&\frac{1}{2}\pi_2\\ 
+1=& \pi_1 + \pi_2 + \pi_3 
+\end{cases}= \begin{cases}
+\pi_1=&\frac{3}{2}\pi_2\\ 
+\pi_2=&2\pi_3\\
+\pi_3=&\frac{1}{2}\pi_2\\ 
+1=& \frac{3}{2}\pi_2 + \pi_2 + \frac{1}{2}\pi_2 
+\end{cases}= \begin{cases}
+\pi_1=&\frac{1}{2}\\
+\pi_2=&\frac{1}{3}\\
+\pi_3=&\frac{1}{6}\\ 
+\pi_2=&\frac{1}{3} 
+\end{cases}
+\]
+possiamo concludere che la distribuzione limite è data dal vettore $\pi = \left[ \frac{1}{2} \; \frac{1}{3} \; \frac{1}{6} \right]$.
+
+\exercise*[2.a] \label{2a}
+Per determinare la distribuzione degli intertempi è necessario determinare in primo luogo la funzione di distribuzione $P(M(t) = k)$.
+\[
+\begin{align}
+P(M(t) = k) &= P(N_1(t) + N_2(t) = k)&&\\
+            &= \sum_{i = 0}^k P(N_1(t) = k - i \mid N_2(t) = i) P(N_2(t) = i)&&\\
+            &= \sum_{i = 0}^k e^{-\mu_1 t} \frac{(\mu_1 t)^{k - i}}{(k-i)!} \; \cdot \; e^{-\mu_2 t} \frac{(\mu_2 t)^i}{i!} &&\\
+            &= e^{-t(\mu_1 + \mu_2)} \frac{1}{k!} \sum_{i = 0}^k \frac{k!}{i!(k-i)!} \; \cdot \; (\mu_1 t)^{k-i} (\mu_2 t)^i &&\\
+            &= e^{-t(\mu_1 + \mu_2)} \frac{t^k(\mu_1 + \mu_2)^k}{k!}
+\end{align}
+\]
+Sapendo quindi che il processo di Poisson $M(t) \sim Poisson(\mu_1 + \mu_2)$, possiamo concludere che gli interarrivi $\{T_i\}$ saranno distribuiti come $T_i \sim Exp(\mu_1 + \mu_2)$.
+
+\exercise*[2.b]
+Si vuole trovare $P(N_1 = n \mid N_1(t) + N_2(t) = 1)$, con $n \in \{0,1\}$, per cui 
+\begin{align}
+P(N_1(t) = n \mid N_1(t) + N_2(t) = 1) &= P(N_1(t) = n \mid N_1(t) + N_2(t) = 1)\nonumber\\[2ex]
+                             &= \frac{P(N_1(t) = n, N_2(t) = 1 - n)}{P(N_1(t) + N_2(t) = 1)}\nonumber\\[2ex]
+                             &= \frac{P(N_1(t) = n) P(N_2(t) = 1 - n)}{P(N_1(t) + N_2(t) = 1)} & (indipendenza)\nonumber\\[2ex]
+                             &= \frac{P(N_1(t) = n) P(N_2(t) = 1 - n)}{P(N_1(t) + N_2(t) = 1)}\nonumber\\[2ex]\nonumber
+                             &= \frac{e^{-\mu_1 t} (\mu_1 t)^n}{n!} \cdot \frac{e^{-\mu_2 t} (\mu_2 t)^{(1 - n)}}{(1 - n)!} \cdot \frac{1}{e^{-(\mu_1 + \mu_2) t} ([\mu_1 + \mu_2] t)^n}\nonumber\\[2ex]
+                             &= \frac{1}{n!(1-n)!} \left(\frac{\mu_1}{\mu_1 + \mu_2}\right)^n \left(\frac{\mu_2}{\mu_1 + \mu_2}\right)^{1-n}\nonumber\\[2ex]
+                             &= \left(\frac{\mu_1}{\mu_1 + \mu_2}\right)^n \left(\frac{\mu_2}{\mu_1 + \mu_2}\right)^{1-n}\nonumber&\qed
+\end{align}
+
+Dal risultato si può affermare che la distribuzione $P(N_1(t) \mid M(t) = 1) \sim Bernoulli\left(\frac{\mu_1}{\mu_1 + \mu_2}\right)$.
+
+\exercise*[2.c]
+Avendo già a disposizione la simulazione della traiettoria di $N_1$, un possibile metodo simulativo per ottenere la traiettoria di $M$ potrebbe essere il seguente:
+\begin{itemize}
+    \item Simuliamo in primo luogo il processo $N_2$. Otteniamo il numero totale di eventi $N_2(t) = n_2$ campionando da una distribuzione $P \sim Pois(t \mu_2)$, per poi campionare i singoli tempi di arrivo $S^2_i$ da una distribuzione $U \sim Uniform(0, t)$. Infine, si riordinano i tempi di arrivo in ordine non decrescente.
+    \footnote{Se si volesse ottenere solamente la traiettoria di $M(t)$, l'ordinamento può essere rimandato al punto successivo per questioni di efficienza. Per ulteriori dettagli implementativi si veda il listato X}
+    \item Siano $S^1$, $S^2$ l'insieme dei tempi di arrivo rispettivamente dei processi $N_1$ e $N_2$, allora l'insieme $S^m$ = $\{S^1, S^2\}$  contiene tutti i tempi di arrivo degli eventi che si verificano nel processo $M(t)$.
+    Riordinando infine l'insieme $S^m$ in ordine non decrescente possiamo definire la traiettoria per $M(t)$.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[scale=.7]{simulation.svg}
+    \label{fig:my_label}
+    \caption{Traiettoria di $M(t)$ prodotta dal listato 1.1 con parametri $\mu_1, \mu_2 = 1$ }
+\end{figure}
+
+\exercise*[3.a]
+Secondo il testo dell'esercizio, $X_i \equiv \emph{"Tempo di vita dello schermo i-esimo"}$, in cui $X_i \sim Exp(\lambda_i)$ con $i = 1, \dots, 6$. Sia $X_{(i)} \equiv \emph{"Tempo dopo che se ne rompono i"}$, per rispondere al primo quesito si vorrebbe trovare la distribuzione del tempo di rottura del primo schermo, cioè $P(X_{(1)} > t)$, dove per definizione $X_{(1)} = min(X_1, \dots, X_6)$. Notiamo innanzitutto che per la definizione di minimo si ha che se $X_{(1)} > t$, allora $X_i > t$ per ogni $i=1, \dots, 6$. Quindi:
+\[
+\begin{align}
+P(X_{(1)} > t) &= P(X_1 > t, \dots, X_6 > t)\\
+              &= \prod_{i=1}^6 P(X_i > t)\\
+              &= \prod_{i=1}^6 e^{-\lambda_i t}\\
+              &= exp \left\{ -\left( \sum_{i=1}^6 \lambda_i \right) \;t \right\}
+\end{align}
+\]
+Possiamo concludere che $X_{(1)}$ è ancora un'esponenziale con attesa
+\[
+\mathbb{E}[X_{(1)}] = \frac{1}{\sum_{i=1}^6 \lambda_i}
+\]
+
+Per rispondere al secondo quesito, definiamo innanzitutto $I = \emph{"indice del monitor che fallisce per primo"}$. A questo punto, sapendo che $j$ è il primo monitor a fallire al tempo $X_{(1)}$, allora $X_{(2)} =\min_{i \neq j}(X_i)$. In altri termini vogliamo trovare:
+\begin{align*}
+P(X_{(2)} > t) &= P(\min_{i \neq j}(X_i) > t, I = j) \\
+               &= \sum_{j=1}^6 P(\min_{i \neq j}(X_i) > t) \cdot P(I = j)\\
+               &= \sum_{j=1}^6 e^{-\sum_{i \neq j}^6 \lambda_i} \cdot \frac{\lambda_j}{\sum_i^6 \lambda_i}
+\end{align*}
+
+Per cui otteniamo la distribuzione cumulativa $P(X_{(2)} \leq t ) =  1 - P(X_{(2)} > t)$.
+Inoltre è evidente che $P(X_{(2)} > t)$ ha una distribuzione Iperesponenziale, per cui l'attesa è
+
+\begin{align*}
+\mathbb{E}(X_{(2)}) &= \sum_{j=1}^6 \frac{P(I=j)}{P(\min_{i \neq j})}\\
+                    &= \sum_{j=1}^6 \frac{\lambda_j}{e^{-t \sum_{i \neq j} \lambda_i}\cdot \sum_{i \neq j} \lambda_i}
+\end{align*}
+
+
+\exercise*[3.b]
+Seguendo il ragionamento fatto per i punti precedenti, abbiamo che il tempo in cui tutti si rompono è pari al tempo in cui l'ultimo si rompe, cioè
+\begin{align*}
+P(X_{(n)} \leq t) &= P(max_i(X_i) \leq t)\\
+                  &= \prod_{i=1}^6 P(X_i \leq t)\\
+                  &= \prod_{i=1}^6 1 - e^{\lambda_i t}
+\end{align*}
+Per ottenere l'attesa applichiamo infine la definizione per cui
+\begin{align*}
+\mathbb{E}[P(X_{(n)} \leq t)] &= \int_0^{\infty} t \cdot P(X_{(n)} \leq t)\;dt\\
+                              &= \int_0^{\infty} t \cdot P(X_{(n)} \leq t)\;dt\\
+\end{align*}
+
+
+\exercise*[4.a]
+Possiamo modellare il problema descrivendo le code M/M/1 come delle catene di Markov a tempo continuo, in particolare come un processo di nascita e morte. 
+Per rispondere alla domanda, consideriamo un caso in cui le due code si trovino nello stesso stato $n$ come rappresentato graficamente dal seguente diagramma.
+
+\begin{figure}[h]
+    \begin{subfigure}
+         \begin{tikzpicture} [
+            node distance = 39mm and 27mm, 
+            every edge/.style = {draw, -{Stealth[scale=1.2]}},
+            on grid, 
+            auto,
+            every loop/.style={stealth-},
+            every edge quotes/.append style = {auto, inner sep=2pt, font=\footnotesize}
+            ]
+ 
+            % State s1
+            \node (s1) [state] {$n-1$};
+            % State s2    
+            \node (s2) [state, accepting, right = of s1] {$n$};
+            % State s3   
+            \node (s3) [state, right = of s2] {$n+1$};
+             
+            % Transitions
+            \path [-stealth, thick]
+                (s1) edge[bend left=15] node {$\lambda_1$}      (s2)
+                (s2) edge[bend left=15] node {$\mu$}     (s1)
+                (s2) edge[bend left=15] node {$\lambda_{1}$}      (s3)
+                (s3) edge[bend left=15] node {$\mu$}      (s2)
+        \end{tikzpicture}
+        \label{fig:queue1_diag}
+     \end{subfigure}
+     \hfill
+    \begin{subfigure}
+        \begin{tikzpicture} [
+            node distance = 39mm and 27mm, 
+            every edge/.style = {draw, -{Stealth[scale=1.2]}},
+            on grid, 
+            auto,
+            every loop/.style={stealth-},
+            every edge quotes/.append style = {auto, inner sep=2pt, font=\footnotesize}
+            ]
+ 
+            % State s1
+            \node (s1) [state] {$n-1$};
+            % State s2    
+            \node (s2) [state, accepting, right = of s1] {$n$};
+            % State s3   
+            \node (s3) [state, right = of s2] {$n+1$};
+             
+            % Transitions
+            \path [-stealth, thick]
+                (s1) edge[bend left=15] node {$\lambda_2$}      (s2)
+                (s2) edge[bend left=15] node {$\mu$}     (s1)
+                (s2) edge[bend left=15] node {$\lambda_{2}$}      (s3)
+                (s3) edge[bend left=15] node {$\mu$}      (s2)
+        \end{tikzpicture}
+        \label{fig:queue2_diag}
+     \end{subfigure}
+\end{figure}
+Denotati il tasso $\lambda_1$ e $\lambda_2$ come rispettivamente il tasso degli arrivi nella coda 1 e 2, è possibile far vedere che la probabilità che nello stesso istante la coda $1$ transisca da $n$ a $n+1$ e la coda $2$ transisca da $n$ ad $n-1$, è data dalla seguente relazione
+\[
+P^{(1)}_{n,n+1} \cdot P^{(2)}_{n,n-1} = P(T_{\uparrow}^{(1)} < T_{\downarrow}^{(1)}) \cdot P(T_{\downarrow}^{(2)} < T_{\uparrow}^{(2)}) = \frac{\lambda_1}{\lambda_1 + \mu} \cdot \frac{\mu}{\lambda_2 + \mu}
+\]
+dove $P^{(1)}$ e $P^{(2)}$ sono le probabilità relative alla prima e alla seconda coda. Dal risultato precedente possiamo osservare che la probabilità non è nulla e che quindi non è possibile asserire con certezza che in un qualsiasi istante nella coda 2 saranno presenti sempre meno clienti in attesa rispetto alla coda 1.  \\
+Intuitivamente è anche possibile fare un'osservazione che dimostra il risultato analitico ottenuto, considerando uno scenario in cui le due code sono inizialmente vuote, è pur sempre probabile che entri un cliente nella coda 1 prima che ne
+entri uno nella coda 2, per cui non è possibile affermare che \emph{sicuramente} ci siano sempre meno clienti in attesa nella prima coda. 
+
+\exercise*[4.b]
+Definendo $L_i$ come il numero di elementi in una generica coda $i$, il valore atteso di elementi presenti nella coda può essere ricavato come $E[L_i] = \frac{\rho^2}{1 - \rho}$ \cite{ross}, dove $\rho$ è il tasso di utilizzo del servitore calcolato come $\frac{\lambda}{\mu}$. 
+Il problema può essere riformulato chiedendosi se $E[L_1] < E[L_2]$. 
+\begin{align*}
+E[L_1] < E[L_2] &=  \frac{\lambda_1^2}{\mu(\mu - \lambda_1)} <  \frac{\lambda_2^2}{\mu(\mu - \lambda_2)}
+\end{align*}
+Questa disuguaglianza è soddisfatta per $\lambda_1 < \lambda_2$. Questo risultato rispecchia i dati del problema. Di conseguenza è possibile affermare che in media nella coda 1 saranno presenti meno elementi rispetto alla coda 2.
+Possiamo confermare ulteriormente la soluzione ottenuta in quanto, intuitivamente, è possibile notare che, siccome il tasso con cui arrivano gli elementi della coda 1 è minore rispetto al tasso con cui arrivano nella coda 2, saranno presenti in media più elementi nella coda 2 rispetto alla coda 1.
+
+
+\newpage
+\begin{appendices}
+\section{Codice Python}
+
+\begin{lstlisting}[language=Python, caption=Calcolo di $P^{(2)}_{1, 3}$]
+import numpy as np
+from fractions import Fraction
+P = np.array([[1/2, 1/3, 1/6],[3/4, 0, 1/4], [0,1,0]])
+P = np.matmul(P,P)
+Fraction(P[0,2]).limit_denominator()
+# Output: Fraction(1, 6)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Calcolo della distribuzione stazionaria $\pi$]
+import numpy as np
+from fractions import Fraction
+P = np.array([[-1/2, 1/3, 1/6],[3/4, -1, 1/4], [0,1,-1]]).T
+# Add constraint pi_1 + pi_2 + pi_3 = 1 to the matrix
+A = np.vstack((P,[1,1,1]))
+solutions,_,_,_ = np.linalg.lstsq(A, np.array([0,0,0,1]), rcond=-1)
+print(f"{[Fraction(solution).limit_denominator() for solution in solutions]}")
+# Output: [Fraction(1, 2), Fraction(1, 3), Fraction(1, 6)]
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Simulazione dei processi di Poisson $N_1(t)$-$N_2(t)$-$M(t)$]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Given a timespan t and the mean number of realizations (per timespan), 
+# returns a pair containing t and N(t) coordinates that correspond to the 
+# realization of the resulting Poisson process. 
+def simulate(t, mu):
+  # Compute N(t), the number of total realizations of the process
+  # in the timespan t
+  n = np.random.poisson(t * mu)
+  # Draw n samples from a uniform distribution between 0 and t
+  # this represents the time intervals between realizations
+  # (we must also include extremes like 0 and t)
+  ts = np.concatenate(([0], np.random.uniform(0, t, n), [t])) 
+  # Since time must increase, sort them on increasing order
+  ts.sort()
+  # Generate the number of realizations (simply a list between 0 and n)
+  Nt = np.arange(len(ts))
+  return ts, Nt
+
+# Simulate 2 processes with both mu_1 and mu_2 equals to 1
+ts_1, Nt_1 = simulate(11, 1)
+ts_2, Nt_2 = simulate(10, 1)
+
+# Given the 2 processes, get their "sum" process 
+ts_sum = np.unique(np.concatenate((ts_1, ts_2)))
+Nt_sum = np.arange(len(ts_sum))
+
+# Plot
+plt.xlabel('$t$')
+plt.ylabel('$N(t)$')
+plt.step(ts_1, Nt_1, label='$N_1(t)$', where='post')
+plt.step(ts_2, Nt_2, label='$N_2(t)$', where='post')
+plt.step(ts_sum, Nt_sum, label='$M(t)$', where='post')
+plt.legend()
+\end{lstlisting}
+
+\end{appendices}
+
+\printbibliography
+
+
+\end{document} 

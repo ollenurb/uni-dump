@@ -1,0 +1,21 @@
+time (ms), mlups, machine, threads
+
+20192, turing, 1
+
+25751, turing, 256
+13125, turing, 512
+6685, turing, 1024
+3436, turing, 2048
+3195, turing, 4096
+2525, turing, 8192
+1371, turing, 32768
+263, turing, 65536
+
+32145, alpha, 256
+16493, alpha, 512
+8674, alpha, 1024
+5086, alpha, 2048
+5060, alpha, 4096
+3679, alpha, 8192
+2031, alpha, 32768
+2033, alpha, 65536
