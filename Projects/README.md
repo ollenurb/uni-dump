@@ -15,12 +15,12 @@ during my university career.
 * [Operating Systems](SO) - Social simulation that uses processes and
   synchronization primitives.
 * [Parallel and Distributed Programming](SCPD)
-    * [1](SCPD/Fluid\ Solver) - Fluid simulation software written in CUDA (with
+    * [1](SCPD/Fluid%20Solver) - Fluid simulation software written in CUDA (with
       GPU acceleration).
     * [2](SCPD/Mandelbrot) - Software that computes the Mandelbrot set using the
       message passing paradigm.
 * [Web Technologies](TWEB)
     * [1](TWEB/Backend) - Backend (REST endpointw) for the application written using Java
       Servlets.
-    * [2](TWEB/Frontend\ Web) - Web frontend for the application written using `Vue.js`.
-    * [3](TWEB/Frontend\ Android) - Android frontend for the application.
+    * [2](TWEB/Frontend%20Web) - Web frontend for the application written using `Vue.js`.
+    * [3](TWEB/Frontend%20Android) - Android frontend for the application.
