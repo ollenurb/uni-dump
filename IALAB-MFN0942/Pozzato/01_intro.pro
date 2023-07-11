@@ -15,6 +15,10 @@ felino(X) :- tigre(X).
 % E' possibile inferire piu' fatti a destra della regola, per cui vengono
 % messi in "and" e sono separati da virgole
 miagola(X) :- gatto(X), vivo(X).
+
+fusa(X) :- felino(X), vivo(X).
+
+fusa(stella).
 % ----------------------------------------------------------------------------------
 % Una volta creata la KB, possiamo caricarla (dall'interprete) con:
 % ['1_intro.pl']. 
