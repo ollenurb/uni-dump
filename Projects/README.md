@@ -20,7 +20,7 @@ during my university career.
     * [2](SCPD/Mandelbrot) - Software that computes the Mandelbrot set using the
       message passing paradigm.
 * [Web Technologies](TWEB)
-    * [1](TWEB/Backend) - Backend (REST endpointw) for the application written using Java
+    * [1](TWEB/Backend) - Backend (REST endpoint) for the application written using Java
       Servlets.
     * [2](TWEB/Frontend%20Web) - Web frontend for the application written using `Vue.js`.
     * [3](TWEB/Frontend%20Android) - Android frontend for the application.
