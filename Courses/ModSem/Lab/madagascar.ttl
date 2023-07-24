@@ -1,6 +1,9 @@
-@prefix animals: <http://www.funny_animals.org#>
-@prefix rdf: <>
-@prefix rdfs: <>
+@prefix animals: <http://www.funny_animals.org#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/200/01/rdfs-schema#> .
+@prefix foaf: <http://www.xmlns.com/foaf/0.1/> .
+@prefix dc: <http://www.purl.org/dc/terms/#> .
+@prefix xsd: <http://www.purl.org/2001/XMLSchema#> .
 @prefix moviedata: <>
 
 animals:Animale a rdfs:Class .
@@ -25,14 +28,24 @@ animals:haPersonaggio a rdfs:Property ;
                       rdfs:domain animals:Film ;
                       rdfs:range animals:Animale .
 
-moviedata:NewYorkZoo a animals:Luogo
+moviedata:NewYorkZoo a animals:Luogo .
 
-moviedata:Marty a animals:Zebra
+moviedata:Marty a animals:Zebra .
 
-moviedata:Melman a animals:Giraffa
+moviedata:Melman a animals:Giraffa .
 
-moviedata:Gloria a animals:Ippopotamo
+moviedata:Gloria a animals:Ippopotamo .
 
 moviedata:Alex a animal:Leone ;
-               foaf:name = "Alex";
+               foaf:name "Alex" .
+
+moviedata:Alex a animal:Leone ;
+               foaf:name "Gloria" .
+
+moviedata:Madagascar a animals:Film ;
+                     dc:title "Madagascar" ;
+                     dc:creator "Eric Darnell", "Tom McGrath" ;
+                     dc:publisher "Miramax" ;
+                     dc date "2005-09-02"^^xsd:date ;
+                     animals:haPersonaggio animals:Gloria, animals: Alex.
 
