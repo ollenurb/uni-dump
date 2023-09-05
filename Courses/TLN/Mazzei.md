@@ -88,13 +88,13 @@ detto, in HMM si ha un modello generativo, per cui, data una sequenza di tag
 vogliamo generare la sequenza di parole piu' verosimile. Per far cio'
 applichiamo Bayes alla formulazione del problema e otteniamo il modello
 $$
-\hat{t}_1^n = \arg \max_{t_1^n} \prod_{i=1}^n P(w_i \mid t_i)P(t_i \mid t_{i-1})
+\hat{t}_1 = \arg \max_{t_1^n} \prod_{i=1}^n P(w_i \mid t_i)P(t_i \mid t_{i-1})
 $$
 In MEMM, invece, abbiamo un modello discriminativo per cui non si applica
-l'ipotesi di Bayes ma semplicemente si applica un'ipotesi di in$$dipendenza e di
+l'ipotesi di Bayes ma semplicemente si applica un'ipotesi di indipendenza e di
 Markov, per cui il modello risultante e' il seguente
 $$
-\hat{t}_1^n = \arg \max_{t_1^n} \prod_{i=1}^n P(t_i \mid t_{i-1}, w_i)
+\hat{t}_1 = \arg \max_{t_1^n} \prod_{i=1}^n P(t_i \mid t_{i-1}, w_i)
 $$
 Questa probabilita' e' modellata utilizzando un modello di regressione lineare
 su un template di features linguistiche scelte $\vec{w} \cdot \vec{f}$.
