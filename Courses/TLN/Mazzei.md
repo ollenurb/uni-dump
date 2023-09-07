@@ -13,9 +13,9 @@ L'algoritmo di Viterbi è un algoritmo di programmazione dinamica per calcolare
 in tempo polinomiale la sequenza di tag che massimizza la likelihood.
 Questo perché per un approccio naive, calcolare a mano tutte le possibili
 sequenze richiederebbe un tempo esponenziale.
-L'idea è quella che si basa essenzialmente sul fatto che la probabilità della
-sequenza di tag $t_1, \dots, t_n$ che massimizza la verosimiglianza puo' essere
-divisa essenzialmente in 2 parti:
+L'idea principale si basa sul fatto che la probabilità della sequenza di tag
+$t_1, \dots, t_n$ che massimizza la verosimiglianza può essere divisa
+essenzialmente in 2 parti:
 
 1. La probabilità della migliore sequenza di tag $t_1, \dots, t_{n-1}$.
 2. Il massimo prodotto tra la probabilità di transizione del tag $t_n$, dato
@@ -35,10 +35,20 @@ v_t(j) &= \max_{i=1}^N v_{t-1} a_{ij} b_j(o_t)\\
 $$
 Tale struttura è una matrice $T \times N$, dove $T$ è il numero di PoS tags e
 $N$ è la lunghezza della frase. 
+Il numero di PoS tags $T$ è in realtà $+2$ poichè bisogna aggiungere 2 tags
+speciali di `START` e `EOS`.
+
+Inizialmente, l'algoritmo inizializza tutte le probabilità della prima colonna e
+poi, scorrendo per ogni colonna (parola) e per ogni riga (tag), calcolan il
+valore corrispondente della cella (cioè salvandone il massimo calcolato al passo
+precedente * probabilità di transizione * probabilità di emissione).
+
+Inoltre, in una matrice di `backpointers` memorizza l'indice dell'elemento
+massimo al passo precedente, in modo da fare backtracking una volta terminato.
 
 ## NER Tagging
 Il Named Entity Recognition è il task di trovare le Named Entities in un testo,
-cioè qualsiasi elemento che puo' essere riferito con un nome proprio.
+cioè qualsiasi elemento che può essere riferito con un nome proprio.
 Alcuni esempi di tag comuni possono essere: 
 
 * `LOC` (Location): New York City
@@ -80,12 +90,12 @@ Le differenze sono su diversi livelli:
   necessita di algoritmi di ottimizzazione che potrebbero anche non convergere
   mai ad un ottimo locale
 * **Informazione utilizzata**: HMM è in grado di utilizzare come features
-  solamente la parola corrente, MEMM puo' utilizzare qualsiasi feature
+  solamente la parola corrente, MEMM può utilizzare qualsiasi feature
   linguistica booleana 
 
 A livello tecnico, le differenze sono anche a livello di probabilità. Come
 detto, in HMM si ha un modello generativo, per cui, data una sequenza di tag
-vogliamo generare la sequenza di parole più verosimile. Per far cio'
+vogliamo generare la sequenza di parole più verosimile. Per far ciò
 applichiamo Bayes alla formulazione del problema e otteniamo il modello
 $$
 \hat{t}_1 = \arg \max_{t_1^n} \prod_{i=1}^n P(w_i \mid t_i)P(t_i \mid t_{i-1})
@@ -115,6 +125,9 @@ Entrambi i modelli soffrono del problema della *sparseness*, cioè quando si
 incontrano parole non conosciute. In questo caso si possono impiegar diverse
 tecniche tra le quali risaltano: supporre sia un nome oppure associare la
 probabilità degli altri tags.
+Nel caso dell'HMM è possibile mitigare il problema andando a creare più modelli
+(unigrammi, bigrammi, trigrammi) e a interpolarli tra loro utilizzando ad
+esempio i *moltipicatori di Lagrange*.
 
 ---
 
@@ -123,7 +136,7 @@ probabilità degli altri tags.
 ## Chomsky e la sua gerarchia
 Chomsky differenzia tra la **competence** (cioè la competenza grammaticale) e
 la **performance** (come questa competenza viene utilizata nella comunicazione).
-Secondo lui il linguaggio naturale (la competence) puo' essere modellato per
+Secondo lui il linguaggio naturale (la competence) può essere modellato per
 mezzo delle Grammatiche Generative, cioè dei sistemi formali di riscrittura
 ispirati a Turing e Post. Formalmente una grammatica generativa è una quadrupla
 $\langle \Sigma, V, S, P \rangle$ dove:
@@ -144,9 +157,9 @@ crescente):
 * Context-Sensitive
 * Type 0
 
-Una domanda che imperverso' nella ricerca per molto tempo fu quindi quella di
+Una domanda che imperversò nella ricerca per molto tempo fu quindi quella di
 stabilire a quale categoria appartenga il linguaggio umano. Inizialmente si
-ipotizzo' fosse CF, ma il Tedesco Svizzero non lo è, per cui invalidava
+ipotizzò fosse CF, ma il Tedesco Svizzero non lo è, per cui invalidava
 l'ipotesi. Ci furono quindi diverse proposte a riguardo, che culminarono con
 l'invenzione delle grammatiche Mildly Context Sensitive. Alcune di queste
 grammatiche appartenenti a questa categoria degne di nota sono:
@@ -217,15 +230,15 @@ L'ambiguità sintattica (structural ambiguity) nasce dal momento che ci possono
 essere più alberi di derivazione validi. Due casi degni di nota sono:
 
 * **Attachment Ambiguity**: si verifica quando c'è un'ambiguità nella
-  separazione tra una preposizione e la sua clausola. Questo puo' verificarsi
-  quando una proposizione puo' essere legata a due o più frasi. Ad esempio:
-  *"Ho parlato col il Professore di matematica nel suo ufficio"* puo' voler dire
+  separazione tra una preposizione e la sua clausola. Questo può verificarsi
+  quando una proposizione può essere legata a due o più frasi. Ad esempio:
+  *"Ho parlato col il Professore di matematica nel suo ufficio"* può voler dire
   *"Ho parlato di matematica con il Professore nel suo ufficio"* oppure *"Ho
   parlato con il professore di matematica nel suo ufficio"*
 * **Coordination ambiguity**: si verifica quando una frase contiene una serie di
   elementi o frasi coordinate che possono essere interpretati in modi diversi a
   causa dell'ambiguità nella loro struttura o posizione. Ad esempio, in *"Ho
-  visto Maria e Paolo baciarsi"* la coordinazione *"e"* puo' essere interpretata
+  visto Maria e Paolo baciarsi"* la coordinazione *"e"* può essere interpretata
   come *"Ho visto Maria e ho visto Paolo baciarsi"* (anche in momenti diversi)
   oppure *"Ho visto Maria e Paolo baciarsi"* (nello stesso momento)
 
@@ -275,7 +288,7 @@ l'input buffer e lo stack sono vuoti e la dependency relations non è vuota.
 Il primo problema è che le dipendenze che vengono create non sono tipate. In
 questo caso, si potrebbe risolvere creando appositamente delle operazioni del
 tipo `LEFT_subj`, `RIGHT_subj`, per cui quando vengono eseguite creano la
-relazione tipata. In questo caso pero' il numero di operazione crescerebbe
+relazione tipata. In questo caso però il numero di operazione crescerebbe
 considerevolmente in relazione al numero di PoS tag diversi ($2n+1$ operazioni
 per $n$ PoS tags).
 
@@ -327,7 +340,7 @@ Successivamente, l'algoritmo considera tutti i possibili span dall'inizio della
 parola ($0$) fino a $j$ e per ogni span tutti i possibili split $k$. Per ognuno
 di essi, ci si chiede se esiste una regola $A \rightarrow BC$ tale per cui $B$
 copre lo span $i \dots k$ e $C$ copre lo span $k \dots j$ (lo sappiamo perché
-sono state salvate precedentemente nella tabella). Se cio' avviene, allora $A$
+sono state salvate precedentemente nella tabella). Se ciò avviene, allora $A$
 copre $i \dots j$, per cui viene inserita nella tablla alla posizione $(i,j)$.
 
 Si noti che la complessità è $O(n^3)$ poichè ci sono 3 cicli `for` innestati:
@@ -348,12 +361,12 @@ Caratteristiche:
 * **Algoritmo**: Bottom-Up, Dynamic Programming.
 * **Oracolo**: Probabilistic.
 
-CKY genera tutti gli alberi possibili, pero' non si ha modo di decidere quale
+CKY genera tutti gli alberi possibili, però non si ha modo di decidere quale
 fra questi sia il più adatto. Secondo questa variante, un albero di derivazione
 ha associata una probabilità che è il prodotto di tutte le regole che sono
 state utilizzate nella derivazione.
 Essenzialmente si va a costruire l'albero più probabile andando a selezionare
-la regola di derivazione più probabile. Per fare cio' viene definita una
+la regola di derivazione più probabile. Per fare ciò viene definita una
 distribuzione di probabilità sulle regole della grammatica. Ogni non terminale
 è associato ad una probabilità tale per cui:
 
@@ -428,7 +441,7 @@ Ma questa soluzione non è particolarmente elegante. Si decide quindi di
 $$
 \exists e \; : \; love(e, Paolo, Francesca) \land sweetly(e)
 $$
-Questo modo di rappresentare gli avverbi puo' anche essere scritto in un'altra
+Questo modo di rappresentare gli avverbi può anche essere scritto in un'altra
 maniera detta *Neo-Davidsoniana* in cui essenzialmente vengono generalizzati
 anche gli argomenti (si normalizzano tutti i predicati ad avere 2 soli
 argomenti)
@@ -516,7 +529,7 @@ Il dialogo ha 4 features significative:
       determinato solamente attraverso il contesto.
     * **Referring-Expressions**.
 4. **Grounding-Signals**: i partecipanti danno dei segnali che hanno/non hanno
-   ricevuto/capito cio' che l'altro interlocutore ha comunicato. Si basa su una
+   ricevuto/capito ciò che l'altro interlocutore ha comunicato. Si basa su una
    collezione di conoscenza e assunzioni in comune che vengono stabilite durante
    un'interazione.
 
