@@ -39,7 +39,7 @@ Il numero di PoS tags $T$ è in realtà $+2$ poichè bisogna aggiungere 2 tags
 speciali di `START` e `EOS`.
 
 Inizialmente, l'algoritmo inizializza tutte le probabilità della prima colonna e
-poi, scorrendo per ogni colonna (parola) e per ogni riga (tag), calcolan il
+poi, scorrendo per ogni colonna (parola) e per ogni riga (tag), calcola il
 valore corrispondente della cella (cioè salvandone il massimo calcolato al passo
 precedente * probabilità di transizione * probabilità di emissione).
 
@@ -55,38 +55,45 @@ Alcuni esempi di tag comuni possono essere:
 * `PER` (Person): Pietro Smusi
 * `ORG` (Organization): Stanford University
 
-è costituito da 2 sottotask:
+Il NER tagging è a sua volta costituito da 2 sottotask:
 
 1. Trovare gli span che costituiscono nomi propri
 2. Taggare con i tag corretti questi span
 
 ### Difficoltà
-Le difficoltà del NER tagging sono sottolineate da due ragioni principali:
+Le difficoltà del NER tagging sono da ricercarsi in due motivazioni principali:
 
-1. **Segmentazione**: In questo caso, non assegnamo un tag ad ogni parola, ma
-   dobbiamo trovare il segmento stesso da taggare
-2. **Ambiguità**: i nomi propri sono molto ambigui, ad esempio lo stesso nome
-   potrebbe essere utilizzato per riferirsi ad organizzazioni, persone e posti
-   diversi (es. Washington).
+1. **Segmentazione**: non viene assegnato un tag ad ogni parola, ma è necessario
+   trovare un segmento di più parole da taggare.
+2. **Ambiguità**: i nomi propri sono inerentemente ambigui, ad esempio lo stesso
+   nome potrebbe essere utilizzato per riferirsi ad organizzazioni, persone e
+   posti diversi (es. Washington).
 
 ### Risoluzione della segmentazione
-Possiamo risolvere il problema della segmentazione del NER tagging con il BIO
-tagging. In questo caso si trasforma il problema andando a introdurre 3 tag:
+È possibile risolvere il problema della segmentazione del NER tagging con il BIO
+tagging. In questo caso si trasforma il problema di segmentazione in un problema
+di tagging (parola per parola). L'idea di base è quella di introdurre 3 tag:
 
 * `B` - Begin
 * `I` - Inside
 * `O` - Outside
 
-I tag di `B` (Begin) e `I` (Inside) vengono tipati con il tipo del tag NER (es.
-`B-Person`), in questo modo si risolve il problema della segmentazione
-poichè si ha un tag per ogni parola.
+I tag di `B` (Begin) e `I` (Inside) vengono *"tipati"* con il tipo del tag NER
+(es. `B-Person`).
+A questo punto il problema diventa quello di taggare parola per parola,
+indicando eventualmente se la singola parola rappresenta l'inizio (`I`) o un
+elemento costituente (`I`) di una Named Entity oppure se non è nessuna delle due
+(`O`).
+
+Ad esempio, *"The president George Washington"* sarà associato alla seguente
+sequenza di tag: `O, O, B-Person, I-Person`.
 
 ## Differenze tra HMM e MEMM
 Le differenze sono su diversi livelli:
 
 * **Tipologia di modello**: HMM è un modello *generativo* mentre MEMM è
   *discriminativo*.
-* **Fase di learning**: HMM necessita solo dei counts delle occorrenze, MEMM
+* **Fase di learning**: HMM necessita solo dei conteggi delle occorrenze, MEMM
   necessita di algoritmi di ottimizzazione che potrebbero anche non convergere
   mai ad un ottimo locale
 * **Informazione utilizzata**: HMM è in grado di utilizzare come features
@@ -115,16 +122,16 @@ questa flessibilità viene pagata in termini di complessità nella fase di
 learning. Inoltre, alcuni ottimizzatori potrebbero anche non riuscire ad
 ottenere una configurazione (sub) ottimale per i pesi.
 
-D'atra parte, l'apprendimento di un HMM consiste semplicemente nel fare un count
-delle occorrenze nel corpus, per cui è molto meno oneroso e molto meno
-suscettiible alla stocasticità degli ottimizzatori. D'altra parte, è molto
-meno flessibile poichè l'unica feature linguistica su cui si basa è la parola
-stessa e il tag attuale.
+D'atra parte, l'apprendimento di un HMM consiste semplicemente nel fare un
+conteggio delle occorrenze nel corpus, per cui è molto meno oneroso dal punto di
+vista computazionale e molto meno suscettibile alla stocasticità degli
+ottimizzatori. Tuttavia, è molto meno flessibile poichè le uniche features
+linguistiche su cui si basa sono la parola stessa e il tag attuale.
 
 Entrambi i modelli soffrono del problema della *sparseness*, cioè quando si
-incontrano parole non conosciute. In questo caso si possono impiegar diverse
-tecniche tra le quali risaltano: supporre sia un nome oppure associare la
-probabilità degli altri tags.
+incontrano parole non conosciute. In questo caso si possono impiegare diverse
+tecniche tra le quali: supporre a priori che la parola sia un nome oppure
+associare la probabilità degli altri tags.
 Nel caso dell'HMM è possibile mitigare il problema andando a creare più modelli
 (unigrammi, bigrammi, trigrammi) e a interpolarli tra loro utilizzando ad
 esempio i *moltipicatori di Lagrange*.
@@ -134,70 +141,80 @@ esempio i *moltipicatori di Lagrange*.
 # Sintassi
 
 ## Chomsky e la sua gerarchia
-Chomsky differenzia tra la **competence** (cioè la competenza grammaticale) e
-la **performance** (come questa competenza viene utilizata nella comunicazione).
-Secondo lui il linguaggio naturale (la competence) può essere modellato per
-mezzo delle Grammatiche Generative, cioè dei sistemi formali di riscrittura
-ispirati a Turing e Post. Formalmente una grammatica generativa è una quadrupla
-$\langle \Sigma, V, S, P \rangle$ dove:
+Secondo Chomsky la linguistica può essere divisa in **competence** (cioè la
+competenza grammaticale) e **performance** (come questa competenza viene
+utilizata). Secondo lui il linguaggio naturale (la competence) può essere
+modellato per mezzo delle *Grammatiche Generative*, cioè sistemi formali di
+riscrittura ispirati ai lavori di Turing e Post. Formalmente, una grammatica
+generativa è una quadrupla $\langle \Sigma, V, S, P \rangle$ dove:
 
-* $\Sigma$ è l'alfabeto
-* $V$ è l'insieme dei simboli non-terminali
-* $S$ è lo *starting symbol*
-* $P$ è un insieme di regole di riscrittura $\theta \rightarrow \gamma$
+* $\Sigma$ è l'alfabeto.
+* $V$ è l'insieme dei simboli non-terminali.
+* $S$ è lo *starting symbol*.
+* $P$ è un insieme di regole di riscrittura $\theta \rightarrow \gamma$.
 
-Queste grammatiche sono in grado sia di modellare la struttura sintattica di una
-frase che di generarla. L'ipotesi è che i vari simboli non terminali modellino
-i costituenti della frase. Chomsky individua anche una gerarchia di diverse
-grammatiche, ognuna con capacità espressiva differente (espressività
+Queste grammatiche hanno la particolare caratteristica di poter essere
+interpretate in due modi differenti: sia come modello per rappresentare la
+*struttura sintattica* di una frase, che come *modello di generazione* di frasi
+sintatticamente valide. L'ipotesi alla base di questa idea rivoluzionaria è che
+i vari simboli non terminali modellino i costituenti della frase. Questa
+formalizzazione del linguaggio naturale, permise ai linguisti di studiare con
+rigore matematico l'espressività sintattica dei linguaggi. Lo studio di queste
+grammatiche portò, tra le altre cose, alla teorizzazione di una gerarchia di
+grammatiche (che successivamente prese il nome omonimo dal suo autore), ognuna
+con capacità espressive differenti (di seguito riportate con espressività
 crescente):
 
-* Linear 
-* Context-Free
-* Context-Sensitive
-* Type 0
+* Linear. 
+* Context-Free.
+* Context-Sensitive.
+* Type 0.
 
-Una domanda che imperversò nella ricerca per molto tempo fu quindi quella di
-stabilire a quale categoria appartenga il linguaggio umano. Inizialmente si
-ipotizzò fosse CF, ma il Tedesco Svizzero non lo è, per cui invalidava
-l'ipotesi. Ci furono quindi diverse proposte a riguardo, che culminarono con
-l'invenzione delle grammatiche Mildly Context Sensitive. Alcune di queste
-grammatiche appartenenti a questa categoria degne di nota sono:
+Dalla scoperta di questa categorizzazione linguistica nacque anche la necessità
+di stabilire a quale categoria appartenesse il linguaggio umano. Uno dei primi
+tentativi fu quello di ipotizzare che fosse CF, ma l'ipotesi fu smentita da un
+controesempio: il Tedesco Svizzero. Tale lingua, infatti, non è CF per via di
+alcune caratteristiche come la presenza di dipendenze incrociate. Ci furono
+quindi diverse proposte a riguardo, che culminarono con l'invenzione delle
+grammatiche *Mildly Context Sensitive*. Alcune di queste grammatiche
+appartenenti a questa categoria degne di nota sono:
 
 * Tree Adjoining Grammars (strutture ad albero e operazioni di adjoining e
-  substitution)
-* Head Grammars
-* Linear Indexed Grammars
+  substitution).
+* Head Grammars.
+* Linear Indexed Grammars.
 * Combinatory Categorial Grammars (bottom up, categorie di elementi atomici che
-  si combinano attraverso regole di combinazione)
+  si combinano attraverso regole di combinazione).
 
 ## Parser Top Down/Bottom Up
-Il parser top-down parte dalla radice $S$ e facendosi guidare dalla grammatica,
+Un parser top-down parte dalla radice $S$ e (facendosi guidare dalla grammatica)
 genera i vari alberi che possono anche non essere compatibli con la frase.
-Il parser bottom-up, parte dalle foglie (le parole) e regredisce eventualmente
-le varie regole della grammatica, per cui si fa guidare dalle parole. Ne segue
-che tutti gli alberi sono compatibili con le parole ma non tutti sono ben
-formati (hanno $S$ come radice).
+
+Un parser bottom-up, parte dalle foglie (le parole) e regredisce eventualmente
+le varie regole della grammatica (si fa guidare dalle parole). Ne segue che
+tutti gli alberi sono compatibili con le parole ma non tutti sono ben formati
+(hanno $S$ come radice).
 
 ## Grammatica CCG
 Una Combinatory Categorial Grammar è una grammatica bottom up (si parte dalle
 parole e si costruisce mano a mano l'albero) dove gli elementi principali sono
-delle categorie di parole. Queste categorie poi vengono combinate con altre
-categorie per mezzo di opportune regole di combinazione. Ad esempio, il verbo
-*amare* è una categoria che cerca un qualche altro elemento alla sua sinistra
-(soggetto) e un'altro elemento alla sua destra (complemento oggetto) con cui
-combinarsi.
+delle *categorie* di parole.
+Queste categorie poi vengono combinate con altre categorie per mezzo di
+opportune regole di combinazione. Ad esempio, il verbo *amare* è una categoria
+che cerca un qualche altro elemento alla sua sinistra (soggetto) e un'altro
+elemento alla sua destra (complemento oggetto) con cui combinarsi.
 
 ## Sintassi a Dipendenze
 La sintassi a dipendenze postula che la struttura sintattica di una frase
 consiste di elementi lessicali legati tra loro da relazioni binarie asimmetriche
-chiamate **dipendenze**. Queste relazioni presuppongono una **head** e un
-**dipendente** (modifier, inferior, subordinate).
+chiamate **dipendenze**. Queste relazioni presuppongono una testa (**head**) e
+un **dipendente** (modifier, inferior, subordinate).
 
-Questo tipo di grammatiche, non hanno valenza generativa come quelle a
-costituenti, bensi' hanno solo valenza di **schema di annotazione**.
-Per stabilire se un sintagma è un head o un dipendente, si utilizzano criteri
-morfologici, sintattici e semantici guidati quindi dalla linguistica.
+Differentemente dalle grammatiche generative, questo tipo di grammatiche non
+hanno valenza generativa, bensì hanno solo l'obiettivo di fungere da **schema di
+annotazione**. Per stabilire se un sintagma è un head o un dipendente, si
+utilizzano criteri morfologici, sintattici e semantici guidati quindi dalla
+linguistica.
 
 ### Vantaggi
 
@@ -216,9 +233,8 @@ Ci sono diversi algoritmi di parsing per le grammatiche a dipendenze:
   sono i nodi e gli archi sono le dipendenze. I vari archi sono pesati e questi
   pesi vengono appresi da un ML classifier.
 * **Parsing a costituenti + Conversione**: parsing di una grammatica con un
-  algoritmo di parsing a costituenti noto e converto successivamente il
-  risultato in formato a dipendenze secondo delle tabelle di percolazione
-  derivate dalla teoria X-Bar.
+  algoritmo di parsing a costituenti noto e successiva conversione in formato a
+  dipendenze secondo delle tabelle di percolazione derivate dalla teoria X-Bar.
 * **Parsing Deterministico**: parsing che ad ogni run ritorna un singolo albero
   di parsing, guidato da Machine Learning Classifiers che prendono scelte
   greedy.
@@ -227,20 +243,21 @@ Ci sono diversi algoritmi di parsing per le grammatiche a dipendenze:
 
 ## Ambiguità sintattica: PP Attachment & Coordination Ambiguity
 L'ambiguità sintattica (structural ambiguity) nasce dal momento che ci possono
-essere più alberi di derivazione validi. Due casi degni di nota sono:
+essere più alberi di derivazione validi. Due casi noti in cui questo può
+verificarsi sono:
 
 * **Attachment Ambiguity**: si verifica quando c'è un'ambiguità nella
   separazione tra una preposizione e la sua clausola. Questo può verificarsi
   quando una proposizione può essere legata a due o più frasi. Ad esempio:
   *"Ho parlato col il Professore di matematica nel suo ufficio"* può voler dire
   *"Ho parlato di matematica con il Professore nel suo ufficio"* oppure *"Ho
-  parlato con il professore di matematica nel suo ufficio"*
+  parlato con il professore di matematica nel suo ufficio"*.
 * **Coordination ambiguity**: si verifica quando una frase contiene una serie di
   elementi o frasi coordinate che possono essere interpretati in modi diversi a
   causa dell'ambiguità nella loro struttura o posizione. Ad esempio, in *"Ho
   visto Maria e Paolo baciarsi"* la coordinazione *"e"* può essere interpretata
   come *"Ho visto Maria e ho visto Paolo baciarsi"* (anche in momenti diversi)
-  oppure *"Ho visto Maria e Paolo baciarsi"* (nello stesso momento)
+  oppure *"Ho visto Maria e Paolo baciarsi"* (nello stesso momento).
 
 ## Algoritmo di parsing TUP
 Caratteristiche:
@@ -260,9 +277,9 @@ Caratteristiche:
 * **Oracolo**: Probabilistico.
 
 È un algoritmo per la parsificazione di grammatiche a dipendenze. È detto
-"deterministico" perché ad ogni run, si ottiene un singolo albero di
-dipendenze, contrariamente a come succede con CKY. L'algoritmo si basa su il
-concetto di automa. Lo stato di questo automa è composto da:
+"deterministico" perché ad ogni run, si ottiene un singolo albero di dipendenze,
+contrariamente a come succede con CKY. L'algoritmo si basa sul concetto di
+*automa a stati finiti*. Lo stato di questo automa è composto da:
 
 * Input buffer: contiene le parole mancanti da analizzare.
 * Stack: contiene le parole attualmente analizzate.
@@ -279,36 +296,42 @@ Su questo stato si possono applicare 3 operazioni principali:
   dipendenza $(b, a)$ con la prossima parola della lista ($a$), rimuove $a$
   dalla lista e inserisce al suo posto $b$.
 
-L'algoritmo pare da uno stato iniziale in cui l'input buffer è pieno (contiene
-tutta la frase) e lo stack vuoto, e applica ad ogni passo l'operazione che viene
-suggerita dall'oracolo fino a quando non si raggiunge uno stato finale in cui
-l'input buffer e lo stack sono vuoti e la dependency relations non è vuota.
+L'algoritmo parte da uno stato iniziale in cui l'input buffer è pieno (contiene
+tutta la frase) e lo stack è vuoto, per poi apllicare ad ogni passo l'operazione
+che viene suggerita dall'oracolo, fino a quando non si raggiunge uno stato
+finale, in cui l'input buffer e lo stack sono vuoti, e la dependency relations
+non è vuota (sicché conterrà il risultato).
 
 ### Problematiche
-Il primo problema è che le dipendenze che vengono create non sono tipate. In
-questo caso, si potrebbe risolvere creando appositamente delle operazioni del
-tipo `LEFT_subj`, `RIGHT_subj`, per cui quando vengono eseguite creano la
-relazione tipata. In questo caso però il numero di operazione crescerebbe
+Il primo problema è che le dipendenze che vengono create non sono tipate, ciò
+significa che l'algoritmo indica semplicemente che esiste una relazione ma senza
+indicarne il tipo. In questo caso, si potrebbe risolvere creando appositamente
+delle operazioni del tipo `LEFT_subj`, `RIGHT_subj`, che se eseguite generano la
+relazione tipata. In questo caso, però, il numero di operazione crescerebbe
 considerevolmente in relazione al numero di PoS tag diversi ($2n+1$ operazioni
 per $n$ PoS tags).
 
 Il secondo problema è dovuto alla scelta dell'oracolo, cioè la scelta
-dell'algoritmo che sceglie effettivamente l'azione da eseguire.
+dell'algoritmo che ha il compito di decidere l'azione effettiva da eseguire ad
+ogni iterazione.
 
 ### Costruzione dell'oracolo
 L'oracolo è un Machine Learning Classifier che viene addestrato sui vari stati
-del programma. Bisogna inoltre stabilire:
+del programma. In altri termini, l'idea è quella di apprendere un modello di ML
+che funga da automa a stati finiti, cioè che mappa *Stati* del programma in
+*Azioni* da eseguire. Per ottenere un modello di questo tipo è necessario
+stabilire:
 
 * **Features linguistiche significative**: bisogna selezionare le features dello
   stato che sono più significative ai fini della classificazione. Tipiche
   features possono riguardare le *posizioni* nello stato e gli *attributi* di
   alcune parole.
 * **Dataset**: costruito per mezzo del Dependency Tree Bank, facendo reverse
-  engineering degli alberi e ottenendo dei passi dell'algoritmo (si apprende su
-  "storie" di esecuzione di azioni)
+  engineering degli alberi e ottenendo invece delle sequenze di passi
+  dell'algoritmo (si apprende su *"storie"* di esecuzione di azioni).
 * **Algoritmo di training**: che deve far apprendere i pesi che vanno a
   massimizzare lo score della transizione corretta per tutte le configurazioni
-  nel training set
+  nel training set.
 
 ## Algoritmo CKY
 Caratteristiche:
@@ -321,20 +344,23 @@ L'algoritmo CKY è un algoritmo di parsing dinamico e bottom up che calcola
 tutti i possibili alberi di parsing di una frase in tempo $O(n^3)$, controllando
 di fatto l'esplosione combinatoria dovuta all'ambiguità strutturale sintattica.
 L'algoritmo funziona solo su grammatiche in Chomsky Normal Form (cioè
-grammatiche che possono produrre solo 2 simboli non-terminali o solo un simbolo
+grammatiche che possono produrre solo 2 simboli non-terminali o un solo simbolo
 terminale).
 L'idea dell'algoritmo si basa sull'intuizione che se esiste una regola $A
-\rightarrow B C$, e $A$ copre dalla posizione $i$ alla posizione $j$, allora
-$\exists k \; : \; i < k < j$ in cui $B$ copre $i \dots k$ e $C$ copre $k \dots
-j$. Se noi memorizziamo per ogni *span* le regole che coprono tale span,
-possiamo riutilizzarle senza doverle ricalcolare.
+\rightarrow B C$, e $A$ copre la frase dalla posizione $i$ alla posizione $j$,
+allora $\exists k \; : \; i < k < j$ in cui $B$ copre $i \dots k$ e $C$ copre $k
+\dots j$. Se si memorizzano per ogni *span* ($i \dots j$) i non-terminali che
+coprono tale span, possiamo riutilizzarli senza dover ricalcolare se coprano o
+meno tale span. In questa maniera è possibile costruire alberi via via sempre
+più grandi riutilizzando i sottoalberi calcolati ai passi precedenti.
 
-CKY utilizza quindi una matrice $N \times N$ (con $N$ numero di parole della
-frase) in cui, nella posizione $(i, j)$ vengono memorizzate le regole che
-coprono lo span $i \dots j$. L'algoritmo, considerando la parola $j$-esima,
-inserisce inizialmente nella matrice alla posizione $(j, j)$ tutte le regole che
-coprono tale parola. Questo è appunto ragionevole siccome lo span $j \dots j$
-coincide con la singola parola che si sta considerando.
+Per poter memorizzare i non-terminali, CKY utilizza una matrice $N \times N$
+(con $N$ numero di parole della frase) in cui in ogni posizione $(i, j)$ sono
+memorizzati tutti i non-terminali delle regole che coprono lo span $i \dots j$.
+L'algoritmo, considerando la parola $j$-esima, inserisce inizialmente nella
+matrice alla posizione $(j, j)$ tutte le regole che coprono tale parola (questo
+è ragionevole siccome lo span $j \dots j$ coincide con uno span di lunghezza $1$
+che è di fatto la singola parola che si sta considerando).
 
 Successivamente, l'algoritmo considera tutti i possibili span dall'inizio della
 parola ($0$) fino a $j$ e per ogni span tutti i possibili split $k$. Per ognuno
@@ -345,14 +371,14 @@ copre $i \dots j$, per cui viene inserita nella tablla alla posizione $(i,j)$.
 
 Si noti che la complessità è $O(n^3)$ poichè ci sono 3 cicli `for` innestati:
 
-1. Scorre tutte le parole
-2. Scorre tutti i possibili *span* fino alla parola attuale
-3. Scorre tutti i possibili *split* dello span attuale
+* Il primo scorre tutte le parole.
+* Il secondo scorre tutti i possibili *span* fino alla parola attuale.
+* Il terzo scorre tutti i possibili *split* dello span attuale.
 
 ## Difetti
 
-* Il caso peggiore e il caso medio coincidono
-* Necessita di una grammatica in CNF
+* Il caso peggiore e il caso medio coincidono.
+* Necessita di una grammatica in CNF.
 
 ## Algoritmo CKY (Probabilistico)
 Caratteristiche:
@@ -388,38 +414,41 @@ La semantica di cui abbiamo discusso a lezione è la semantica argomentale,
 cioè ci dice chi ha fatto cosa (struttura predicato argomento), non ci dice,
 per esempio, quando questa cosa è stata fatta, per cui si ignora la componente
 temporale.
-Per modellare questa semantica si utilizza la logica del prim'ordine perché è
-un buon compromesso tra facilità di rappresentazione e a livello di
-complessità di computazione.
+Per modellare questa semantica si utilizza la logica del prim'ordine,
+principalmente perché rappresenta un buon compromesso tra complessità
+computazionale e semplicità di rappresentazione.
 
 ## Principio di composizionalità di Frege
 Il principio di composizionalità di Frege è un principio secondo il quale il
-significato di una frase è in funzione del significato delle sue componenti e
-di come questi significati sono combinati tra loro.
+significato di una frase è funzione del significato delle sue componenti e di
+come questi significati sono combinati tra loro.
 Da questo principio ne deriva un algoritmo fondamentale della linguistica
 computazionale, che consiste nei seguenti passaggi:
 
 1. Parsifica la frase ottenendo l'albero sintattico.
-2. Cerca la semantica per ogni sintagma.
-3. Componi la semantica fino a risalire al significato della frase.
+2. Determina la semantica per ogni sintagma (*foglie*).
+3. Componi la semantica partendo dalle foglie e risalendo alla radice, ottenendo
+   il significato dell'intera frase.
 
 ## Semantica di Montague
-La semantica di Montague è un formalismo che unisce la logica del prim'ordine e
-il lambda calcolo. Questo perché il lambda calcolo serve a superare delle
-limitazioni intrinseche della logica del prim'ordine, poichè esso è solamente
-un formalismo di *rappresentazione* e non di calcolo. Due limitazioni principali
-sono:
+La semantica di Montague è un formalismo che unifica l'espressività della logica
+del prim'ordine con la calcolabilità del lambda calcolo. L'introduzione del
+lambda calcolo serve a superare delle limitazioni intrinseche alla logica del
+prim'ordine, poichè esso è solamente un formalismo di *rappresentazione* e non
+di calcolo (non sappresenta *computazioni*). Più precisamente, le due
+limitazioni principali sono:
 
-1. Non è possibile rappresentare predicati con variabili libere
-2. Non è possibile imporre un ordine preciso di applicazione dei predicati
+1. Non è possibile rappresentare predicati con variabili libere.
+2. Non è possibile imporre un ordine preciso di applicazione dei predicati.
 
-Con l'introduzione del lambda calcolo risolviamo entrambi i problemi. A questo
+Con l'introduzione del lambda calcolo si risolvono entrambi i problemi. A questo
 punto, le grammatiche vengono annotate con delle lambda astrazioni in cui
 vengono specificate anche le regole di composizione. 
 
 ## Rappresentazione di Articoli e Sostantivi
-Per rappresentare articoli, bisogna permettere l'astrazione anche sui predicati,
-per cui se volessimo rappresentare *"un"* avremo:
+Per rappresentare articoli all'interno di questo formalismo, è sufficiente
+permettere l'astrazione anche sui predicati, per cui se si volesse rappresentare
+l'articolo *"un"*, si avrebbe:
 $$
 \lambda P. \lambda Q. \exists z (P(z) \land Q(z))
 $$
@@ -451,7 +480,7 @@ sweetly(e)
 $$
 Questa formulazione rispetta anche la transitività e offre una modellazione
 più sistematica. Mentre in Montague si hanno predicati *n*-ari in base ai
-modificatori, nello stile Neo-Davidsoniano si hanno invece solo predicati unati
+modificatori, nello stile Neo-Davidsoniano si hanno invece solo predicati unari
 e i modificatori sono esplicitati con i luoghi semantici.
 
 ---
