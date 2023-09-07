@@ -241,7 +241,7 @@ Ci sono diversi algoritmi di parsing per le grammatiche a dipendenze:
 * **Constraint Satisfaction**: vengono eliminate tutte le possibili dipendenze
   che non soddisfano determinati vincoli.
 
-## Ambiguità sintattica: PP Attachment & Coordination Ambiguity
+## Ambiguità sintattica
 L'ambiguità sintattica (structural ambiguity) nasce dal momento che ci possono
 essere più alberi di derivazione validi. Due casi noti in cui questo può
 verificarsi sono:
@@ -332,6 +332,8 @@ stabilire:
 * **Algoritmo di training**: che deve far apprendere i pesi che vanno a
   massimizzare lo score della transizione corretta per tutte le configurazioni
   nel training set.
+
+TODO: Dettaglio sul training
 
 ## Algoritmo CKY
 Caratteristiche:
@@ -698,12 +700,96 @@ Il dialogue manager è composto a sua volta di 2 componenti principali:
 # Esercizi e Miscellanee
 
 ## Qual'è la differenza tra ambiguità sintattica e ambiguità semantica?
+L'ambiguità sintattica è causata da ambiguità inerenti all'interpretazione
+del posizionamento e delle relazioni che intercorrono tra elementi sintattici.
+Dal punto di vista formale, si presenta come più alberi sintattici validi per
+una singola frase.
 
-## Esercizio 1 (Viterbi) 
+L'ambiguità semantica è causata dalla molteplicità di significati che possono
+essere associati alla stessa struttura morfologica di una parola
+
+## Esercizio 1 (Viterbi)
+Fare il learning di un modello HMM sul corpus riportato di seguito. Utilizzare
+poi l'algoritmo di Viterbi per fare il decoding del modello ottenuto sulla frase
+*"Paolo ama Francesca"*.
+
+* `Paolo/N pesca/V`
+* `Giovanni/N ama/V i/D cani/N`
+* `Francesca/N ama/N`
+* `Una/D pesca/N Francesca/A`
+
+Probabilità di transizione:
+
+* $P(N \mid S_{ini}) = \frac{3}{4}$
+* $P(D \mid S_{ini}) = \frac{1}{4}$
+* $P(S_{end} \mid V) = \frac{1}{4}$
+* $P(S_{end} \mid N) = \frac{1}{2}$
+* $P(S_{end} \mid A) = \frac{1}{4}$
+* $P(V \mid N) = \frac{2}{6}$ 
+* $P(D \mid V) = \frac{1}{2}$ 
+* $P(A \mid N) = \frac{1}{6}$ 
+* $P(N \mid D) = 1$ 
+* $P(N \mid N) = \frac{1}{6}$ 
+
+Probabilità di emissione:
+
+* $P(Paolo \mid N) = \frac{1}{6}$
+* $P(pesca \mid V) = \frac{1}{2}$
+* $P(pesca \mid N) = \frac{1}{6}$
+* $P(Giovanni \mid N) = \frac{1}{6}$
+* $P(ama \mid V) = \frac{1}{2}$
+* $P(ama \mid N) = \frac{1}{6}$
+* $P(i \mid D) = \frac{1}{2}$
+* $P(cani \mid N) = \frac{1}{6}$
+* $P(Francesca \mid N) = \frac{1}{6}$
+* $P(Francesca \mid A) = 1$
+* $P(Una \mid D) = \frac{1}{2}$
+
+Risultato della codifica:
+
+|         | `S_ini` | Paolo | ama   | Francesca | `S_end` |
+|---------|---------|-------|-------|-----------|---------|
+| `S_end` |         |       |       |           | 1/6912  |
+| `N`     |         | 1/8   | 1/288 | 1/10368   |         |
+| `V`     |         | 0     | 1/48  | 0         |         |
+| `D`     |         | 0     | 0     | 0         |         |
+| `A`     |         | 0     | 0     | 1/1728    |         |
+| `S_ini` | 1       |       |       |           |         |
 
 ## Esercizio 2 (CKY)
+Data la Grammatica in CNF di seguito, eseguire CKY sulla frase *"Paolo ama
+Francesca dolcemente"*.
+
+* $S \to NP\;VP$
+* $VP \to VP\;ADV$
+* $VP \to V\;NP$
+* $NP \to Paolo$
+* $NP \to Francesca$
+* $V \to ama$
+* $ADV \to dolcemente$
+
+|      |     |      |       |
+|------|-----|------|-------|
+| `NP` |     | `S`  | `S`   |
+|      | `V` | `VP` | `VP`  |
+|      |     | `NP` |       |
+|      |     |      | `Adv` |
 
 ## Esercizio 3 (MALT)
+Si esegua l'algoritmo MALT sulla frase *"Paolo ama Francesca dolcemente"*,
+indicando per ogni passo l'azione eseguita e lo stato dell'algoritmo.
+
+| Azione  | Stato                                                                                         |
+|---------|-----------------------------------------------------------------------------------------------|
+| `NONE`  | `[root], ["Paolo", "ama", "Francesca", "dolcemente"], []`                                     |
+| `SHIFT` | `[root, "Paolo"], ["ama", "Francesca", "dolcemente"], []`                                     |
+| `LEFT`  | `[root], ["ama", "Francesca", "dolcemente"], [("ama", "Paolo")]`                              |
+| `SHIFT` | `[root, "ama"], ["Francesca", "dolcemente"], [("ama", "Paolo")]`                              |
+| `RIGHT` | `[root], ["ama", "dolcemente"], [("ama", "Paolo"), ("ama", "Francesca") ]`                    |
+| `SHIFT` | `[root, "ama"], ["dolcemente"], [("ama", "Paolo"), ("ama", "Francesca") ]`                    |
+| `RIGHT` | `[root], ["ama"], [("ama", "Paolo"), ("ama", "Francesca"), ("ama", "dolcemente") ]`           |
+| `RIGHT` | `[], [root], [("ama", "Paolo"), ("ama", "Francesca"), ("ama", "dolcemente"), (root, "ama") ]` |
+| `SHIFT` | `[root], [], [("ama", "Paolo"), ("ama", "Francesca"), ("ama", "dolcemente"), (root, "ama") ]` |
 
 ## Esercizio 4 (Montague)
 
