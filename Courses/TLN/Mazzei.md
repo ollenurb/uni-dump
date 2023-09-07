@@ -259,6 +259,15 @@ verificarsi sono:
   come *"Ho visto Maria e ho visto Paolo baciarsi"* (anche in momenti diversi)
   oppure *"Ho visto Maria e Paolo baciarsi"* (nello stesso momento).
 
+## Ambiguità sintattica vs ambiguità semantica
+L'ambiguità sintattica è causata da ambiguità inerenti all'interpretazione
+del posizionamento e delle relazioni che intercorrono tra elementi sintattici.
+Dal punto di vista formale, si presenta come più alberi sintattici validi per
+una singola frase.
+
+L'ambiguità semantica è causata dalla molteplicità di significati che possono
+essere associati alla stessa struttura morfologica di una parola
+
 ## Algoritmo di parsing TUP
 Caratteristiche:
 
@@ -328,12 +337,18 @@ stabilire:
   alcune parole.
 * **Dataset**: costruito per mezzo del Dependency Tree Bank, facendo reverse
   engineering degli alberi e ottenendo invece delle sequenze di passi
-  dell'algoritmo (si apprende su *"storie"* di esecuzione di azioni).
+  dell'algoritmo che hanno generato l'albero (si apprende su *"storie"* di
+  esecuzione di azioni).
 * **Algoritmo di training**: che deve far apprendere i pesi che vanno a
   massimizzare lo score della transizione corretta per tutte le configurazioni
   nel training set.
 
-TODO: Dettaglio sul training
+Il classificatore non è nient'altro che un classificatore lineare. Si definisce
+un vettore di feature $f(c, t)$ che dipende dallo stato $c$ e dalla transizione
+$t$. Lo score viene definito come $S(c, t) = w \cdot f(c, t)$, per cui
+l'algoritmo di apprendimento trova un assegnamento di pesi $\hat{w}$ tale che
+massimizzi lo score della transizione corretta per tutte le configurazioni $c$
+nel training set.
 
 ## Algoritmo CKY
 Caratteristiche:
@@ -393,15 +408,23 @@ CKY genera tutti gli alberi possibili, però non si ha modo di decidere quale
 fra questi sia il più adatto. Secondo questa variante, un albero di derivazione
 ha associata una probabilità che è il prodotto di tutte le regole che sono
 state utilizzate nella derivazione.
-Essenzialmente si va a costruire l'albero più probabile andando a selezionare
-la regola di derivazione più probabile. Per fare ciò viene definita una
-distribuzione di probabilità sulle regole della grammatica. Ogni non terminale
-è associato ad una probabilità tale per cui:
+L'algoritmo non differenzia particolarmente da CKY classico, l'unica differenza
+è che ci sono delle probabilità associate ad ogni regola. Mano a mano che
+l'algoritmo aggiunge le regole alla tabella, ne salva anche il valore di
+probabilità. In caso una regola derivi da due sottoalberi, si moltiplica la
+probabilità della regola per le probabilità associate ai due sottoalberi.
+Ad esempio, se avessimo la regola $P(VP \to V\;NP)= 0.2$ e i due sottoalberi
+(rappresentati da non-terminali nelle celle) $V$ e $VP$, rispettivamente con
+$P(V)=0.05$ e $P(VP) = 0.0024$, si inserirà nella casella corrente il
+corrispondente non-terminale $VP$ con probabilità $P(VP) = 0.2 \cdot 0.05 \cdot
+0.0024$.
 
-* $A \rightarrow \beta[p]$ con $p \in [0, 1]$
-* $\sum_\beta P(A \rightarrow \beta) = 1$
+In questo modo ogni albero finale (rappresentato dal simbolo $S$) avrà associata
+una probabilità, per cui per disambiguare sarà sufficiente scegliere quello con
+il valore massimo.
 
-Le probabilità vengono calcolate a partire da un tree bank nel modo seguente
+Le probabilità possono essere stimate a partire da un tree bank nel modo
+seguente:
 $$
 P(\alpha \rightarrow \beta \mid \alpha) =
 \frac{Count(\alpha \rightarrow \beta)}{Count(\alpha)}
@@ -412,20 +435,24 @@ $$
 # Semantica
 
 ## Semantica Argomentale
-La semantica di cui abbiamo discusso a lezione è la semantica argomentale,
-cioè ci dice chi ha fatto cosa (struttura predicato argomento), non ci dice,
-per esempio, quando questa cosa è stata fatta, per cui si ignora la componente
-temporale.
-Per modellare questa semantica si utilizza la logica del prim'ordine,
-principalmente perché rappresenta un buon compromesso tra complessità
-computazionale e semplicità di rappresentazione.
+La semantica di cui abbiamo discusso a lezione è la semantica argomentale, cioè
+ha lo scopo di rappresentare chi ha fatto cosa (struttura predicato argomento),
+per cui si ignora totalmente la componente temporale. Per modellare questa
+semantica si utilizza il formalismo della logica del prim'ordine, principalmente
+perché rappresenta un buon compromesso tra complessità computazionale e
+semplicità di rappresentazione.
 
 ## Principio di composizionalità di Frege
 Il principio di composizionalità di Frege è un principio secondo il quale il
 significato di una frase è funzione del significato delle sue componenti e di
 come questi significati sono combinati tra loro.
-Da questo principio ne deriva un algoritmo fondamentale della linguistica
-computazionale, che consiste nei seguenti passaggi:
+Ne deriva che secondo questo principio, una volta ottenuto il significato dei
+singoli elementi di una frase, è possibile comporli tra di loro in base alle
+regole di composizione semantica per ottenere il significato della frase intera.
+
+È quindi possibile sviluppare sulla base di questa idea un algoritmo, che prende
+il nome di *Algoritmo fondamentale della linguistica computazionale*, il quale
+consiste nei seguenti passaggi:
 
 1. Parsifica la frase ottenendo l'albero sintattico.
 2. Determina la semantica per ogni sintagma (*foglie*).
@@ -433,11 +460,11 @@ computazionale, che consiste nei seguenti passaggi:
    il significato dell'intera frase.
 
 ## Semantica di Montague
-La semantica di Montague è un formalismo che unifica l'espressività della logica
-del prim'ordine con la calcolabilità del lambda calcolo. L'introduzione del
-lambda calcolo serve a superare delle limitazioni intrinseche alla logica del
-prim'ordine, poichè esso è solamente un formalismo di *rappresentazione* e non
-di calcolo (non sappresenta *computazioni*). Più precisamente, le due
+La semantica di Montague è un formalismo che unifica la rappresentabilità della
+logica del prim'ordine con la calcolabilità del lambda calcolo. L'introduzione
+del lambda calcolo serve a superare delle limitazioni intrinseche alla logica
+del prim'ordine, poichè esso è solamente un formalismo di *rappresentazione* e
+non di calcolo (non sappresenta *computazioni*). Più precisamente, le due
 limitazioni principali sono:
 
 1. Non è possibile rappresentare predicati con variabili libere.
@@ -474,16 +501,16 @@ $$
 $$
 Questo modo di rappresentare gli avverbi può anche essere scritto in un'altra
 maniera detta *Neo-Davidsoniana* in cui essenzialmente vengono generalizzati
-anche gli argomenti (si normalizzano tutti i predicati ad avere 2 soli
-argomenti)
+anche gli argomenti (si normalizzano tutti i predicati in modo che abbiano solo
+2 argomenti)
 $$
 \exists \; : \; love(e) \land agent(e, Paolo) \land patient(e, Francesca) \land
 sweetly(e)
 $$
-Questa formulazione rispetta anche la transitività e offre una modellazione
-più sistematica. Mentre in Montague si hanno predicati *n*-ari in base ai
-modificatori, nello stile Neo-Davidsoniano si hanno invece solo predicati unari
-e i modificatori sono esplicitati con i luoghi semantici.
+Questa formulazione rispetta anche la transitività, e rappresenta inoltre una
+tipologia di modellazione più sistematica. Mentre in Montague si hanno predicati
+*n*-ari in base ai modificatori, nello stile Neo-Davidsoniano si hanno invece
+solo predicati unari e i modificatori sono esplicitati con i luoghi semantici.
 
 ---
 
@@ -568,8 +595,8 @@ Il dialogo ha 4 features significative:
 Le architetture per i ChatBots possono essere categorizzate in due approcci
 principali:
 
-* Rule Based
-* Corpus Based
+* Rule Based.
+* Corpus Based.
 
 ### ELIZA
 ELIZA era un chatbot rule-based che simulava uno psicanalista di stampo
@@ -579,9 +606,7 @@ ELIZA utilizzava delle regole che avevano il duplice compito di fare
 *pattern-matching* e *trasformazione*. Ad esempio la regola:
 
 ```
-(0 YOU 0 ME)
--> 
-(WHAT MAKES YOU THINK I 3 YOU)
+(0 YOU 0 ME) -> (WHAT MAKES YOU THINK I 3 YOU)
 ```
 
 Faceva pattern matching sul pattern nell'antecedente della regola e produceva
@@ -610,16 +635,16 @@ regola (incrementando un contatore).
 I Chatbot basati sui corpus possono essere sviluppati essenzialmente seguendo
 due approcci:
 
-* Response by **retrieval**
+* Response by **retrieval**.
 * Response by **generation** (si utilizza un language model per generare la
-  risposta basandosi sul contesto del dialogo)
+  risposta basandosi sul contesto del dialogo).
 
 Per apprendere questi modelli si possono utilizzare diverse fonti di
 informazioni quali:
 
-* Trascrizioni telefoniche
-* Dialoghi nei film
-* Crowd-working con conversatori umani 
+* Trascrizioni telefoniche.
+* Dialoghi nei film.
+* Crowd-working con conversatori umani.
 
 ## Architettura dei sistemi di dialogo
 L'architettura dei sistemi di dialogo è come molte delle altre architetture
@@ -675,8 +700,8 @@ manager decide su quale frame bisogna focalizzare il discorso.
 Per poterlo decidere, il dialogue manager esegue 3 passi principali:
 
 1. Domain Classification: si determina a quale dominio si sta facendo
-   riferimento
-2. Intent Determination: si determina l'intento dell'utente
+   riferimento.
+2. Intent Determination: si determina l'intento dell'utente.
 3. Slot Filling: estrai i dati significativi dalla frase per riempire gli slots.
    Questa fase può essere fatta attraverso delle regole di pattern matching.
 
@@ -692,21 +717,12 @@ managers. Abbiamo quindi le seguenti possibilità:
 
 Il dialogue manager è composto a sua volta di 2 componenti principali:
 
-* **Dialogue Context Model**: è il modello del discorso
+* **Dialogue Context Model**: è il modello del discorso.
 * **Dialogue Control**: dedide cosa fare dopo nel contesto comunicativo attuale.
 
 ---
 
-# Esercizi e Miscellanee
-
-## Qual'è la differenza tra ambiguità sintattica e ambiguità semantica?
-L'ambiguità sintattica è causata da ambiguità inerenti all'interpretazione
-del posizionamento e delle relazioni che intercorrono tra elementi sintattici.
-Dal punto di vista formale, si presenta come più alberi sintattici validi per
-una singola frase.
-
-L'ambiguità semantica è causata dalla molteplicità di significati che possono
-essere associati alla stessa struttura morfologica di una parola
+# Esercizi
 
 ## Esercizio 1 (Viterbi)
 Fare il learning di un modello HMM sul corpus riportato di seguito. Utilizzare
@@ -747,14 +763,14 @@ Probabilità di emissione:
 
 Risultato della codifica:
 
-|         | `S_ini` | Paolo | ama   | Francesca | `S_end` |
-|---------|---------|-------|-------|-----------|---------|
-| `S_end` |         |       |       |           | 1/6912  |
-| `N`     |         | 1/8   | 1/288 | 1/10368   |         |
-| `V`     |         | 0     | 1/48  | 0         |         |
-| `D`     |         | 0     | 0     | 0         |         |
-| `A`     |         | 0     | 0     | 1/1728    |         |
-| `S_ini` | 1       |       |       |           |         |
+|           | $S_{ini}$ | Paolo | ama   | Francesca | $S_{end}$ |
+|-----------|-----------|-------|-------|-----------|-----------|
+| $S_{end}$ |           |       |       |           | 1/6912    |
+| `N`       |           | 1/8   | 1/288 | 1/10368   |           |
+| `V`       |           | 0     | 1/48  | 0         |           |
+| `D`       |           | 0     | 0     | 0         |           |
+| `A`       |           | 0     | 0     | 1/1728    |           |
+| $S_{ini}$ | 1         |       |       |           |           |
 
 ## Esercizio 2 (CKY)
 Data la Grammatica in CNF di seguito, eseguire CKY sulla frase *"Paolo ama
