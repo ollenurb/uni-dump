@@ -627,56 +627,61 @@ Faceva pattern matching sul pattern nell'antecedente della regola e produceva
 l'antecedente in cui $3$ è il terzo costituente nel pattern (cioè il bind $0$ in
 questo caso).
 
-Un'altro aspetto importante di ELIZA è quello del ranking. Essenzialmente
-viene stabilito un rank per una serie di parole chiavi che viene utilizzato poi
+Un'altro aspetto importante di ELIZA è quello del ranking. Essenzialmente viene
+stabilito un rank per una serie di pattern che viene utilizzato poi
 dall'algoritmo per decidere quale regola attivare.
 
-L'algoritmo sceglie la keyword con ranking maggiore tra tutte le keywords
-presenti nella frase in input e ne applica la trasformazione corrispondente.
-In caso non ci siano keywords, allora scatta il `NONE` pattern, cioè delle frasi
-di placeholder predefinite.
+L'algoritmo sceglie la keyword con il rank maggiore tra tutte le keywords
+presenti nella frase in input e ne applica la trasformazione corrispondente. In
+caso non ci siano keywords, allora scatta il `NONE` pattern, cioè delle frasi di
+placeholder predefinite.
 
-Un'altra caratteristica interessante e' la presenza di memoria. Ogni qual volta
+Un'altra caratteristica interessante è la presenza di memoria. Ogni qual volta
 che la keyword *"My"* è la highest-ranking, seleziona una trasfomazione inserita
 nella memoria, la applica alla frase e la inserisce in uno stack del discorso.
-Successivamente, se nessuna keyword non fa match, prima di far scattare il
-pattern `NONE` ritorna il top dello stack del discorso.
+Successivamente, se nessuna keyword fa match, prima di far scattare il pattern
+`NONE` ritorna il top dello stack del discorso.
+In questo modo è possibile attingere alla memoria quando non si hanno pattern
+attivi così da ottenere più informazioni e chiedere altro in relazione a quanto
+detto precedentemente nell'interazione.
 
-Vengono poi impiegati altri trucchi quali il non riutilizzare sempre la stessa
-regola (incrementando un contatore).
+Vengono poi impiegate altre accortezze per evitare di non riutilizzare sempre la
+stessa regola (utilizzando un semplice contatore).
 
 ### Corpus Based
 I Chatbot basati sui corpus possono essere sviluppati essenzialmente seguendo
 due approcci:
 
-* Response by **retrieval**.
-* Response by **generation** (si utilizza un language model per generare la
-  risposta basandosi sul contesto del dialogo).
+* Response by **retrieval**: in cui si apprende un modello da un corpus di
+  interazioni. L'output è fisso, cioè non viene generato nuovo testo, ma viene
+  semplicemente ritornata la risposta facendo retrieval dal corpus.
+* Response by **generation**: si apprende un language model da un grande corpus
+  di interazioni, per cui la risposta sarà generata.
 
-Per apprendere questi modelli si possono utilizzare diverse fonti di
-informazioni quali:
+Il corpus per apprendere questi modelli può provenire da diverse fonti di
+informazioni come:
 
 * Trascrizioni telefoniche.
 * Dialoghi nei film.
 * Crowd-working con conversatori umani.
 
 ## Architettura dei sistemi di dialogo
-L'architettura dei sistemi di dialogo è come molte delle altre architetture
-viste a pipeline. I vari stadi corredati da input/output sono:
+L'architettura dei sistemi di dialogo è (come molte delle altre architetture
+viste) a pipeline. I vari stadi corredati da input/output sono:
 
-1. Speech Recognition
+1. **Speech Recognition**
     * Input: Segnale acustico
     * Output: Parole
-2. Language Understanding
+2. **Language Understanding**
     * Input: Parole
     * Output: Dialogue Act (User)
-3. Dialogue Manager
+3. **Dialogue Manager**
     * Input: Dialogue Act (User)
     * Output: Dialogue Act (System)
-4. Response Generation
+4. **Response Generation**
     * Input: Dialogue Act (System)
     * Output: Parole
-5. Text to Speech Synthesis
+5. **Text to Speech Synthesis**
     * Input: Parole
     * Output: Segnale acustico
 
@@ -731,8 +736,18 @@ managers. Abbiamo quindi le seguenti possibilità:
 
 Il dialogue manager è composto a sua volta di 2 componenti principali:
 
-* **Dialogue Context Model**: è il modello del discorso.
+* **Dialogue Context Model**: è il modello del discorso, implementato tramite
+  strutture dati apposite.
 * **Dialogue Control**: dedide cosa fare dopo nel contesto comunicativo attuale.
+  Impiega algoritmi basati su grafi per governare le dinamiche del dialogo.
+
+### Valutazione
+I sistemi di dialogo possono essere valutati per mezzo di 2 possibili sistemi di
+valutazione:
+
+1. Valutazione tramite test non oggettivi.
+2. Trindi Tricklist: lista di sedici condizioni si/no per la valutazione
+   oggettiva.
 
 ---
 
@@ -821,6 +836,9 @@ indicando per ogni passo l'azione eseguita e lo stato dell'algoritmo.
 | `RIGHT` | `[], [root], [("ama", "Paolo"), ("ama", "Francesca"), ("ama", "dolcemente"), (root, "ama") ]` |
 | `SHIFT` | `[root], [], [("ama", "Paolo"), ("ama", "Francesca"), ("ama", "dolcemente"), (root, "ama") ]` |
 
-## Esercizio 4 (Montague)
+## Esercizio 4 (Montague + Neo-Davidsonian Semantic)
+Costruire la derivazione (albero sintattico e semantica) in stile
+Neo-Davidsoniano per la frase *"Paolo ama Francesca dolcemente"*.
 
-## Esercizio 5 (Neo-Davidsonian Style)
+
+
