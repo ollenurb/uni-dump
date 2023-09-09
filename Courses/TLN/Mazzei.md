@@ -200,9 +200,13 @@ Una Combinatory Categorial Grammar è una grammatica bottom up (si parte dalle
 parole e si costruisce mano a mano l'albero) dove gli elementi principali sono
 delle *categorie* di parole.
 Queste categorie poi vengono combinate con altre categorie per mezzo di
-opportune regole di combinazione. Ad esempio, il verbo *amare* è una categoria
-che cerca un qualche altro elemento alla sua sinistra (soggetto) e un'altro
-elemento alla sua destra (complemento oggetto) con cui combinarsi.
+opportune regole di combinazione (combinazione destra e sinistra).
+Quindi una grammatica di questo tipo consiste in un lessico (parole) associate a
+delle categorie più eventualmente delle regole di combinazione.
+
+Ad esempio, `ama: (S\NP)/NP` è una categoria che cerca un qualche altro elemento
+alla sua sinistra (soggetto) e un'altro elemento alla sua destra (complemento
+oggetto) con cui combinarsi.
 
 ## Sintassi a Dipendenze
 La sintassi a dipendenze postula che la struttura sintattica di una frase
@@ -266,7 +270,14 @@ Dal punto di vista formale, si presenta come più alberi sintattici validi per
 una singola frase.
 
 L'ambiguità semantica è causata dalla molteplicità di significati che possono
-essere associati alla stessa struttura morfologica di una parola
+essere associati alla stessa struttura morfologica di una parola. Ad esempio,
+nell'Inglese *"Bank"* è un termine *polisemico*, cioé significa che può assumere
+significati differenti in base al contesto. In questo caso può indicare sia una
+*banca* di deposito (*"Bank account"*), che il *letto* di un fiume ("*River
+bank"*).
+
+Nonostante differiscano, entrambe le ambiguità causano lo stesso problema, cioè
+che può essere associato più di un significato diverso per la stessa frase.
 
 ## Algoritmo di parsing TUP
 Caratteristiche:
@@ -474,13 +485,16 @@ Con l'introduzione del lambda calcolo si risolvono entrambi i problemi. A questo
 punto, le grammatiche vengono annotate con delle lambda astrazioni in cui
 vengono specificate anche le regole di composizione. 
 
-## Rappresentazione di Articoli e Sostantivi
+## Rappresentazione di Articoli e Coordinazioni
 Per rappresentare articoli all'interno di questo formalismo, è sufficiente
-permettere l'astrazione anche sui predicati, per cui se si volesse rappresentare
-l'articolo *"un"*, si avrebbe:
-$$
-\lambda P. \lambda Q. \exists z (P(z) \land Q(z))
-$$
+permettere l'astrazione anche sui predicati, di seguito sono riportati diversi
+formalismi per rappresentare i vari articoli:
+
+* *un*: $\lambda P \lambda Q. \exists z (P(z) \land Q(z))$
+* *tutti*: $\lambda P \lambda Q. \exists z (P(z) \to Q(z))$
+* *nessuno*: $\lambda P \lambda Q. \exists z (P(z) \to \lnot Q(z))$
+* *e*: $\lambda P \lambda Q \lambda R.(P(R) \land Q(R))$ 
+* *ogni*: $\lambda P \lambda Q (\forall x (P(x) \to Q(x)))$
 
 ## Rappresentazione di Avverbi
 Per rappresentare avverbi, invece, non possiamo utilizzare l'avverbio come
