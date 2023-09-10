@@ -10,7 +10,8 @@ geometry: margin=2.5cm
 
 ## Algoritmo di Viterbi
 L'algoritmo di Viterbi è un algoritmo di programmazione dinamica per calcolare
-in tempo polinomiale la sequenza di tag che massimizza la likelihood.
+in tempo polinomiale la sequenza di tag che massimizza la probabilità data una
+sequenza di parole.
 Questo perché per un approccio naive, calcolare a mano tutte le possibili
 sequenze richiederebbe un tempo esponenziale.
 L'idea principale si basa sul fatto che la probabilità della sequenza di tag
@@ -839,6 +840,3 @@ indicando per ogni passo l'azione eseguita e lo stato dell'algoritmo.
 ## Esercizio 4 (Montague + Neo-Davidsonian Semantic)
 Costruire la derivazione (albero sintattico e semantica) in stile
 Neo-Davidsoniano per la frase *"Paolo ama Francesca dolcemente"*.
-
-
-
