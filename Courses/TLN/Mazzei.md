@@ -318,7 +318,7 @@ Su questo stato si possono applicare 3 operazioni principali:
   dalla lista e inserisce al suo posto $b$.
 
 L'algoritmo parte da uno stato iniziale in cui l'input buffer è pieno (contiene
-tutta la frase) e lo stack è vuoto, per poi apllicare ad ogni passo l'operazione
+tutta la frase) e lo stack è vuoto, per poi applicare ad ogni passo l'operazione
 che viene suggerita dall'oracolo, fino a quando non si raggiunge uno stato
 finale, in cui l'input buffer e lo stack sono vuoti, e la dependency relations
 non è vuota (sicché conterrà il risultato).
