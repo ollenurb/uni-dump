@@ -6,4 +6,4 @@ italian since 99% of the courses were taught in italian.
 
 ## Index
 
-* [] 
+* [Projects Archive](/Projects)
