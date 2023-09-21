@@ -1,5 +1,6 @@
 ---
-title: Riassunto Mazzei 
+title: 'Riassunto di Tecnologie del Linguaggio Naturale'
+subtitle: 'Parte 1: Introduzione alla Linguistica Computazionale'
 author: Matteo Brunello
 numbersections: true
 papersize: a4

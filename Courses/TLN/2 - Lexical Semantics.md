@@ -1,5 +1,6 @@
 ---
-title: Riassunto Radicioni 
+title: 'Riassunto di Tecnologie del Linguaggio Naturale'
+subtitle: 'Parte 2: Semantica Lessicale'
 author: Matteo Brunello
 numbersections: true
 papersize: a4
@@ -98,4 +99,29 @@ Questa differenza permette di rappresentare la relazione che esiste tra concetti
 espressi come aggettivi e concetti espressi come nomi.
 
 # Rappresentazioni Strutturate
+La rappresentazione strutturata della conoscenza nasce dall'esigenza di
+rappresentare la conoscenza del mondo in cui un sistema intelligente deve
+operare. Per soddisfare questa esigenze, un sistema di rappresentazione
+strutturata deve fornire:
+
+* Un **linguaggio di rappresentazione**, che definisce le strutture sintattiche
+  per la rappresentazione delle informazioni.
+* Un **insieme di regole** di manipolazione delle struttura sintattiche in
+  accordo con il loro significato.
+
+Vediamo quindi alcuni sistemi di rappresentazione strutturata visti.
+
+## Reti Semantiche
+Sono una classe di sistemi di rappresentazione che adottano una struttura a
+grafo (*rete*) in cui i *nodi* rappresentano *concetti*, mentre gli *archi*
+rappresentano *proprietà* dei concetti.
+
+L'istanza più semplice di questa classe di sistemi sono i *grafi relazionali*.
+Essi permettono di descrivere le relazioni tra le diverse *entità* del grafo. In
+questo grafo i diversi nodi rappresentano le *entità*, collegate tra loro da
+*archi* etichettati in modo da esplicitare la *relazione* che intercorre tra le
+due entità collegate. Dal punto di vista formale, i grafi relazionali
+implementano un sottoinsieme del calcolo dei predicati del primo ordine: gli
+archi rappresentano i *predicati*, e i nodi i *termini*.
+
 
