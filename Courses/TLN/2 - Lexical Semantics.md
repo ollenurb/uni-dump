@@ -124,4 +124,101 @@ due entità collegate. Dal punto di vista formale, i grafi relazionali
 implementano un sottoinsieme del calcolo dei predicati del primo ordine: gli
 archi rappresentano i *predicati*, e i nodi i *termini*.
 
+La limitazione piu' grande di questa tipologia di rete semantia risiede
+nell'espessivita'. Esse difatti sono in grado di rappresentare solamente l'idea
+della congiunzione. Inoltre, le relazioni espresse dagi archi sono unicamente
+binarie, per cui tutta una casse di predicati con arieta' > 2 devono essere
+espressi per mezzo di un nodo intermedio che rappresenta il predicato.
 
+Le *reti proposizionali* sono invece un'evoluzione rispetto ai grafi relazionali
+perche' introducono la possibilita' di rappreesentaree intere proposizioni per
+mezzo dei nodi. Queste reti sono piu' espressive dei grafi relazionali poiche'
+e' possibiel introdurre i connettivi logici e dei contesti all'interno dei quali
+fare operare i quantificatori. L'aumentata capacita' espressiva permette di
+esprimere idee piuttosto articolate, ad esempio permette di distinguere la
+negazione di un'intera proposizione dalla negazione di una proposizione
+*incassata* all'inteno di una poposizione.
+Inoltre, sapendo che la congiunzione e' implicita nella rete e avendo introdotto
+la possibilita' di negare delle proposizioni, tramite De Morgan e' possibile
+ottenere qualsiasi altro connettivo logico quale OR o AND.
+
+Un concetto molto importante nelle reti semantiche e' anche la decisione di
+quali informazioni devono essere rappresentate esplicitamente e quali devono
+invece essere dedotte al momeento necessario. Per stabilirlo ci sono due
+strategiee principali:
+
+1. Relazione di Copertura: si rappresentano solo i legami essenziali che
+   connettono ciascun nodo con la classe immediatamente superordinata. Ne
+   risultano reti piu' efficienti dal punto di vista di memoria ma di meno dal
+   punto di vista computazioinale in caso di inferenze.
+2. Chiusura Transitiva: si rappresentano esplicitamentee tutti i possibili
+   legami fra i nodi della rete. Piu' eefficiente in fase di inferenza, meno
+   efficiente dal punto di vista di memoria. Inoltre e' difficile da mantenere
+   una rete del genere.
+
+Nella fase di design si deve optare per un tradeoff di questi due aspetti
+fondamentali.
+
+A prima vista, le reti semantiche introdurrebbero solamente un'ulteriore
+macchinosita' nella rappresentazione, avendo pur sempre lo stesso potere
+espressivo della logica. In realta', questo tipo di reti si presta molto bene a
+rappresentare la conoscenza di tipo gerarchico. Le proprieta' vengono ereditate
+dalle varie classi, rendendo il meccanismo di inferenza una semplice visita
+della rete, senza dover applicare sofisticate regole.
+Inolte, queste reti sono economiche nella rappresentazione perche' non bisogna
+replicare ogni volta la stessa prroprieta' (se ereditata) per tutti i nodi ogni
+volta.
+
+Alcuni problemi noti delle reti semantiche sono:
+
+* Ereditarieta' multipla: nel caso vi sia un conflitto di valori, non e'
+  possiible stabilie un criterio risolutivo che abbia caratteere generale, tutto
+  dipende dall'algoritmo di ricerca utilizzato. (es. Nixon Quacchero o
+  Pacifista) Si puo' risolvere applicando il criterio della *dissonanza
+  cognitiva*, in cui prevale il valore che riteniamo prevalente.
+* Appartenenza e inclusione: non esiste la distinzione tra nodi che
+  rappresentano individui e nodi che rappresentano *classi* o *insiemi di
+  individui*
+* Mancanza di una semantica formale: il significato di una rete deriva
+  esclusivamente dalla natura delle procedure che la manipolano, per cui e'
+  impossibile separare la semantica di una rete dal suo uso.
+
+## Frame
+Un'altro sistema di rappresentazione strutturata molto famoso sono i *frames*.
+Introdotti da Minsky nel 1975, permettono di rappresentare della conoscenza
+stereotipica riguardo a situazioni, luoghi, oggetti o personaggi. L'idea e' che
+forniscano una *cornice concettuale* all'interno della quale i nuovi dati
+vengono interpretati alla luce delle conoscenze derivate dall'esperienza
+precedente.
+L'organizzazione della conoscenza relativa ad un certo dominio permette di
+facilitare sia il reperimento delle informazioni che i processi inferenziali
+necessari ad agire in modo intelligente.
+Cosi' come le reti semantiche, anche i frames mancano di una semantica formale,
+per cui bisogna presupporre l'esistenza di adeguate procedure in grado di
+estrarre le informazioni in essi contenute.
+
+I sistemi a frame organizzano l conosccenze in strutture gerarchiche in cui gli
+elementi sono collegati fra loro da espressioni di tipo `isA` o `ako`, che
+consentono la trasmissione ereditaria dele proprieta'. Le proprieta' dei frame
+che sono a livelo piu' alto nella gerarchia restano fisse, mentre i liveli piu'
+bassi possono essere contraddistinti da proprieta' speecifiche, anche in
+contrasto con quelle delle superclassi.
+
+Ogni frame ha un nome che identifica univocamente l'oggetto che esso
+rappreesenta. Le caratteristiche dei vari oggetti sono rappresentate per mezzo
+di un insieme di slot: caselle in cui vengono inserite le informazioni. (es.
+frame ristorante puo' avere slot relativi a categoria, indirizzo, giorno di
+chiusura ecc..). Ogni slot puo' avere un valore di default che viene inserito in
+caso non ci sia la possibilita' di riempire tale slot con valori specifici.
+Gli slot possono inoltre avere come valore riferimenti ad altri frames.
+
+Otre ala componente *dichiarativa*, i frames supportano anche una parte
+*procedurale*, poiche' permettono ad esempio di calcolare i valori degli slot
+per mezzo di procedure specifiche. Ci sono due tipologie principali di procedure
+in tal senso:
+
+* Procedure *if needed*: procedure che codificano metodi ad-hoc per il calcolo
+  del valore di uno slot qualora sia richiesto dal processo di elaborazione in
+  corso.
+* Procedure *if added*: rimangono silenti fino a quando non si tenta di riempire
+  qualche slot a cui sono associate.
