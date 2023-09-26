@@ -222,3 +222,96 @@ in tal senso:
   corso.
 * Procedure *if added*: rimangono silenti fino a quando non si tenta di riempire
   qualche slot a cui sono associate.
+
+# WordNet
+WordNet è una risorsa lessicale di riferimento ispirata a teorie
+psicolinguistiche sulla memoria lessicale umana. In WordNet, nomi, verbi e
+aggettivi sono organizzati in *synonym sets* (synsets), che rappresentano il
+concetto sottostante alle parole (semantica), connessi tra loro da diverse
+relazioni.
+
+WordNet può essere visto come un vocabolario per ricercare parole
+*concettualmente* più che alfabeticamente.
+La differenza sostanziale tra un dizionario classico e WN è che l'ultimo
+individua 4 categorie lessicali, in cui ogni parola viene organizzata in base al
+suo *word meaning*. Tali categorie sono:
+
+1. Nomi: organizzati in gerarchie,
+2. Verbi: organizzati da relazioni di implicazione,
+3. Aggettivi: organizzati come spazi *N*-dimensionali,
+4. Avverbi: organizzati come gli aggettivi.
+
+Una parola è un'*associazione* convenzionale tra un *concetto lessicale* (word
+meaning) ed un *utterance* (word form) che gioca invece il ruolo sintattico. Una
+matrice lessicale serve a rappresentare queste associazioni. Le righe di tale
+matrice sono i significati mentre le forme sono le colonne. Se una stessa parola
+compare in più righe si dice che la parola è *polisemica* (si possono
+rappresentare due sensi con la stessa parola). Al contrario, se due entry sono
+nella stessa riga, allora le due forme associate alle entry (nelle colonne)
+hanno lo stesso significato, per cui sono *sinonimi*.
+
+Per rappresentare un significato, quindi, è sufficiente elencare la serie di
+word forms che sono associati ad esso. Tali insiemi di word forms sono detti
+**synoym sets** (o *synsets*). Ovvimente, il significato è sottinteso, cioè si
+ipotizza che l'utilizzatore sappia già il concetto e quindi sia in grado di
+riconoscerlo dalle parole presenti nel synset.
+Nei casi in cui non ci sia più di un termine in un synset, il significato è
+disambiguato associando ad esso una breve **glossa**, cioè una descrizione del
+termine.
+
+Come accennato precedentemente, sia i synsets che le parole in esso contenuti
+sono legati tra loro da relazioni. Siccome i synsets rappresentano concetti, le
+relazioni sono quindi tra i *significati* sottintesi alle parole. Una
+caratteristica di queste relazioni è che sono *asimmetriche*. Alcune di queste
+relazioni sono:
+
+* **Sinonimia**: indica la similarità di significato tra due *parole*. Due
+  espressioni sono in relazione di sinonimia se la sostituzione di una per
+  l'altra non cambia il valore di verità di una frase in cui viene effettuata la
+  sostituzione. Spesso si definisce anche un contesto linguistico in cui
+  valutare la sostituzione, siccome senza contesto queste relazioni sarebbero
+  estremamente rare.
+* **Antinomia**: due *parole* sono in relazione di antinomia se una ha il
+  significato opposto dell'altra.
+* **Iponimia/Iperonimia**: due *sensi* $x$ e $y$ sono in relazione di iponimia
+  tra loro se un qualsiasi parlante della lingua riconosce vera la proposizione
+  *"un $x$ è un esemplare di $y$". L'inverso vale per la relazione di
+  iperonimia. Questa relazione genera naturalmente una struttura gerarchica
+  semantica tra sensi.
+* **Meronimia/Olonimia**: due *sensi* $x$ e $y$ sono in relazione di meronimia
+  se un qualsiasi parlante della lingua accetti come vera la proposizione *"un
+  $y$ ha $x$ come sua parte"*.
+
+## Nomi
+Le definizioni dei nomi includono tipicamente un termine *superodinato* e delle
+*features distintive*. Queste informazioni sono sufficienti per organizzare i
+nomi in WordNet secondo una struttura basata sul principio di ereditarietà. Ogni
+parola *eredita* tutte le feature distintive dei suoi *superiori*
+(superordinates). Le features distintive sono di 3 tipologie differenti:
+
+1. Attributi (modification)
+2. Parti (meronymy)
+3. Funzioni (predication)
+
+I problemi dei dizionari sono essenzialmente 3:
+
+* Non è possibile capire quale termine superordinato contiene la vera e propria
+  spefica del nome. (es. tree $\to$ plant)
+* Non ci sono informazioni sui termini coordinati. Se uno volesse cercare altre
+  le tipologie di piante, dovrebbe andare a cercare tutti i termini che hanno
+  come superordinato *pianta*.
+* Non si sono reference agli iponimi, per cui non si può ad esempio cercare
+  quali sono gli alberi sono di un certo tipo.
+* Esistono reference cicliche nelle definizioni.
+
+## Assunzioni Psicolinguistiche
+Dal momento che WordNet è organizzato secondo i principi che governano il
+lessico umano, la decisione di organizzare i nomi secondo un sistema basato
+sull'ereditarietà riflette un giudizio psicolinguistico sul lessico mentale.
+L'evidenza psicolinguistica che la conoscenza dei nomi viene organizzata
+gerarchicamente viene dal fatto che gli umani riescono a gestire con
+facilità nomi anaforici e costruzioni comparative.
+
+I nomi superordinati possono fungere da anafore che si riferiscono ai loro
+iponimi
+
