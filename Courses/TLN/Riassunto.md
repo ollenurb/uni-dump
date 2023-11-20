@@ -10,7 +10,7 @@ distribuzione di probabilita' $P(w_1, \dots, w_n)$ su tutte le possibili frasi.
 ## Prototypes vs Examplar Theories & Dual Process Theories
 Sono due grandi teorie riguardo alla rappresentazione del significato delle
 parole. Secondo la teoria dei prototipi, il significato di un concetto puo'
-essere rappresentato come il suo prototipo, cioe' un rappresntante
+essere rappresentato come il suo prototipo, cioe' un rappresentante
 statisticamente rilevante tra gli elementi di questa categoria. (es. sedia)
 Secondo la teoria degli esemplari, invece, un senso puo' essere rappresentanto
 come l'**insieme** delle rappresentazioni di alcuni esempi di tale categoria che
