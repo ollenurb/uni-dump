@@ -174,8 +174,12 @@
         * Vantaggi (2).
     * Text Inferece;
     * Transformation;
-    * 
-
+    * Expansion;
+    * Search/IR;
+* Aspetti Pratici.
+    * Istruzioni;
+    * Avoid Negations;
+    * Zero-Shot, Few-Shot, CoT.
         
 ## Soggettività nell'NLP
 * Soggettività nella creazione di WordNet (WSD)
