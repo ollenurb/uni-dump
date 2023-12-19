@@ -4,7 +4,6 @@
 Dal punto di vista formale, un modello del linguaggio non e' nient'altro che una
 distribuzione di probabilita' $P(w_1, \dots, w_n)$ su tutte le possibili frasi. 
 
-
 # Lezione 2
 
 ## Prototypes vs Examplar Theories & Dual Process Theories
@@ -132,6 +131,3 @@ rilevanza delle frasi:
   quelli le entita' piu' connesse rispetto ad una struttura semantica. Per
   determinarla si possono utilizzare diversi classi di approcci oppure una
   combinazione di essi.
-
- 
-

@@ -232,7 +232,7 @@ relazioni.
 
 WordNet può essere visto come un vocabolario per ricercare parole
 *concettualmente* più che alfabeticamente.
-La differenza sostanziale tra un dizionario classico e WN è che l'ultimo
+La differenza sostanziale tra un dizionario clasopus 38 nosico e WN è che l'ultimo
 individua 4 categorie lessicali, in cui ogni parola viene organizzata in base al
 suo *word meaning*. Tali categorie sono:
 
@@ -314,4 +314,3 @@ facilità nomi anaforici e costruzioni comparative.
 
 I nomi superordinati possono fungere da anafore che si riferiscono ai loro
 iponimi
-
