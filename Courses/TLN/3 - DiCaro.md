@@ -133,7 +133,7 @@
     * Soggettività.
 * Perchè è importante 
 
-## 9 - Ontology Learning e Open Information Extraction
+## 9. Ontology Learning e Open Information Extraction
 * Ontology Learning
     * Definizione;
     * Problematiche (2);
@@ -159,7 +159,7 @@
     * Vantaggio;
     * Problemi (3).
 
-## 10 - LLMs e Prompting
+## 10. LLMs e Prompting
 * LLMs *"Basici"* vs "Instructed"*;
 * Cos'è il prompting;
 * Principi chiave del prompting (4);
