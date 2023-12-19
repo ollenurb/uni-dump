@@ -58,9 +58,7 @@
     * Document Segmentation (topic modelling sequenziale e intra-documentale);
         * Algoritmo di Text Tiling.
     * Document Summarization;
-        * Metodi Estrat. Vale in sostanza quel che avete appreso (e non solo)
-all’interno di questo corso.
-Con la Formal Concept Analysis (otivi;
+        * Metodi Estrattivi;
         * Metodi Astrattivi;
         * Metriche di valutazione.
     * Information Retrieval.
