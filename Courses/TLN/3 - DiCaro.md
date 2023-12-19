@@ -58,7 +58,9 @@
     * Document Segmentation (topic modelling sequenziale e intra-documentale);
         * Algoritmo di Text Tiling.
     * Document Summarization;
-        * Metodi Estrattivi;
+        * Metodi Estrat. Vale in sostanza quel che avete appreso (e non solo)
+all’interno di questo corso.
+Con la Formal Concept Analysis (otivi;
         * Metodi Astrattivi;
         * Metriche di valutazione.
     * Information Retrieval.
@@ -119,7 +121,6 @@
 * Constitutional AI
     * Efficacia vs Innocuità.
 
-
 ## 8. Basicness
 * Studio del vocabolario
 * Roger Brown - *"How Shall a Thing be Called?"*
@@ -150,8 +151,11 @@
         * Concept Hierarchies Induction;
         * Relation Extraction;
         * Population;
-        * Notazione di Sussunzione.
+            * NER;
+            * IE.
+        * Notazione di Sussunzione (?).
     * Metodi.
+        * NLP (Parsing Trees, Statistics, Lexical Resources, ecc..)
         * Formal Concept Analysis (FCA);
         * Deep Learning Based.
 * Open Information Extraction;
@@ -172,21 +176,23 @@
 * LLMs Tasks;
     * Summarization;
         * Vantaggi (2).
-    * Text Inferece;
-    * Transformation;
-    * Expansion;
+    * Text Inference;
+        * (es.) Sentiment Analysis;
+        * (es.) Topic Extraction.
+    * Text Transformation;
+    * Text Expansion;
+        * Temperatura;
     * Search/IR;
+        * Time to train problem;
 * Aspetti Pratici.
     * Istruzioni;
     * Avoid Negations;
     * Zero-Shot, Few-Shot, CoT.
         
 ## Soggettività nell'NLP
-* Soggettività nella creazione di WordNet (WSD)
+* Soggettività nella creazione di WordNet (WSD).
 * Interpretazione del risultato del Topic Modelling.
 * Criterio per stabilire se una risposta è etica o meno (Constitutional AI).
 * Definizioni di Similarità.
-* Definizioni di Basicness.
+* Definizioni di Basicness (un termine basic è soggettivo in base alla persona).
 * Valutazione e metodi di estrazione delle triple in OIE.
-
-
