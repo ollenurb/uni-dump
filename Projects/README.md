@@ -32,3 +32,11 @@ during my university career.
     * [3](IALAB/SOAR) - Simulation of an agent that learns to escape an
       environment using reinforcement learning on the SOAR cognitive
       architecture. 
+* [Natural Language Processing](TLN)
+    * [1](TLN/Part%201) - An implementation of a CKY parser, tested on a
+      context-free grammar for the Klingon language.
+    * [2](TLN/Part%202) - A series of experimentations ranging from a
+      from-scratch implementation of an *n-gram* language model, a document
+      classifier and a Word-Sense Disambiguation algorithm.
+    * [3](TLN/Part%203) - A series of experimentations regarding different
+      aspects of NLP as well as computational linguistics. 

@@ -209,7 +209,7 @@
 
 ### 2. Content to Form 
 * Si trasformano le definizioni in liste di sostantivi. 
-* Si calcola i genera candidati. Esso essenzialmente è l'insieme dei primi $n$
+* Si calcolano i genera candidati. Esso essenzialmente è l'insieme dei primi $n$
   sostantivi che occorrono con più frequenza tra tutte le definizioni.
 * Per ogni genus candidato, prima si ottengono i synset a cui corrispondono e si
   vanno a vedere tutti gli iponimi di tali synset fino ad un certo livello della
@@ -250,7 +250,7 @@
       perché troppo ambigui.
 * Si vanno a contare quante volte compaiono nel testo i vari significati (quindi
   quante volte il verbo compare con due determinati semantic types). Ovviamente,
-  ogni combinazione semantic type e verbo indentifica un senso (cluter).
+  ogni combinazione semantic type e verbo indentifica un senso (cluster).
 
 ### 4b. New Language
 * Utilizziamo Open Multilingual Wordnet, cioè un progetto di vari WordNet di

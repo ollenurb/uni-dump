@@ -1,0 +1,33 @@
+
+% start S
+
+S[SEM=<app(?subj, ?vp)>] -> VP[SEM=?vp] NP[SEM=?subj]
+S[SEM=<app(?subj, ?vp)>] -> VP[SEM=?vp] Pronoun[SEM=?subj]
+S[SEM=<app(?np, ?vp1)>] -> NP[SEM=?np] VP1[SEM=?vp1]
+S[SEM=<app(?subj, ?adj)>] -> Adj[SEM=?adj] Pronoun[SEM=?subj]
+
+VP[NUM=?n, SEM=<app(?vp, ?np)>] -> NP[NUM=?n, SEM=?np] VP1[NUM=?n, SEM=?vp]
+
+NP[NUM=?n, SEM=<app(?adj, ?noun)>] -> Adj[SEM=?adj] Noun[NUM=?n, SEM=?noun]
+
+NP[SEM=<\x.in_room(x)>] -> "pa'Daq"
+
+NP[NUM=sg, SEM=<\P.P(child)>] -> "puq"
+NP[NUM=sg, SEM=<\x.klingon(x)>] -> "tlhIngan"
+NP[NUM=sg, SEM=<\x.language(x)>] -> "Hol"
+
+NP[NUM=sg, SEM=<\P.P(me)>] -> "jIH"
+NP[NUM=pl, SEM=<\P.P(we)>] -> "maH"
+
+Adj[SEM=<\x.klingon(x)>] -> "tlhIngan"
+
+Noun[NUM=sg, SEM=<\P.P(child)>] -> "puq"
+Noun[NUM=sg, SEM=<\x.klingon(x)>] -> "tlhIngan"
+Noun[NUM=sg, SEM=<\x.language(x)>] -> "Hol"
+
+Pronoun[NUM=sg, SEM=<\P.P(me)>] -> "jIH"
+Pronoun[NUM=pl, SEM=<\P.P(we)>] -> "maH"
+
+VP1[NUM=sg, SEM=<\X x.X(speak(you, x))>, TNS=pres] -> "Dajatlh'a'"
+VP1[NUM=sg, SEM=<\X x.X(\y.see(x, y))>, TNS=pres] -> "vIlegh"
+VP1[NUM=sg, SEM=<\x.be(me, x)>, TNS=pres] -> "jIHtaH"
