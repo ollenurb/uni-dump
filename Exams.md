@@ -8,17 +8,16 @@
 * [X] Complementi di Analisi e Probabilita'
 * [X] Agenti Intelligenti
 * [X] Intelligenza Artificiale Laboratorio 
+* [X] Tecnologie del Linguaggio Naturale
 * [ ] Modellazione Concettuale per il Web Semantico
-* [ ] Tecnologie del Linguaggio Naturale
 * [ ] Elaborazione di Immagini e Visione Artificiale 
 
 ### Piano Esami
 
-#### Settembre - 2023
+#### Gennaio - 2024
 
-* __ - Modellazione Concettuale per il Web Semantico (24 lezioni)
-* __ - Tecnologie del Linguaggio Naturale (36 lezioni)
+* 25 - Elaborazione di Immagini e Visione Artificiale (24 lezioni)
 
-#### Dicembre - 2023
+#### Febbraio - 2024
 
-* -- - Elaborazione di Immagini e Visione Artificiale (24 lezioni)
+* 09 - Modellazione Concettuale per il Web Semantico (24 lezioni)
