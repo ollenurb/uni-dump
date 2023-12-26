@@ -1,5 +1,4 @@
 # Sulla nuova amministrazione di Twitter
-
 Quando parliamo di Twitter non stiamo parlando di un social network in senso
 tradizionale. Differentemente da Facebook e Instagram in cui lo scopo e'
 principalmente quello di connettersi con nuove persone per fare conoscenze, su
@@ -86,8 +85,6 @@ Musk questo lo sa bene.
 
 1. *Reuters* - [Twitter suspends several journalists, Musk cites 'doxxing' of his
    jet](https://www.reuters.com/technology/twitter-suspends-accounts-several-journalists-2022-12-16/)
-   
 2. *Los Angeles Times* - [Column: With Elon Musk in charge, it’s the beginning of the end for
    #BlackTwitter](https://www.latimes.com/california/story/2022-04-25/elon-musk-buying-twitter-will-silence-black-twitter)
-
 3. *Wired* - [Elon Musk sta azzerando critiche e concorrenti su Twitter](https://www.wired.it/article/twitter-elon-musk-sospende-giornalisti-jet-mastodon/)

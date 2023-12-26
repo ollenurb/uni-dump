@@ -1,0 +1,17 @@
+---
+header-includes:
+  - \usepackage{physics}
+  - \usepackage{amsthm}
+  - \usepackage{mathrsfs}
+  - \newtheorem{definition}{Definizione}
+  - \newtheorem{lemma}{Lemma}
+  - \newtheorem{theorem}{Teorema}
+  - \usepackage[italian]{babel}
+numbersections: true
+titlepage: true
+title:  'Appunti di Elaborazione di Immagini e Visione Artificiale'
+subtitle: "A.A. 2022-2023"
+author: [Matteo Brunello]
+toc-own-page: true
+---
+

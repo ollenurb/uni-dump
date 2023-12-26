@@ -1,5 +1,4 @@
 # L'era del capitalismo della Sorveglianza - Shoshana Zuboff
-
 Questo libro parla essenzialmente di una nuova forma economica senza precedenti
 che caratterizza il nostro presente. Essendo un qualcosa senza precedenti,
 l'autrice ne da un nome: capitalismo della sorveglianza. Il libro si estende su
@@ -20,9 +19,6 @@ aziende di conquistare sempre piu' diverse zone dell'esperienza umana, entrando
 sempre piu' in intimita' per ottenere prodotti predittivi sempre piu' efficaci.
 In tutto questo processo l'utente e' inerme, tant'e' che la Zuboff la paragona
 ai conquistatori Spagnoli. 
-
-
-
 
 Nella seconda si approfondiscono i modi in cui questo imperativo non si sia
 limitato alla dimensione virtuale ma bensi' abbia esteso le operazioni di
