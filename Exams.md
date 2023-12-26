@@ -1,6 +1,6 @@
 ## Exams
 
-### Todo (3)
+### Todo (2)
 
 * [X] Reti Neurali e Deep Learning
 * [X] Tecniche e Architetture Avanzate per lo Sviluppo del Software
