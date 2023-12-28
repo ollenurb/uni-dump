@@ -1,4 +1,4 @@
 all: pdf
 
 pdf:
-	pandoc *.md metadata.yaml -s --toc -o ELIVA.pdf --listings
+	pandoc *.md metadata.yaml -s --toc -o ELIVA.pdf --listings --template eisvogel
