@@ -3,9 +3,12 @@ header-includes:
   - \usepackage{physics}
   - \usepackage{amsthm}
   - \usepackage{mathrsfs}
+  - \usepackage{algpseudocode}
+  - \usepackage{algorithm}
   - \newtheorem{definition}{Definizione}
   - \newtheorem{lemma}{Lemma}
   - \newtheorem{theorem}{Teorema}
+
 numbersections: true
 titlepage: true
 title:  'Appunti di Elaborazione di Immagini e Visione Artificiale'
