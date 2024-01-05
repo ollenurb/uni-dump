@@ -4,6 +4,7 @@ header-includes:
   - \usepackage{amsthm}
   - \usepackage{mathrsfs}
   - \usepackage{algpseudocode}
+    \usepackage[makeroom]{cancel}
   - \usepackage{algorithm}
   - \newtheorem{definition}{Definizione}
   - \newtheorem{lemma}{Lemma}
