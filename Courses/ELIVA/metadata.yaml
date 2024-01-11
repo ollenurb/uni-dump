@@ -9,6 +9,9 @@ header-includes:
   - \newtheorem{definition}{Definizione}
   - \newtheorem{lemma}{Lemma}
   - \newtheorem{theorem}{Teorema}
+  - \usepackage{xcolor}
+  - \usepackage{sectsty}
+  - \sectionfont{\clearpage}
 
 numbersections: true
 titlepage: true
