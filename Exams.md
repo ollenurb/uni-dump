@@ -1,6 +1,6 @@
 ## Exams
 
-### Todo (2)
+### Todo (1)
 
 * [X] Reti Neurali e Deep Learning
 * [X] Tecniche e Architetture Avanzate per lo Sviluppo del Software
@@ -9,14 +9,10 @@
 * [X] Agenti Intelligenti
 * [X] Intelligenza Artificiale Laboratorio 
 * [X] Tecnologie del Linguaggio Naturale
+* [X] Elaborazione di Immagini e Visione Artificiale 
 * [ ] Modellazione Concettuale per il Web Semantico
-* [ ] Elaborazione di Immagini e Visione Artificiale 
 
 ### Piano Esami
-
-#### Gennaio - 2024
-
-* 25 - Elaborazione di Immagini e Visione Artificiale (24 lezioni)
 
 #### Febbraio - 2024
 
