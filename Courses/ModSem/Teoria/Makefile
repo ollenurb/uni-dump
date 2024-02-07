@@ -1,7 +1,19 @@
-all: pdf
+all: html
 
 OPTIONS := --citeproc --listings --number-sections
 FILENAME := ModSem
+SOURCES_REPORT := $(wildcard [0-9]*.md) $(wildcard [1-9][0-9]*.md)
+SOURCES_QUESTIONS := Domande.md
 
-pdf:
-	pandoc *.md $(OPTIONS) -o $(FILENAME).pdf
+html:
+	pandoc $(SOURCES_REPORT) $(OPTIONS) -o $(FILENAME).html
+
+questions:
+	pandoc $(SOURCES_QUESTIONS) -o Domande.pdf
+
+clean:
+	rm *.pdf *.html
+
+
+
+
