@@ -300,7 +300,7 @@ Lo sviluppo di un'ontologia secondo NeOn si sviluppa in un ciclo di vita
 
 ## Domanda #14
 
-**Domanda:**: Cosa sono i *phased sortals*?
+**Domanda**: Cosa sono i *phased sortals*?
 
 Sono delle entità che rimangono le stesse pur modificando in parte i propri
 criteri di identità (es. bruco che diventa farfalla). Sono indipendenti (-D),
