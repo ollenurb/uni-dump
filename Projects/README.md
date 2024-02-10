@@ -40,3 +40,8 @@ during my university career.
       classifier and a Word-Sense Disambiguation algorithm.
     * [3](TLN/Part%203) - A series of experimentations regarding different
       aspects of NLP as well as computational linguistics. 
+* [Conceptual Modelling for the Semantic Web](ModSem) - An ontology to describe
+  and support the identification of plant pathogen in the italian territory. It
+  also contains a simple webapp to navigate the resource.
+
+

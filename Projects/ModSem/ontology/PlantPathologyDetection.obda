@@ -1,0 +1,51 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/onto_plant_pathology#
+dc:		http://purl.org/dc/elements/1.1/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+skos:		http://www.w3.org/2004/02/skos/core#
+vann:		http://purl.org/vocab/vann/
+event:		http://w3id.org/daselab/onto/event#
+swrla:		http://swrl.stanford.edu/ontologies/3.3/swrla.owl#
+collectionentity:	http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#
+cpannotationschema:	http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#
+onto_plant_pathology:	http://www.semanticweb.org/onto_plant_pathology#
+
+[MappingDeclaration] @collection [[
+mappingId	INSERT PLANTS FROM NON-FREQUENT FAMILIES
+target		:{eppo_code} a :{phylum_name} ; :hasEppoCode {eppo_code} ; :hasScientificName {name} ; rdfs:label {name} ; rdfs:comment "Plant of the {phylum_name} phylum."@en , "Pianta della divisione {phylum_name}."@it . 
+source		SELECT eppo_code, name, phylum_name FROM plants WHERE family_eppo_code NOT IN (SELECT eppo_code FROM special_families)
+
+mappingId	INSERT PLANTS FROM FREQUENT FAMILIES
+target		:{eppo_code} a :{family_name} ; :hasEppoCode {eppo_code} ; :hasScientificName {name} ; rdfs:label {name} ; rdfs:comment "Plant of {family_name} family."@en , "Pianta della famiglia {family_name}."@it . 
+source		SELECT eppo_code, name, family_name FROM plants WHERE family_eppo_code IN (SELECT eppo_code FROM special_families)
+
+mappingId	INSERT PATHOGENS HOSTS
+target		:{pathogen} :affects :{plant} . 
+source		SELECT pathogen, plant FROM pathogens_hosts
+
+mappingId	INSERT PATHOGEN PRESENCE IN SUBTERRITORY
+target		:{pathogen}-{subterritory} a :Presence ; :presenceOf :{pathogen} ; :presenceIn :{subterritory} ; rdfs:label "{name} in {english_name}"@en , "{name} in {italian_name}"@it ; rdfs:comment "The presence of the the {name} pathogen in {english_name}."@en , "La presenza del patogeno {name} in {italian_name}."@it . 
+source		SELECT pathogen, subterritory, name, italian_name, english_name FROM presences, pathogens, subterritories WHERE pathogens.eppo_code = presences.pathogen AND presences.subterritory = subterritories.iso_3166_2_it;
+
+mappingId	INSERT YEAR OF PATHOGEN FIRST ENCOUNTER IN A SUBTERRITORY
+target		:{pathogen}-{subterritory} :hasFirstEncounter {year} . 
+source		SELECT pathogen, subterritory, year FROM presences WHERE year IS NOT NULL
+
+mappingId	INSERT PLANTS NAME IN ENGLISH
+target		:{plant} :hasCommonName {name}@en . 
+source		SELECT DISTINCT plant, name FROM plants_names WHERE language LIKE 'en'
+
+mappingId	INSERT PLANTS NAME IN ITALIAN
+target		:{plant} :hasCommonName {name}@it . 
+source		SELECT DISTINCT plant, name FROM plants_names WHERE language LIKE 'it'
+
+mappingId	INSERT ERADICATED PATHOGEN PRESENCE
+target		:{pathogen}-{subterritory} :hasEradicatedPathogen "true"^^xsd:boolean . 
+source		SELECT pathogen, subterritory, eradicated FROM presences WHERE eradicated = true;
+]]
+
