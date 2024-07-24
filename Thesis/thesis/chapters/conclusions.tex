@@ -1,0 +1,97 @@
+\setchapterstyle{kao}
+\chapter{Conclusions and Future Developments}
+\labch{conclusions_future_developments}
+
+In conclusion, the extensive validation across ten different downstream tasks,
+as discussed in~\refch{anatcl}, has demonstrated that integrating anatomical
+information during training enhances the accuracy of predictions for various
+neurological and psychiatric conditions. The findings also indicate a partial
+improvement in the accuracy for clinical assessment scores and phenotypes. These
+results suggest that enriching these learning methods with anatomical data can
+yield more robust and generalizable models applicable to a range of downstream
+tasks. The insights gained from these models could be crucial in developing
+personalized treatment plans for patients. By accurately characterizing the
+neurological basis of various psychiatric and neurodegenerative disorders, these
+models could significantly influence the design of tailored therapeutic
+interventions. Additionally, achieving higher accuracy in detecting biomarkers
+such as brain age from these models could significantly enhance the diagnosis of
+specific neurological disorders, thereby improving patient outcomes. 
+
+However, further research is required to refine and enhance these methods. For
+example, an obvious limitation of this approach is that these methods still rely
+on the age attribute, which may not be available in all neuroimaging datasets.
+Further research in this area could lead to the development of novel methods
+that rely solely on anatomical measures for weak supervision, potentially
+achieving superior performance compared to fully self-supervised methods. Since
+anatomical measures can be automatically extracted using established
+neuroimaging algorithms, these innovative methods could essentially be
+considered fully self-supervised.
+
+Furthermore, this research primarily utilized a specific brain atlas, thereby
+not incorporating the range of other atlases available in the neuroimaging
+literature. Future work could involve exploring additional atlases that utilize
+different anatomical measures. Such an endeavor would necessitate a meticulous
+comparative evaluation of these alternative atlases to determine their efficacy
+and accuracy relative to the one used in this study. Expanding the scope to
+include a variety of atlases could enhance the robustness and applicability of
+the findings, potentially offering a more comprehensive understanding of brain
+anatomy and its implications for neuroimaging analysis.
+
+Another potential direction not explored in this thesis involves utilizing other
+acquisition methods as additional learning data. The aim would be to integrate
+diverse neuroimaging modalities (sMRI, fMRI, dMRI), signals (EEG) and other
+relevant data (clinical assessment scores, phenotypic data) into the learning
+process of the model. The idea is to create a more holistic model that
+incorporates a broader range of modalities in order to provide a more
+comprehensive understanding of brain health and pathology. The integration of
+diverse sources of information could be achieved either by incorporating it into
+the loss formulation, as examined in this work, or by developing a novel
+multimodal model architecture capable of extracting and combining salient
+information from input data.
+Recent research~\sidecite{radford_clip_2021} has also demonstrated the
+feasibility of augmenting deep learning models not only with imaging data but
+also with textual data. For instance, in the medical domain, there has been a
+research effort~\sidecite{wang_medclip_2022} directed towards integrating
+clinical records and assessment scores. This research direction is further
+supported by recent works~\sidecite{venugopalan_multimodal_2021} that
+demonstrated by integrating data of different nature such as EEG and clinical
+assessments could significantly enrich the representations learned by the model.
+
+The findings from this research direction could pave the way for the development
+of large multimodal models that could serve as foundational tools in
+personalized medicine. Employing the principles of transfer learning, these
+models can be adapted for personalized predictions of psychiatric conditions,
+such as Autism Spectrum Disorder (ASD), and neurodegenerative conditions, such
+as Alzheimer's Disease (AD). To achieve this, multimodal and/or longitudinal
+data can be utilized to create detailed, patient-specific profiles and to model
+the progression of various conditions. Such personalized models can then offer
+customized insights and treatment recommendations, thereby enhancing patient
+outcomes by accommodating the unique variations in brain structure and function
+specific to each individual.
+
+\section*{Ethical Considerations}
+In the development and experiments described within this thesis, strict
+adherence to ethical standards was maintained. A significant aspect of these
+ethical considerations involves the use of data. It is important to note that
+there were no ethical issues concerning the datasets utilized, as all were
+publicly accessible and composed of previously anonymized patient data, ensuring
+that individual privacy was preserved and that the data could be used without
+compromising patient confidentiality.
+
+Furthermore, the applications of the findings discussed in this research thesis
+are aimed at enhancing the accuracy of diagnoses and the identification of
+pathological conditions related to the brain. By improving diagnostic
+capabilities through more precise imaging analysis, the potential for positive
+impacts on patient outcomes is significant. The use of advanced machine learning
+models in medical imaging can lead to earlier detection of diseases, more
+tailored treatment plans, and ultimately, better patient care. This alignment
+with the goal of improving healthcare outcomes further supports the ethical
+justification for this research.
+
+\section*{Declaration of Originality}
+I declare to be responsible for the content I'm presenting in order to
+obtain the final degree, not to have plagiarized in all or part of, the work
+produced by others and having cited original sources in consistent way with
+current plagiarism regulations and copyright. I am also aware that in case of
+false declaration, I could incur in law penalties and my admission to final exam
+could be denied.

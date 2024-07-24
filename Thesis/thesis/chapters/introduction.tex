@@ -1,0 +1,154 @@
+\setchapterstyle{kao}
+\chapter{Introduction}
+\labch{intro}
+
+\section{Background and Motivation}
+\labsec{background_motivation}
+Neuroimaging has come up as a pivotal tool in understanding the structure and
+function of the human brain. Amongst the neuroimaging techniques available, MRI
+is the most popular, being a non-invasive technique that has high spatial
+resolution. MRI has broad application in diagnosis and studies related to
+neurological disorders, including but not limited to Alzheimer's Disease,
+schizophrenia, and Autism Spectrum Disorder (ASD). Further advancements in
+hardware and software techniques have also enabled the development of various
+MRI modalities, each serving unique purposes in brain imaging, with the most
+notable ones being:
+\begin{itemize}
+    \item Structural Magnetic Resonance Imaging (sMRI), which provides
+    high-resolution images that assess the morphology, volume, and other
+    anatomical measures\sidenote{For instance, one such measure is the
+    \emph{cortical thickness}, which refers to the thickness of the cerebral
+    cortex, the outer layer of the brain that is responsible for high-level
+    cognition and functions.} of the brain.
+    \item Functional Magnetic Resonance Imaging (fMRI), which measures brain
+    activity by detecting changes associated with blood flow.
+    \item Diffusion Magnetic Resonance Imaging (dMRI), which maps the diffusion
+    process of molecules in biological tissues, highlighting neural pathways in
+    the brain.
+\end{itemize}
+The advancement of MRI technology has brought numerous benefits, opening up many
+possibilities for automated analysis methods. This is particularly important as
+neurological disorders encompasses multiple factors that must be considered
+simultaneously, requiring a multifaceted evaluation. In this context, the
+application of computer vision methods may be beneficial, especially for the
+extraction and analysis of complex patterns within the images that may be too
+subtle or intricate for manual detection.
+
+In recent years, the advancements in computer vision propelled by Deep
+Learning~\sidecite{lecun_2015}, have introduced exceptional tools for image
+recognition, segmentation, and classification. In particular, Convolutional
+Neural Networks~\sidecite{lecun_cnn_1989} have shown very strong performance in
+the capture of hierarchical features in visual data. These advances have brought
+a new source of inspiration for neuroimaging analysis. However, the employment
+of such models in neuroimaging also introduces some unique challenges such as:
+\begin{itemize}
+    \item High dimensionality and complexity of data: brain MRI scans produce
+    complex and high-dimensional data that encapsulates intricate anatomical
+    information that requires more data for models to learn the statistical correlations. The inherently three-dimensional nature of MRI data presents
+    significant challenges compared to conventional two-dimensional image
+    representation models. This
+    issue is particularly pronounced in scenarios where data is scarce,
+    compounding the difficulty of training effective models.
+    \item Limited annotated data: high cost of manual annotation, coupled with
+    necessary expert knowledge imposition, makes the scale of labeled
+    neuroimaging data hard to achieve. This practice, therefore, makes it
+    difficult to achieve generalization capability of supervised deep learning
+    models, often induced by label noise or performance degradation upon
+    transfer to unseen data.
+    \item Anatomical variability between subjects: the anatomical variation of
+    the human brain is large between subjects. Furthermore, it is largely
+    influenced by factors such as age, sex, and neurological diseases. This
+    makes the development of deep learning models that can work well across
+    these diverse populations a real challenge.
+\end{itemize}
+
+All these issues can largely be attributed to a lack of annotated data, a
+problem that is particularly accentuated in the field of neuroimaging. Despite
+recent efforts to increase the collection of neuroimaging data, these datasets
+remain relatively small compared to those available in other imaging fields.
+This limitation is even more pronounced for datasets concerning specific
+neurological conditions that are demographically rare, exacerbating the
+challenges of developing robust and effective models due to the limited
+availability of comprehensive data.
+
+The principle of Transfer Learning helps mitigate the challenges associated with
+the scarcity of labeled data. This method begins by training the target model in
+a self-supervised manner using a large unlabeled dataset\sidenote{In
+neuroimaging, unlabeled data consist of MRI scans.}. The underlying rationale of
+this first phase is to enable the model to learn the basic statistical
+correlations present in the general population.
+Subsequently, the model is fine-tuned for a specific downstream
+task\sidenote{Example tasks may be brain age or patient's sex prediction.},
+typically using a smaller labeled dataset. This two-stage approach leverages the
+broad generalizability learned initially and applies it to more focused,
+specific tasks, enhancing the model's performance on datasets where labeled
+examples are limited.
+
+One of the pre-training methods that has shown considerable success in the
+literature is Contrastive Learning~\cite{hadsell_dimred_2005,
+chen_self_contrastive_2020, khosla_supervised_contrastive_2021,
+henaff_contrastive_2020, hjelm_contrastive_2019, wu_unsupervised_2018}. The
+unsupervised form of this method is a learning paradigm that aims to minimize
+the distance between positive pairs\sidenote{Different augmentations of the same
+image (referred to as the \emph{anchor}) constitute positive pairs, whereas
+augmentations from different images form negative pairs.} and maximize the
+distance between negative pairs in a latent space that the model must learn.
+Despite its effectiveness compared to other self-supervised learning methods,
+Contrastive Learning has inherent limitations, notably that positive samples
+with respect to the anchor may inadvertently be treated as negative samples.
+Such misclassification can potentially hinder the model's ability to learn
+accurate representations, especially in complex datasets where similar but
+distinct classes may exist.
+
+To address this issue, it is possible to utilize additional metadata associated
+with each sample\sidenote{This metadata typically remains unused in
+self-supervised methods.} to more accurately determine whether a sample should
+be considered positive or negative relative to the anchor. Incorporating such
+metadata can enhance the model's ability to discern between positive and
+negative pairs, resulting in more informative and generalizable representation
+spaces that translates in better performance in downstream tasks. These
+approaches are categorized as \emph{weakly supervised learning} methods because
+they leverage an indirect source of information about the target task rather
+than relying on direct and precise labels.
+
+Existing weakly supervised contrastive learning approaches focus on the
+integration of continuous attributes like brain age, achieving state-of-the-art
+performance in brain age prediction. However, these methods are limited to a
+single attribute, leaving most other meta-information that is present in
+neuroimaging datasets unused. This work builds upon existing state-of-the-art
+methods by incorporating additional meta-information along with age. The
+proposed framework is AnatCL, a novel contrastive loss that leverages both age
+and anatomical brain measures. Models pre-trained with AnatCL outperform current
+SOTA approaches on various downstream tasks, suggesting that it could become an
+effective framework for pre-training foundation models in brain imaging. 
+
+\section{Contributions of this Work}
+The research work discussed in this thesis has been summarized in a research
+paper~\sidecite{barbano_anatcl_2024} that was submitted to the NeurIPS
+conference.
+
+\section{Thesis Structure}
+This thesis is divided into two parts. The first part includes all the chapters
+presenting the background information needed to understand the following parts.
+These chapters take a focused approach, introducing only the elements that are
+needed further on, without discussing extensively the entire literature, which
+is outside the scope of this thesis. Building from first
+principles,~\refch{deeplearning} introduces the basic methods, algorithms and
+models typical of deep learning, with a focus on imaging models.
+\refch{neuroimaging}, on the other hand, gives a bird's eye view of various
+acquisition methods, pre-processing and analysis of neuroimaging data.
+
+The second part presents the main body of the thesis, discussing the novel loss
+formulation, experiments, and potential future developments. Specifically, this
+section is organized into several chapters:~\refch{anatcl} discusses the loss
+formulation,~\refch{experiments} provides a comprehensive account of the
+experiments conducted to evaluate the proposed loss, and~\refch{conclusions_future_developments} explores potential future research
+directions stemming from this work. Each chapter is designed to stand alone,
+allowing readers with sufficient background knowledge to directly engage with
+specific sections of interest. For instance, machine learning practitioners who
+are familiar with the foundational concepts may prefer to start with
+~\refch{neuroimaging} before proceeding to ~\refch{anatcl} to gain a deeper
+understanding of the context and application of the novel methodologies
+discussed. On the other hand, neuroimaging practitioners may prefer to first
+explore the chapter dedicated to deep learning (\refch{deeplearning}) before
+delving into the methodologies discussed in~\refch{anatcl}.

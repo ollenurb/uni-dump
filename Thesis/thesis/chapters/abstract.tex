@@ -1,0 +1,44 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}  
+
+In recent years, the application of deep neural networks, particularly
+Convolutional Neural Networks (CNNs), has yielded remarkable results across
+various domains that benefit from automated image analysis. The field of
+neuroimaging has particularly benefited from these advances, driven by the
+growing availability of brain imaging data, facilitated by enhancements in
+non-invasive acquisition methods like magnetic resonance imaging. 
+
+However, the application of deep learning in neuroimaging faces challenges,
+especially when applied to the prediction of psychiatric and neurological
+disorders, which encompasses a wide range of clinical, biological, and
+environmental factors. This challenge is further exacerbated by data scarcity.
+Although the volume of neuroimaging data has increased in recent years due to
+collaborative research efforts, these datasets are often limited in size,
+especially when focused on specific neurological conditions. To address these
+challenges, Transfer Learning and Contrastive Learning have emerged as effective
+strategies, showing good performances in various neuroimaging tasks compared to
+traditional machine learning approaches. According to this framework, a model is
+initially pre-trained on a large dataset of healthy subjects using Contrastive
+Learning techniques. Subsequently, this pre-trained model is fine-tuned for a
+specific task using a smaller cohort of patients, typically associated with a
+particular condition or phenotype.
+
+Neuroimaging datasets are also rich in additional patient information, such as
+age, sex, and other neuroanatomical data. These features are valuable markers,
+particularly when correlated with data derived from neuroimaging studies. Recent
+research efforts have focused on integrating these features into the
+pre-training phase using contrastive learning techniques. However, current
+state-of-the-art methods predominantly rely on chronological age as the primary
+feature during pre-training, which may not sufficiently capture the complex
+information inherent in brain MRI data.
+
+This thesis introduces a novel approach designed to overcome this limitation.
+The core of this research involves the development and application of a new
+Contrastive Learning method termed AnatCL, which integrates multiple anatomical
+measures derived from brain MRIs along with demographic data (patient age). By
+incorporating additional features, AnatCL facilitates the learning of more
+meaningful and generalizable representation spaces that more accurately reflect
+individual variability and aging patterns. Results from evaluating various
+downstream tasks across multiple neuroimaging datasets suggest that enriching
+these learning methods with additional data can yield more robust and
+generalizable models.
